@@ -6,6 +6,16 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/admin/login',
+    name: 'admin',
+    component: () => import('../views/Admin.vue')
+  },
+  {
+    path: '/admin',
+    exact: true,
+    redirect: '/admin/login'
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound
