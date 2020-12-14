@@ -18,7 +18,58 @@
             <div class="tweettime">3小時</div>
           </div>
           <div class="tweetcontent">
-            Nulla Lorem mollitcupidatat irure. Laborum magna!!
+            Nulla Lorem mollitcupidatat irure. Laborum magna!!Nulla Lorem
+            mollitcupidatat irure. Laborum magna!!Nulla Lorem mollitcupidatat
+            irure. Laborum magna!!Nulla Lorem mollitcupidatat irure. Laborum
+            magna!!
+          </div>
+        </div>
+        <div class="delete">Ｘ</div>
+      </div>
+      <div class="tweetscard d-flex">
+        <div class="userphoto mx-2 ml-3">
+          <img
+            src="https://imgur.com/JVhBuMg.png"
+            alt="userpic"
+            class="userpic"
+          />
+        </div>
+        <div class="contentcontainer d-flex">
+          <div class="userinfo d-flex">
+            <div class="username">Apple</div>
+            <div class="useraccount">@apple</div>
+            <div class="dot">·</div>
+            <div class="tweettime">3小時</div>
+          </div>
+          <div class="tweetcontent">
+            Nulla Lorem mollitcupidatat irure. Laborum magna!!Nulla Lorem
+            mollitcupidatat irure. Laborum magna!!Nulla Lorem mollitcupidatat
+            irure. Laborum magna!!Nulla Lorem mollitcupidatat irure. Laborum
+            magna!!
+          </div>
+        </div>
+        <div class="delete">Ｘ</div>
+      </div>
+      <div class="tweetscard d-flex">
+        <div class="userphoto mx-2 ml-3">
+          <img
+            src="https://imgur.com/JVhBuMg.png"
+            alt="userpic"
+            class="userpic"
+          />
+        </div>
+        <div class="contentcontainer d-flex">
+          <div class="userinfo d-flex">
+            <div class="username">Apple</div>
+            <div class="useraccount">@apple</div>
+            <div class="dot">·</div>
+            <div class="tweettime">3小時</div>
+          </div>
+          <div class="tweetcontent">
+            Nulla Lorem mollitcupidatat irure. Laborum magna!!Nulla Lorem
+            mollitcupidatat irure. Laborum magna!!Nulla Lorem mollitcupidatat
+            irure. Laborum magna!!Nulla Lorem mollitcupidatat irure. Laborum
+            magna!!
           </div>
         </div>
         <div class="delete">Ｘ</div>
@@ -38,7 +89,10 @@ export default {};
 }
 .tweetscontainer {
   width: 100%;
+}
+.tweetscard {
   border-bottom: 2px solid #f0f0f0;
+  margin-top: 1rem;
 }
 .contentcontainer {
   flex-direction: column;
@@ -58,7 +112,7 @@ export default {};
 }
 h5 {
   border-bottom: 2px solid #f0f0f0;
-  padding: 0 0 10px 10px;
+  padding: 0 10px 10px 30px;
 }
 .userinfo {
   margin: 0 10px 5px 0;
@@ -76,9 +130,11 @@ h5 {
   margin: 0 3px;
   color: #9d9d9d;
 }
-
 .useraccount,
 .tweettime {
   font-weight: 500;
+}
+.delete {
+  margin-left: 20px;
 }
 </style>

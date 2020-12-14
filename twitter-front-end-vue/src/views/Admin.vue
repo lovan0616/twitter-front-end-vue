@@ -6,7 +6,7 @@
       class="alphitterLogo"
     />
     <h5>後台登入</h5>
-    <input type="email" placeholder="帳號" autofocus />
+    <input type="email" placeholder="帳號" />
     <input type="text" placeholder="密碼" />
     <div class="buttonContainer">
       <button class="button">登入</button>
