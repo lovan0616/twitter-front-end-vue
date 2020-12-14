@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/admin/main',
+    name: 'admin-main',
+    component: () => import('../views/AdminMain.vue')
+  },
+  {
     path: '/admin/login',
     name: 'admin',
     component: () => import('../views/Admin.vue')

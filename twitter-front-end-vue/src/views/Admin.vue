@@ -57,10 +57,8 @@ input {
   width: 40%;
   margin: 10px;
   padding: 10px;
-  border-top: 10px;
-  border-left: 10px;
-  border-right: 10px;
-  border-color: #9d9d9d;
+  border: 10px;
+  border-bottom: 3px solid #9d9d9d;
   background-color: #f0f0f0;
 }
 button {
