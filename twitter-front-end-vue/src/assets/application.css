@@ -1,0 +1,53 @@
+html, body, #app {
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+  margin: 14px auto 14px auto;
+}
+
+#navbar-area {
+  width: 26%;
+  height: 100%;
+  border-right: 1px solid #E6ECF0;
+}
+
+#main-area {
+  flex-grow: 1;
+  height: 100%;
+}
+
+#follow-recommend-area {
+  width: 38%;
+  height: 100%;
+  border-left: 1px solid #E6ECF0;
+  padding-left: 31px;
+}
+.btn-primary {
+  border: none;
+  background-color: #FF6600;
+  color: FFFFFF;
+}
+
+.btn-primary:hover {
+  background-color: #de5b04
+}
+
+.badge-primary {
+  border: none;
+  background-color: #FF6600;
+  color: FFFFFF;
+}
+
+.badge-outline-primary {
+  border: 1px solid #FF6600;
+  background-color: FFFFF;
+  color: #FF6600;
+}
