@@ -1,13 +1,14 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 export const fromNowFilter = {
   filters: {
-    fromNow(value) {
-      return value ? moment(value).fromNow() : '--';
+    fromNow(datetime) {
+      dayjs.extend(relativeTime)
+      return datetime ? dayjs().from(datetime) : '--';
     }
   }
 }
-
 export const emptyImageFilter = {
   filters: {
     emptyImage(src) {
