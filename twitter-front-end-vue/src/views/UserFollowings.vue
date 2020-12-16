@@ -8,7 +8,7 @@
     <div id="main-area" class="main-area">
       <div class="upper-area d-flex align-items-top">
         <div class="upper-area-content">
-          <span class="mr-5 pt-2">&larr;</span>
+          <span class="mr-5">&larr;</span>
           <div class="user">
             <strong class="name">{{ user.name }}</strong>
             <p class="tweets-count small">{{ user.tweetsCount }} 推文</p>
@@ -16,7 +16,7 @@
         </div>
       </div>
       <main>
-        <ul class="nav nav-tabs mt-4">
+        <ul class="nav nav-tabs">
           <li class="nav-item">
             <router-link
               class="nav-link"
@@ -37,11 +37,9 @@
           </li>
         </ul>
         <div class="followers-panel">
-          <div class="follower" v-for="follower in followers" :key="follower.id">
+          <div class="card follower" v-for="follower in followers" :key="follower.id">
             <div class="info d-flex">
-              <div class="image-cropper">
-                <img :src="follower.image" class="avatar" />
-              </div>
+              <img :src="follower.image" class="avatar round" />
               <div class="info-text d-flex flex-column">
                 <strong class="name">{{ follower.name }}</strong>
                 <p class="account">{{ follower.account }}</p>
@@ -71,7 +69,7 @@ const dummyData = {
       id: "1",
       name: "蠟筆小新",
       image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+        "https://lh3.googleusercontent.com/proxy/k19C098W2KUwl3wO0Um30bPeUfEvcA2wxyEdionqHxhZdd8vDAL5sWGVahERTTjo6iw9uZYT3pTAlrNHnuxau-MeCu-mtCaxEwF4DyY",
       account: "canyon",
       introduction:
         "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
@@ -84,7 +82,7 @@ const dummyData = {
       id: "2",
       name: "蠟筆小新",
       image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+        "https://lh3.googleusercontent.com/proxy/k19C098W2KUwl3wO0Um30bPeUfEvcA2wxyEdionqHxhZdd8vDAL5sWGVahERTTjo6iw9uZYT3pTAlrNHnuxau-MeCu-mtCaxEwF4DyY",
       account: "canyon",
       introduction:
         "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
@@ -97,7 +95,7 @@ const dummyData = {
       id: "3",
       name: "蠟筆小新",
       image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+        "https://lh3.googleusercontent.com/proxy/k19C098W2KUwl3wO0Um30bPeUfEvcA2wxyEdionqHxhZdd8vDAL5sWGVahERTTjo6iw9uZYT3pTAlrNHnuxau-MeCu-mtCaxEwF4DyY",
       account: "canyon",
       introduction:
         "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
@@ -158,55 +156,9 @@ export default {
 </script>
 
 <style scoped>
-.upper-area-content {
-  display: flex;
-  align-items: top;
-  padding-left: 15px;
-}
-
-.upper-area-content p {
-  margin: 0;
-  line-height: 10px;
-}
-
-.follower {
-  width: 100%;
-  border-top: 1px solid #e6ecf0;
-  border-bottom: 1px solid #e6ecf0;
-  position: relative;
-  padding: 12px 15px 10px 15px;
-}
-
-info {
-  width: 100%;
-}
-
-.follow-badge {
-  position: absolute;
-  top: 12px;
-  right: 15px;
-}
-
-.image-cropper {
+.round {
   width: 50px;
   height: 50px;
-  position: relative;
-  overflow: hidden;
   border-radius: 50%;
-  margin-right: 10px;
-}
-
-.info-text {
-  width: calc(100% - 50px);
-}
-
-.info-text p {
-  margin-bottom: 0;
-}
-
-.avatar {
-  width: auto;
-  display: inline;
-  height: 100%;
 }
 </style>

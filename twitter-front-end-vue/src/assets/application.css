@@ -10,26 +10,31 @@ html, body, #app {
 .container {
   display: flex;
   height: 100%;
-  margin: 14px auto 14px auto;
+  margin: 0 auto 14px auto;
 }
 
 #navbar-area {
-  width: 26%;
+  width: 22%;
   height: 100%;
-  border-right: 1px solid #E6ECF0;
 }
 
 #main-area {
-  flex-grow: 1;
+  width: 45%;
   height: 100%;
+  border-left: 1px solid #E6ECF0;
 }
 
 #follow-recommend-area {
-  width: 38%;
+  width: 33%;
   height: 100%;
   border-left: 1px solid #E6ECF0;
   padding-left: 31px;
 }
+
+.upper-area {
+  height: 55px;
+}
+
 .btn-primary {
   border: none;
   background-color: #FF6600;

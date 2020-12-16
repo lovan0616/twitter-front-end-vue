@@ -129,6 +129,10 @@ export default {
     border: hidden;
   }
 
+  .card {
+    margin-top: 15px;
+  }
+
   .card-body {
     padding: 0 20px 0 20px;
   }

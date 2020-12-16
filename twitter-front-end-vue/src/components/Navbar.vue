@@ -30,7 +30,7 @@
           </router-link>
         </div>
 
-        <div class="btn btn-primary post">推文</div>
+        <div type="button" class="btn btn-primary post" data-toggle="modal" data-target="#exampleModal">推文</div>
       </div>
 
       <div class="bottom-area mt-auto">
@@ -47,6 +47,12 @@
 ul,
 li {
   list-style: none;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
 }
 
 .nav-item div {

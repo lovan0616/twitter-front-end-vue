@@ -5,9 +5,11 @@
        <Navbar />
       </div>
 
-      <div id="main-area" class="main-area">
+      <div class="right-content">
         <div class="upper-area">
-          <strong>帳戶設定</strong>
+          <div class="upper-area-content">
+            <strong>帳戶設定</strong>
+          </div>
         </div>
         <main>
           <form class="ml-2" @submit.stop.prevent="handleSubmit" style="width: 60%">
@@ -137,10 +139,12 @@ export default {
 </script>
 
 <style scoped>
-  .upper-area {
+  .right-content {
+    flex-grow: 1;
+  }
+  .upper-area-content {
     border-bottom: 1px solid #E6ECF0;
-    height: 55px;
-    padding-left: 23px;
+    padding-left: 15px;
   }
 
   .upper-area strong {

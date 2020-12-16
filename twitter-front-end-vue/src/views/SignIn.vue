@@ -16,7 +16,9 @@
 
       <button class="btn btn-primary btn-block" type="submit">登入</button>
 
-      <p class="text-right pt-4"><a href="">註冊 Alphitter</a>·<a href="">後台登入</a></p>
+      <p class="text-right pt-4">
+        <a href="">註冊 Alphitter</a>·
+        <router-link to="/admin">後台登入</router-link></p>
     </form>
  </div>
   
