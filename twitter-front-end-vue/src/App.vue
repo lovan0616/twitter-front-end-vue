@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="twitter">
     <router-view />
   </div>
 </template>
@@ -11,3 +11,5 @@ export default {
   name: "App",
 };
 </script>
+
+
