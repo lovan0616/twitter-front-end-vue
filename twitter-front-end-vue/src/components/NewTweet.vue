@@ -12,11 +12,11 @@
         </a>
       </div>
       <div class="content-area w-100">
-        <form class="w-100 d-flex flex-column align-items-end">
-          <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？"></textarea>
+        <form class="w-100 d-flex flex-column align-items-end" @submit.stop.prevent="handleSubmit">
+          <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？" v-model="description"></textarea>
 
           <div class="button-control mt-3">
-            <div class="btn btn-primary post">推文</div>
+            <button type="submit" class="btn btn-primary post">推文</button>
           </div>
         </form>
       </div>
@@ -51,7 +51,7 @@
                 </a>
               </div>
               <div class="content-area w-100">
-                <form class="w-100 d-flex flex-column align-items-end">
+                <form class="w-100 d-flex flex-column align-items-end" @submit.stop.prevent="handleSubmit">
                   <textarea
                     class="w-100"
                     name="text"
@@ -59,10 +59,11 @@
                     cols="20"
                     rows="4"
                     placeholder="有什麼新鮮事？"
+                    v-model="description"
                   ></textarea>
 
                   <div class="button-control mt-3">
-                    <div class="btn btn-primary post">推文</div>
+                    <button type="submit" class="btn btn-primary post">推文</button>
                   </div>
                 </form>
               </div>
@@ -75,8 +76,27 @@
 </template>
 
 <script>
+//Todo: 取回API後記得刪除
+import { v4 as uuidv4 } from "uuid"
 export default {
-  name: "NewTweet"
+  name: "NewTweet",
+  data() {
+    return {
+      description: "",
+    }
+  },
+  methods: {
+    handleSubmit() {
+      console.log('1')
+      this.$emit('after-post-submit', {
+        id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
+        description: this.description
+      })
+      console.log('2')
+
+      this.description = ""
+    }
+  }
 };
 </script>
 
@@ -133,5 +153,4 @@ textarea:focus {
   padding: 1rem 1rem;
   margin: -1rem auto -1rem -1rem;
 }
-
 </style>

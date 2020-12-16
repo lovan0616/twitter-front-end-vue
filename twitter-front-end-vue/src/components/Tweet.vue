@@ -18,12 +18,10 @@
       </div>
       <div class="post-engage d-flex">
         <div class="reply-control d-flex mr-3">
-          <router-link :to="{
-            name: 'reply-list',
-            params: {id: tweet.id}
-          }">
+         <!-- Todo:修改成router-link 導reply-list -->
+          <a>
             <img src="../assets/Reply.svg" />
-          </router-link>
+          </a>
           <p class="reply-counts mb-0 ml-2">{{ tweet.repliedCount }}</p>
         </div>
 
