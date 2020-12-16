@@ -9,33 +9,33 @@
     </div>
     <ul>
       <li>
-        <a href="" class="d-flex"
+        <router-link to="/admin/main" class="d-flex"
           ><img
-            src="https://imgur.com/UkjEsBp.png"
+            src="https://imgur.com/ucoP2Jy.png"
             alt="推文icon"
             class="tweeticon"
           />
-          <h5 class="list">推文清單</h5></a
+          <h5 class="list">推文清單</h5></router-link
         >
       </li>
       <li>
-        <a href="" class="d-flex"
+        <router-link to="/admin/users" class="d-flex"
           ><img
             src="https://imgur.com/twOPjEE.png"
             alt="使用者icon"
             class="usericon"
           />
-          <h5 class="user">使用者列表</h5></a
+          <h5 class="user">使用者列表</h5></router-link
         >
       </li>
-      <a href="" class="logout d-flex">
+      <router-link to="/admin/login" class="logout d-flex">
         <img
           src="https://imgur.com/1JSzLaV.png"
           alt="登出icon"
           class="logout-icon"
         />
         <h5 class="logout-text">登出</h5>
-      </a>
+      </router-link>
     </ul>
   </div>
 </template>
@@ -46,7 +46,7 @@
   width: 35%;
   height: 700px;
   flex-direction: column;
-  position: relative;
+  margin-left: 0;
 }
 li {
   list-style: none;
@@ -73,9 +73,16 @@ h5 {
   width: 24px;
   height: 24px;
 }
-.list {
-  color: #ff8800;
+.tweeticon:hover,
+.usericon:hover,
+.list:hover,
+.user:hover {
+  transform: scale(1.1);
+  filter: invert(50%) sepia(100%) saturate(1383%) hue-rotate(360deg)
+    brightness(102%) contrast(107%);
+  /* https://www.zhangxinxu.com/sp/filter.html */
 }
+.list,
 .user,
 .logout-text {
   color: black;

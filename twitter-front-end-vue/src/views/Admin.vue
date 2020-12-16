@@ -1,21 +1,25 @@
 <template>
   <div class="container">
-    <img
-      src="https://imgur.com/JVhBuMg.png"
-      alt="alphitterLogo"
-      class="alphitterLogo"
-    />
-    <h5>後台登入</h5>
-    <input type="email" placeholder="帳號" />
-    <input type="text" placeholder="密碼" />
-    <div class="buttonContainer">
-      <button class="button">登入</button>
-      <router-link to="/" class="toFront">前台登入</router-link>
-    </div>
+    <form class="form-container d-flex" @submit.prevent.stop="handleLogin">
+      <img
+        src="https://imgur.com/JVhBuMg.png"
+        alt="alphitterLogo"
+        class="alphitterLogo"
+      />
+      <h5>後台登入</h5>
+      <input type="email" placeholder="帳號" v-model="admin.account" required />
+      <input type="text" placeholder="密碼" v-model="admin.password" required />
+      <div class="buttonContainer">
+        <button class="button" :disabled="isProcessing">登入</button>
+        <router-link to="/" class="toFront">前台登入</router-link>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
+import { Toast } from "../utils/helpers";
+
 const dummyAdmin = {
   account: "root@example.com",
   password: "12345678",
@@ -24,24 +28,44 @@ const dummyAdmin = {
 export default {
   data() {
     return {
-      admin: {},
+      admin: {
+        account: "",
+        password: "",
+      },
+      isProcessing: false,
     };
   },
-  created() {
-    this.fetchAdmin();
-  },
   methods: {
-    fetchAdmin() {
-      this.admin = dummyAdmin;
+    //Todo: 改使用 Async/await 串接 API
+    handleLogin() {
+      if (!this.admin.account || !this.admin.password) {
+        Toast.fire({
+          icon: "warning",
+          title: "請填入 email 和 password",
+        });
+        return;
+      } else if (
+        this.admin.account === dummyAdmin.account &&
+        this.admin.password === dummyAdmin.password
+      ) {
+        // 避免急躁管理員瘋狂點擊
+        this.isProcessing = true;
+        this.$router.push("/admin/main");
+      } else {
+        Toast.fire({
+          icon: "error",
+          title: "帳號或密碼輸入有誤，請重新確認！",
+        });
+        return;
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-.container {
+.form-container {
   width: 100%;
-  display: flex;
   flex-direction: column;
   align-items: center;
 }

@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/reply-list',
+    name: 'reply-list',
+    component: () => import('../views/MainTweetsReplyList.vue')
+  },
+  {
     path: '/admin/users',
     name: 'admin-users',
     component: () => import('../views/AdminUsers.vue')
