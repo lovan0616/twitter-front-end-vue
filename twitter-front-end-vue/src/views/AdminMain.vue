@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex container">
+  <div class="d-flex">
     <AdminNav />
     <AdminTweets />
   </div>

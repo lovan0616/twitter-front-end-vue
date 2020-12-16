@@ -452,13 +452,14 @@ h5 {
   padding: 0 10px 10px 30px;
 }
 .card {
-  min-height: 250px;
-  min-width: 180px;
+  height: 350px;
+  min-width: 200px;
   background-color: #f0f0f0;
   border-radius: 10px;
   border: none;
   position: relative;
   margin-bottom: 10px;
+  overflow: hidden;
 }
 .user-name {
   margin-top: 3rem;
@@ -508,14 +509,10 @@ p {
   border-radius: 50%;
   border: 2px solid white;
   position: absolute;
-  top: 30%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 100px;
   width: 100px;
-}
-.card-img-top {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
 }
 </style>

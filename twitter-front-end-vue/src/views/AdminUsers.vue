@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex">
+  <div class="d-flex">
     <AdminNav />
     <AdminUserCard />
   </div>

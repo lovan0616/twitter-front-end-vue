@@ -42,11 +42,10 @@
 
 <style scoped>
 .nav-bar {
-  border-right: 2px solid #f0f0f0;
+  border-right: 2px solid #e6ecf0;
   width: 35%;
   height: 700px;
   flex-direction: column;
-  margin-left: 0;
 }
 li {
   list-style: none;
