@@ -42,7 +42,7 @@
 
 <style scoped>
 .nav-bar {
-  border-right: 2px solid #e6ecf0;
+  border-right: 1px solid #e6ecf0;
   width: 35%;
   height: 700px;
   flex-direction: column;
@@ -77,8 +77,8 @@ h5 {
 .list:hover,
 .user:hover {
   transform: scale(1.1);
-  filter: invert(50%) sepia(100%) saturate(1383%) hue-rotate(360deg)
-    brightness(102%) contrast(107%);
+  filter: invert(42%) sepia(19%) saturate(6136%) hue-rotate(2deg)
+    brightness(106%) contrast(105%);
   /* https://www.zhangxinxu.com/sp/filter.html */
 }
 .list,

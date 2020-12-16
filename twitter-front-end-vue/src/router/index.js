@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/reply-list',
+    path: '/tweet/:id/reply-list',
     name: 'reply-list',
     component: () => import('../views/MainTweetsReplyList.vue')
   },

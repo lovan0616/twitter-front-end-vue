@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="all-container">
     <h5 class="my-3">推文清單</h5>
     <div class="tweetscontainer">
       <div class="tweetscard d-flex">
@@ -83,15 +83,11 @@ export default {};
 </script>
 
 <style scoped>
-.container {
-  padding: 0;
-  width: 100%;
-}
 .tweetscontainer {
   width: 100%;
 }
 .tweetscard {
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #e6ecf0;
   margin-top: 1rem;
 }
 .contentcontainer {
@@ -104,14 +100,14 @@ export default {};
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: #6c6c6c;
+  background-color: #c4c4c4;
 }
 .userpic {
   width: 60px;
   height: 60px;
 }
 h5 {
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #e6ecf0;
   padding: 0 10px 10px 30px;
 }
 .userinfo {
@@ -128,7 +124,7 @@ h5 {
 .tweettime,
 .dot {
   margin: 0 3px;
-  color: #9d9d9d;
+  color: #657786;
 }
 .useraccount,
 .tweettime {

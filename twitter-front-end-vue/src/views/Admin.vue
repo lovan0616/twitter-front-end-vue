@@ -92,7 +92,7 @@ button {
   border-radius: 30px;
   border: none;
   color: white;
-  background-color: #ff8800;
+  background-color: #ff6600;
 }
 .buttonContainer {
   width: 40%;

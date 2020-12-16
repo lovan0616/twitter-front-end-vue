@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="all-container">
     <h5 class="my-3">使用者列表</h5>
     <div class="usercontainer">
       <div class="usercard">
@@ -443,18 +443,17 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  padding: 0;
-  width: 100%;
-}
 h5 {
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #e6ecf0;
   padding: 0 10px 10px 30px;
+}
+.all-container {
+  width: 90%;
 }
 .card {
   height: 350px;
   min-width: 200px;
-  background-color: #f0f0f0;
+  background-color: #f6f7f8;
   border-radius: 10px;
   border: none;
   position: relative;
@@ -468,12 +467,12 @@ h5 {
 }
 .user-account {
   text-align: center;
-  color: #9d9d9d;
+  color: #657786;
 }
 p {
   height: 100%;
   font-size: 8px;
-  color: #9d9d9d;
+  color: #657786;
   margin-top: 1rem;
 }
 .user-status {
