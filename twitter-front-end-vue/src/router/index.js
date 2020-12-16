@@ -1,23 +1,48 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home'
 import NotFound from '../views/NotFound'
+import SignIn from '../views/SignIn'
+import Main from '../views/MainTweets'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'root',
+    redirect: '/main'
+    
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/signin',
+    name: 'sign-in',
+    component: SignIn
+  },
+  {
+    path: '/signup',
+    name: 'sign-up',
+    component: () => import('../views/SignUp.vue')
+  },
+  {
+    path: '/main',
+    name: 'main-tweets',
+    component: Main
+  },
+  {
+    path: '/user/setting',
+    mame: 'user-setting',
+    component: () => import('../views/UserSetting.vue')
+
+  },
+  {
+    path: '/user/:id/followers',
+    name: 'user-followers',
+    component: () => import('../views/UserFollowers.vue')
+  },
+  {
+    path: '/user/:id/followings',
+    name: 'user-followings',
+    component: () => import('../views/UserFollowings.vue')
   },
   {
     path: '*',
@@ -27,6 +52,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  linkExactActiveClass: 'active',
   routes
 })
 
