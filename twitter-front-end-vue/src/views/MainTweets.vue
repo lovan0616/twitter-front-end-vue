@@ -311,7 +311,4 @@ export default {
   padding-left: 15px;
 }
 
-.tweets-panel {
-  margin-top: 10px;
-}
 </style>

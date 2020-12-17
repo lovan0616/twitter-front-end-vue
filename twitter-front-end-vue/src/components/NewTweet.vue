@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="new-tweet-area d-flex p-3">
+    <div class="root new-tweet-area d-flex p-3">
       <div class="image-area mr-3">
         <a>
           <div class="image-cropper">
@@ -16,11 +16,12 @@
           <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？" v-model="description"></textarea>
 
           <div class="button-control mt-3">
-            <button type="submit" class="btn btn-primary post">推文</button>
+            <button type="submit" class="btn btn-primary post" :disabled="!description">推文</button>
           </div>
         </form>
       </div>
     </div>
+    <div class="divider"></div>
 
     <!-- Modal -->
     <div
@@ -63,7 +64,7 @@
                   ></textarea>
 
                   <div class="button-control mt-3">
-                    <button type="submit" class="btn btn-primary post">推文</button>
+                    <button type="submit" class="btn btn-primary post" :disabled="!description">推文</button>
                   </div>
                 </form>
               </div>
@@ -122,7 +123,12 @@ export default {
   position: relative;
 }
 
-.new-tweet-area::after {
+.root.new-tweet-area {
+  border-right: 1px solid #E6ECF0;
+  border-left: 1px solid #E6ECF0;
+}
+
+/* .new-tweet-area::after {
   content: "";
   width: 100%;
   height: 10px;
@@ -130,6 +136,12 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
+} */
+
+.divider {
+  width: 100$;
+  height: 10px;
+  background-color: #e6ecf0;
 }
 
 textarea {

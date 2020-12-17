@@ -16,23 +16,26 @@ html, body, #twitter {
 #navbar-area {
   width: 22%;
   height: 100%;
+  position: relative;
+  top: 0;
+  bottom: 0;
 }
 
 #main-area {
   width: 45%;
   height: 100%;
-  border-left: 1px solid #E6ECF0;
 }
 
 #follow-recommend-area {
   width: 33%;
   height: 100%;
-  border-left: 1px solid #E6ECF0;
   padding-left: 31px;
 }
 
 .upper-area {
   height: 55px;
+  border-right: 1px solid #E6ECF0;
+  border-left: 1px solid #E6ECF0;
 }
 
 .btn-primary {
@@ -41,7 +44,7 @@ html, body, #twitter {
   color: FFFFFF;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-primary:disabled, .btn-primary:active  {
   background-color: #de5b04
 }
 

@@ -106,6 +106,8 @@ export default {
 <style scoped>
 .tweet {
   border-bottom: 1px solid #E6ECF0;
+  border-right: 1px solid #E6ECF0;
+  border-left: 1px solid #E6ECF0;
 }
 
 .image-cropper {
