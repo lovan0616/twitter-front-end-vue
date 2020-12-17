@@ -25,10 +25,10 @@
     <!-- Modal -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="postModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="postModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
@@ -78,6 +78,7 @@
 <script>
 //Todo: 取回API後記得刪除
 import { v4 as uuidv4 } from "uuid"
+import $ from 'jquery'
 export default {
   name: "NewTweet",
   data() {
@@ -94,7 +95,9 @@ export default {
       })
       console.log('2')
 
+    // 發文後清空收入欄、關閉彈跳視窗
       this.description = ""
+      $('#postModal').modal('hide')
     }
   }
 };

@@ -6,8 +6,10 @@
     <div class="card-body">
       <div class="recommend d-flex" v-for="recommend in recommends" :key="recommend.id">
         <div class="info d-flex align-items-center">
-          <div class="image-cropper">
+          <div class="image-area mr-2">
+            <div class="image-cropper">
             <img :src="recommend.image" class="avatar">
+          </div>          
           </div>
           <div class="info-text d-flex flex-column justify-content-center">
             <strong class="name">{{ recommend.name }}</strong>
@@ -31,42 +33,42 @@ const dummyData = {
     {
       id: 1,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: true
     },
     {
       id: 2,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: true
     },
     {
       id: 3,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
     {
       id: 4,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
     {
       id: 5,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
     {
       id: 6,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
@@ -80,21 +82,21 @@ const dummyData = {
     {
       id: 8,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
     {
       id: 9,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
     {
       id: 10,
       name: '蠟筆小新',
-      account: 'canyon',
+      account: '@canyon',
       image:'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
       isFollowed: false
     },
@@ -151,6 +153,11 @@ export default {
     height: 100%;
   }
 
+  .info-text p {
+    line-height:12px;
+    color: #657786;
+  }
+
   .recommend {
     border-top: 1px solid #E6ECF0;
     border-bottom: 1px solid #E6ECF0;
@@ -159,6 +166,11 @@ export default {
 
   .recommend p {
     margin-bottom: 0;
+  }
+
+  .badge-pill {
+    padding: 7px 16px;
+    cursor: pointer;
   }
 
   .more {
