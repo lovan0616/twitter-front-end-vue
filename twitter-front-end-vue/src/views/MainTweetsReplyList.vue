@@ -41,7 +41,7 @@
         <div class="like">喜歡次數</div>
       </div>
       <div class="reation-container d-flex">
-        <div class="reply-icon">
+        <div class="reply-icon" @click="goReply">
           <img src="../assets/Reply.svg" class="reply-img" />
         </div>
         <div class="like-icon">
@@ -70,6 +70,11 @@ export default {
     Navbar,
     FollowRecommend,
     TweetReply,
+  },
+  methods: {
+    goReply() {
+      this.$router.push("/tweet/:id/replied");
+    },
   },
 };
 </script>
@@ -177,8 +182,8 @@ export default {
   line-height: 60px;
   border-bottom: 1px solid #e6ecf0;
 }
-.reply-icon:hover,
-.like-icon:hover {
+.reply-img:hover,
+.like-img:hover {
   cursor: pointer;
 }
 .reply-img,
@@ -187,7 +192,7 @@ export default {
   width: 25px;
   height: 25px;
 }
-.like-img {
+.like-icon {
   margin-left: 150px;
 }
 </style>

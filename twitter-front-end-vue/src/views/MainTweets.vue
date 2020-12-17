@@ -52,22 +52,27 @@
                 <p class="created-at">・3小時</p>
               </div>
               <div class="post-content">
-                <p>Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum. 
+                <p>
+                  Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
+                  ullamco cillum dolor. Voluptate exercitation incididunt
+                  aliquip deserunt reprehenderit elit laborum.
                 </p>
               </div>
               <div class="post-engage d-flex">
                 <div class="reply-control d-flex mr-3">
-                  <img src="../assets/Reply.svg">
+                  <img
+                    src="../assets/Reply.svg"
+                    class="make-reply"
+                    @click="fetchReply"
+                  />
                   <p class="reply-counts">13</p>
                 </div>
 
                 <div class="like-control d-flex">
-                  <img src="../assets/Like.svg">
+                  <img src="../assets/Like.svg" />
                   <p class="like-counts">23</p>
                 </div>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -89,8 +94,14 @@ export default {
   components: {
     Navbar,
     FollowRecommend,
-    NewTweet
-  }
+    NewTweet,
+  },
+  methods: {
+    fetchReply() {
+      //待串 API 資料
+      this.$router.push(`/tweet/:id/reply-list`);
+    },
+  },
 };
 </script>
 
@@ -116,6 +127,10 @@ export default {
 
 .tweets-panel {
   border: 1px solid red;
-  margin-top: 10px
+  margin-top: 10px;
+}
+
+.make-reply:hover {
+  cursor: pointer;
 }
 </style>

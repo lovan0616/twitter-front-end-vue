@@ -13,7 +13,15 @@
       </div>
       <div class="content-area w-100">
         <form class="w-100 d-flex flex-column align-items-end">
-          <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？"></textarea>
+          <textarea
+            background-color="transparent"
+            class="w-100"
+            name="text"
+            id="text"
+            cols="20"
+            rows="1"
+            placeholder="有什麼新鮮事？"
+          ></textarea>
 
           <div class="button-control mt-3">
             <div class="btn btn-primary post">推文</div>
@@ -34,7 +42,12 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <img src="../assets/Close.svg" />
             </button>
           </div>
@@ -76,7 +89,7 @@
 
 <script>
 export default {
-  name: "NewTweet"
+  name: "NewTweet",
 };
 </script>
 
@@ -133,5 +146,4 @@ textarea:focus {
   padding: 1rem 1rem;
   margin: -1rem auto -1rem -1rem;
 }
-
 </style>
