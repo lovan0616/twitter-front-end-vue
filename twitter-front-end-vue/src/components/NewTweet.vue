@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="new-tweet-area d-flex p-3">
+    <div class="root new-tweet-area d-flex p-3">
       <div class="image-area mr-3">
         <a>
           <div class="image-cropper">
@@ -12,23 +12,24 @@
         </a>
       </div>
       <div class="content-area w-100">
-        <form class="w-100 d-flex flex-column align-items-end">
-          <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？"></textarea>
+        <form class="w-100 d-flex flex-column align-items-end" @submit.stop.prevent="handleSubmit">
+          <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？" v-model="description"></textarea>
 
           <div class="button-control mt-3">
-            <div class="btn btn-primary post">推文</div>
+            <button type="submit" class="btn btn-primary post" :disabled="!description">推文</button>
           </div>
         </form>
       </div>
     </div>
+    <div class="divider"></div>
 
     <!-- Modal -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="postModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="postModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
@@ -51,7 +52,7 @@
                 </a>
               </div>
               <div class="content-area w-100">
-                <form class="w-100 d-flex flex-column align-items-end">
+                <form class="w-100 d-flex flex-column align-items-end" @submit.stop.prevent="handleSubmit">
                   <textarea
                     class="w-100"
                     name="text"
@@ -59,10 +60,11 @@
                     cols="20"
                     rows="4"
                     placeholder="有什麼新鮮事？"
+                    v-model="description"
                   ></textarea>
 
                   <div class="button-control mt-3">
-                    <div class="btn btn-primary post">推文</div>
+                    <button type="submit" class="btn btn-primary post" :disabled="!description">推文</button>
                   </div>
                 </form>
               </div>
@@ -75,8 +77,30 @@
 </template>
 
 <script>
+//Todo: 取回API後記得刪除
+import { v4 as uuidv4 } from "uuid"
+import $ from 'jquery'
 export default {
-  name: "NewTweet"
+  name: "NewTweet",
+  data() {
+    return {
+      description: "",
+    }
+  },
+  methods: {
+    handleSubmit() {
+      console.log('1')
+      this.$emit('after-post-submit', {
+        id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
+        description: this.description
+      })
+      console.log('2')
+
+    // 發文後清空收入欄、關閉彈跳視窗
+      this.description = ""
+      $('#postModal').modal('hide')
+    }
+  }
 };
 </script>
 
@@ -99,7 +123,12 @@ export default {
   position: relative;
 }
 
-.new-tweet-area::after {
+.root.new-tweet-area {
+  border-right: 1px solid #E6ECF0;
+  border-left: 1px solid #E6ECF0;
+}
+
+/* .new-tweet-area::after {
   content: "";
   width: 100%;
   height: 10px;
@@ -107,6 +136,12 @@ export default {
   position: absolute;
   top: 100%;
   left: 0;
+} */
+
+.divider {
+  width: 100$;
+  height: 10px;
+  background-color: #e6ecf0;
 }
 
 textarea {
@@ -133,5 +168,4 @@ textarea:focus {
   padding: 1rem 1rem;
   margin: -1rem auto -1rem -1rem;
 }
-
 </style>

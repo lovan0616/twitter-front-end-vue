@@ -30,11 +30,11 @@
           </router-link>
         </div>
 
-        <div type="button" class="btn btn-primary post" data-toggle="modal" data-target="#exampleModal">推文</div>
+        <div type="button" class="btn btn-primary post" data-toggle="modal" data-target="#postModal">推文</div>
       </div>
 
       <div class="bottom-area mt-auto">
-        <div class="signout-wrapper d-flex"  style="width:115px">
+        <div class="signout-wrapper d-flex"  style="width:115px" @click.stop.prevent="handleSignOut">
           <img src="../assets/Signout.svg" class="icon" />
           <p>登出</p>
         </div>
@@ -42,6 +42,22 @@
     </div>
   </nav>
 </template>
+
+<script>
+export default {
+  name: 'Navbar',
+  methods: {
+    handleSignOut() {
+      // 用API發送登出請求
+
+      // 清空token
+
+      // 導向/sginin
+      this.$router.push({name: 'sign-in'})
+    },
+  }
+}
+</script>
 
 <style scoped>
 ul,
@@ -105,6 +121,7 @@ li {
 }
 
 .signout-wrapper {
+  cursor: pointer;
   height: 46px;
   padding: 10px;
 }
