@@ -1,59 +1,30 @@
 <template>
   <div class="container d-flex">
     <div id="navbar-area" class="navbar-area">
+      <!-- 插入NewTweet -->
       <Navbar />
     </div>
     <div class="main">
-      <div class="main-title d-flex">
-        <router-link to="/" class="arrow"></router-link>
-        <div class="title">推文</div>
-      </div>
-      <div class="tweet-container">
-        <div class="user-info-container d-flex">
-          <div class="image-cropper">
-            <img
-              src="https://imgur.com/JVhBuMg.png"
-              alt="user-pic"
-              class="avatar"
-            />
-          </div>
-          <div class="user-info-context">
-            <div class="user-name">Apple</div>
-            <div class="user-account">@apple</div>
-          </div>
-        </div>
-        <div class="tweet-content">
-          Nulla Lorem mollitcupidatat irure. Laborum magna!!Nulla Lorem
-          mollitcupidatat irure. Laborum magna!!Nulla Lorem mollitcupidatat
-          irure. Laborum magna!!Nulla Lorem mollitcupidatat irure. Laborum
-          magna!!
-        </div>
-        <div class="tweet-time d-flex">
-          <div class="tweet-hour">上午 10:05</div>
-          <div class="dot">·</div>
-          <div class="tweet-date">2020年6月10日</div>
-        </div>
-      </div>
-      <div class="status-container d-flex">
-        <div class="reply-number">34</div>
-        <div class="reply">回覆</div>
-        <div class="like-number">808</div>
-        <div class="like">喜歡次數</div>
-      </div>
-      <div class="reation-container d-flex">
-        <div class="reply-icon">
-          <img src="../assets/Reply.svg" class="reply-img" />
-        </div>
-        <div class="like-icon">
-          <img src="../assets/Like.svg" class="like-img" />
-        </div>
+      <div class="tweet-detail-container">
+        <!-- 插入TweetDetail -->
+        <TweetDetail
+          :user="user"
+          :tweet="tweet"
+          @after-post-submit="afterPostSubmit"
+        />
       </div>
       <div class="tweet-reply-container">
-        <TweetReply />
+        <!-- 插入TweetReply -->
+        <TweetReply
+          v-for="reply in replies"
+          :key="reply.id"
+          :initial-reply="reply"
+          :user="user"
+        />
       </div>
     </div>
-    <!--跟隨誰-->
     <div id="follow-recommend-area" class="follow-recommend-area">
+      <!-- 插入FollowRecommend -->
       <FollowRecommend />
     </div>
   </div>
@@ -63,6 +34,240 @@
 import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import TweetReply from "../components/TweetReply";
+import TweetDetail from "../components/TweetDetail";
+
+const dummyUser = {
+  currentUser: {
+    id: 11,
+    email: "user1@example.com",
+    password: "123445",
+    name: "user1",
+    avatar:
+      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+    introduction: "Quam et veniam.",
+    isAdmin: false,
+    account: "@user1",
+    cover:
+      "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
+    createdAt: "2020-12-16T06:02:24.000Z",
+    updatedAt: "2020-12-16T06:02:24.000Z",
+  },
+  isAuthenticated: true,
+};
+
+const dummyData = {
+  tweets: [
+    {
+      id: 1,
+      UserId: 11,
+      description:
+        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
+      createdAt: "2020-12-16T06:02:25.000Z",
+      updatedAt: "2020-12-16T06:02:25.000Z",
+      User: {
+        id: 11,
+        email: "user1@example.com",
+        password:
+          "$2a$10$0/fxm5Jfb7h2Kdrd.Caoy.X4S.pB/9ifTDcty4WX2MP4mR1E/M2d2",
+        name: "user1",
+        avatar:
+          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+        introduction: "Quam et veniam.",
+        isAdmin: false,
+        account: "@user1",
+        cover:
+          "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
+        createdAt: "2020-12-16T06:02:24.000Z",
+        updatedAt: "2020-12-16T06:02:24.000Z",
+      },
+      Likes: [
+        {
+          id: 21,
+          UserId: 11,
+          TweetId: 1,
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 31,
+          UserId: 21,
+          TweetId: 1,
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+      ],
+      Replies: [
+        {
+          id: 1,
+          UserId: 11,
+          TweetId: 1,
+          comment: "ut suscipit similique",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 11,
+          UserId: 21,
+          TweetId: 1,
+          comment: "Sunt error facere eaque.",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 21,
+          UserId: 31,
+          TweetId: 1,
+          comment:
+            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+      ],
+      isLiked: false,
+      repliedCount: 3,
+      LikeCount: 2,
+    },
+    {
+      id: 2,
+      UserId: 11,
+      description:
+        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
+      createdAt: "2020-12-16T06:02:25.000Z",
+      updatedAt: "2020-12-16T06:02:25.000Z",
+      User: {
+        id: 11,
+        email: "user1@example.com",
+        password: "123445",
+        name: "user1",
+        avatar:
+          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+        introduction: "Quam et veniam.",
+        isAdmin: false,
+        account: "@user1",
+        cover:
+          "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
+        createdAt: "2020-12-16T06:02:24.000Z",
+        updatedAt: "2020-12-16T06:02:24.000Z",
+      },
+      Likes: [
+        {
+          id: 21,
+          UserId: 11,
+          TweetId: 1,
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 31,
+          UserId: 21,
+          TweetId: 1,
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+      ],
+      Replies: [
+        {
+          id: 1,
+          UserId: 11,
+          TweetId: 1,
+          comment: "ut suscipit similique",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 11,
+          UserId: 21,
+          TweetId: 1,
+          comment: "Sunt error facere eaque.",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 21,
+          UserId: 31,
+          TweetId: 1,
+          comment:
+            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+      ],
+      isLiked: true,
+      repliedCount: 3,
+      LikeCount: 2,
+    },
+    {
+      id: 3,
+      UserId: 11,
+      description:
+        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
+      createdAt: "2020-12-16T06:02:25.000Z",
+      updatedAt: "2020-12-16T06:02:25.000Z",
+      User: {
+        id: 11,
+        email: "user1@example.com",
+        password:
+          "$2a$10$0/fxm5Jfb7h2Kdrd.Caoy.X4S.pB/9ifTDcty4WX2MP4mR1E/M2d2",
+        name: "user1",
+        avatar:
+          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+        introduction: "Quam et veniam.",
+        isAdmin: false,
+        account: "@user1",
+        cover:
+          "ttps://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
+        createdAt: "2020-12-16T06:02:24.000Z",
+        updatedAt: "2020-12-16T06:02:24.000Z",
+      },
+      Likes: [
+        {
+          id: 21,
+          UserId: 11,
+          TweetId: 1,
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 31,
+          UserId: 21,
+          TweetId: 1,
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+      ],
+      Replies: [
+        {
+          id: 1,
+          UserId: 11,
+          TweetId: 1,
+          comment: "ut suscipit similique",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 11,
+          UserId: 21,
+          TweetId: 1,
+          comment: "Sunt error facere eaque.",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+        {
+          id: 21,
+          UserId: 31,
+          TweetId: 1,
+          comment:
+            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
+          createdAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z",
+        },
+      ],
+      isLiked: false,
+      repliedCount: 3,
+      LikeCount: 2,
+    },
+  ],
+};
 
 export default {
   name: "MainTweetsReplyList",
@@ -70,6 +275,50 @@ export default {
     Navbar,
     FollowRecommend,
     TweetReply,
+    TweetDetail,
+  },
+  data() {
+    return {
+      tweet: [],
+      user: {},
+      replies: [],
+    };
+  },
+  created() {
+    const { id: tweetId } = this.$route.params;
+    this.fetchTweet(tweetId);
+
+    this.fetchUser();
+
+    this.fetchReply();
+  },
+  methods: {
+    // Todo: 待串接 API 資料 / async/await
+    fetchTweet() {
+      const { id: tweetId } = this.$route.params;
+      this.tweet = dummyData.tweets[tweetId];
+      console.log("fetch tweetId", tweetId);
+    },
+    fetchUser() {
+      this.user = dummyUser;
+    },
+    fetchReply() {
+      // 利用 $route.params 拉取id為N的tweet的replies
+      const { id: tweetId } = this.$route.params;
+      this.replies = dummyData.tweets[tweetId].Replies;
+    },
+    afterPostSubmit(payload) {
+      const { tweetId } = this.$route.params;
+      const { id, newReply } = payload;
+      this.replies.push({
+        id,
+        TweetId: tweetId,
+        UserId: dummyUser.currentUser.id,
+        createdAt: new Date(),
+        updateAt: new Date(),
+        comment: newReply,
+      });
+    },
   },
 };
 </script>
@@ -80,114 +329,5 @@ export default {
   width: 600px;
   height: 1200px;
   border: 1px solid #e6ecf0;
-}
-.main-title {
-  border-bottom: 1px solid #e6ecf0;
-  height: 55px;
-}
-.arrow {
-  background-image: url("https://i.imgur.com/MHQuvWA.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  margin: auto 43px auto 1.3rem;
-  width: 17px;
-  height: 14px;
-}
-.title {
-  padding: 0 10px 10px 0;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 55px;
-}
-.image-cropper {
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
-  border-radius: 50%;
-  padding: 0;
-}
-.avatar {
-  width: auto;
-  display: inline;
-  height: 100%;
-}
-.user-info-context {
-  margin-top: 10px;
-  margin-left: 10px;
-}
-.user-name {
-  font-size: 15px;
-  font-weight: 700;
-}
-.user-account {
-  font-size: 15px;
-  font-weight: 500;
-}
-.tweet-time {
-  margin-bottom: 10px;
-}
-.tweet-container {
-  margin: 1rem 10px 0 15px;
-  border-bottom: 1px solid #e6ecf0;
-}
-
-.user-account {
-  color: #657786;
-}
-.tweet-content {
-  margin: 1.5rem 0;
-  font-size: 23px;
-  font-weight: 500;
-}
-.tweet-hour,
-.tweet-date,
-.dot {
-  color: #657786;
-  margin-right: 5px;
-  font-weight: 500;
-}
-.dot {
-  font-weight: 700;
-}
-.status-container {
-  border-bottom: 1px solid #e6ecf0;
-  line-height: 68px;
-  margin: 0 10px 0 15px;
-}
-.reply-number,
-.like-number,
-.reply,
-.like {
-  font-size: 19px;
-  font-weight: 500;
-}
-.reply,
-.like {
-  color: #657786;
-  margin-left: 5px;
-}
-.reply {
-  margin-right: 1.5rem;
-}
-.reation-container,
-.reply-icon,
-.like-icon {
-  height: 60px;
-  line-height: 60px;
-  border-bottom: 1px solid #e6ecf0;
-}
-.reply-icon:hover,
-.like-icon:hover {
-  cursor: pointer;
-}
-.reply-img,
-.like-img {
-  margin: 0 10px 0 15px;
-  width: 25px;
-  height: 25px;
-}
-.like-img {
-  margin-left: 150px;
 }
 </style>
