@@ -46,6 +46,8 @@
 <script>
 export default {
   name: 'Navbar',
+  components: {
+  },
   methods: {
     handleSignOut() {
       // 用API發送登出請求

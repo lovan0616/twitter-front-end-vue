@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/',
     name: 'root',
-    redirect: '/main'
+    redirect: '/signin'
 
   },
   {
@@ -60,7 +60,13 @@ const routes = [
 
   },
   {
+    path: '/user/profile/:id/:category?',
+    name: 'user-profile',
+    component: () => import('../views/UserProfile.vue')
+  },
+  {
     path: '/user/:id/:followship',
+    exact: true,
     name: 'user-followlist',
     component: () => import('../views/UserFollowList.vue')
   },

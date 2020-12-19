@@ -149,8 +149,8 @@ export default {
 
   .avatar {
     width: auto;
-    display: inline;
     height: 100%;
+    display: inline;
   }
 
   .info-text p {
@@ -159,8 +159,6 @@ export default {
   }
 
   .recommend {
-    border-top: 1px solid #E6ECF0;
-    border-bottom: 1px solid #E6ECF0;
     padding: 10px 0 10px 0;
   }
 

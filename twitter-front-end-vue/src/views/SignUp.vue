@@ -7,28 +7,28 @@
       </div>
 
       <div class="form-group my-4">
-        <input type="text" id="account" name="account" class="form-control" placeholder="帳號" v-model="account">
+        <input type="text" id="account" name="account" class="form-control" placeholder="帳號" v-model="account" required autofocus>
       </div>
 
       <div class="form-group my-4">
-        <input type="email" id="email" name="email" class="form-control" placeholder="Email" v-model="email">
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email" v-model="email" required>
       </div>
 
       <div class="form-group my-4">
-        <input type="text" id="name" name="name" class="form-control" placeholder="名稱" v-model="name">
+        <input type="text" id="name" name="name" class="form-control" placeholder="名稱" v-model="name" required>
       </div>
      
       <div class="form-group my-4">
-        <input type="password" id="password" name="password" class="form-control" placeholder="密碼" v-model="password">
+        <input type="password" id="password" name="password" class="form-control" placeholder="密碼" v-model="password" required>
       </div>
 
       <div class="form-group my-4">
-        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="密碼確認" v-model="confirmPassword">
+        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="密碼確認" v-model="confirmPassword" required>
       </div>
 
       <button class="btn btn-primary btn-block my-4" type="submit">註冊</button>
 
-      <p class="text-center"><a href="">取消</a></p>
+      <p class="text-center"><router-link to="/signin">取消</router-link></p>
     </form>
  </div>
   

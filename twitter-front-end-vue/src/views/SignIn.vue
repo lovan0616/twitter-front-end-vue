@@ -7,17 +7,17 @@
       </div>
 
       <div class="form-group my-4">
-        <input type="text" id="account" name="account" class="form-control" placeholder="帳號" v-model="account">
+        <input type="text" id="account" name="account" class="form-control" placeholder="帳號" v-model="account" required autofocus>
       </div>
      
       <div class="form-group my-4">
-        <input type="password" id="password" name="password" class="form-control" placeholder="密碼" v-model="password">
+        <input type="password" id="password" name="password" class="form-control" placeholder="密碼" v-model="password" required>
       </div>
 
       <button class="btn btn-primary btn-block" type="submit">登入</button>
 
       <p class="text-right pt-4">
-        <a href="">註冊 Alphitter</a>·
+        <router-link to="/signup">註冊 Alphitter</router-link>·
         <router-link to="/admin">後台登入</router-link></p>
     </form>
  </div>
@@ -45,3 +45,8 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+
+</style>
