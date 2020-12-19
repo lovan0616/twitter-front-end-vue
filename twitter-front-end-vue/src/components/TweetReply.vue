@@ -18,7 +18,7 @@
           <div class="reply-account">{{ userprofile.currentUser.account }}</div>
         </div>
         <!--API為reply.comment-->
-        <div class="reply-content">comment</div>
+        <div class="reply-content">{{ initialReply.comment }}</div>
       </div>
     </div>
   </div>
@@ -33,13 +33,12 @@ export default {
   mixins: [fromNowFilter],
   data() {
     return {
-      replies: this.initialReplies,
       userprofile: this.user,
     };
   },
   props: {
-    initialReplies: {
-      type: Array,
+    initialReply: {
+      type: Object,
       required: true,
     },
     user: {

@@ -7,16 +7,19 @@
     <div class="main">
       <div class="tweet-detail-container">
         <!-- 插入TweetDetail -->
-        <TweetDetail :user="user" :tweet="tweet" />
+        <TweetDetail
+          :user="user"
+          :tweet="tweet"
+          @after-post-submit="afterPostSubmit"
+        />
       </div>
       <div class="tweet-reply-container">
         <!-- 插入TweetReply -->
         <TweetReply
           v-for="reply in replies"
           :key="reply.id"
-          :initial-replies="replies"
+          :initial-reply="reply"
           :user="user"
-          @after-post-submit="afterPostSubmit"
         />
       </div>
     </div>
