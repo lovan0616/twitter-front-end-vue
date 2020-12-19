@@ -1,90 +1,62 @@
 <template>
   <div class="reply-container">
-    <div class="reply-template d-flex" v-for="reply in replys" :key="reply.id">
+    <div class="reply-template d-flex">
       <div class="image-cropper">
-        <img :src="reply.image" class="avatar" />
+        <img :src="userprofile.currentUser.avatar" class="avatar" />
       </div>
       <div class="reply-all">
         <div class="user-profile d-flex">
-          <div class="user-name">{{ reply.name }}</div>
-          <div class="user-account">{{ reply.account }}</div>
+          <div class="user-name">{{ userprofile.currentUser.name }}</div>
+          <div class="user-account">{{ userprofile.currentUser.account }}</div>
           <div class="dot">・</div>
-          <div class="createdAt">{{ reply.createdAt }}</div>
+          <div class="createdAt">
+            {{ userprofile.currentUser.createdAt | fromNow }}
+          </div>
         </div>
         <div class="user-reply d-flex">
           <div class="reply-literal">回覆</div>
-          <div class="reply-account">@apple</div>
+          <div class="reply-account">{{ userprofile.currentUser.account }}</div>
         </div>
-        <div class="reply-content">{{ reply.replyContent }}</div>
+        <!--API為reply.comment-->
+        <div class="reply-content">comment</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-//Todo: 需要替換為API撈回資料
-const dummyData = {
-  replys: [
-    {
-      id: 1,
-      name: "蠟筆小新",
-      account: "@canyon",
-      image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-      createdAt: "1小時",
-      replyContent: "供尛？！",
-    },
-    {
-      id: 2,
-      name: "蠟筆小新",
-      account: "@canyon",
-      image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-      createdAt: "3小時",
-      replyContent: "大屁股妖怪外星人",
-    },
-    {
-      id: 3,
-      name: "蠟筆小新",
-      account: "@canyon",
-      image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-      createdAt: "5小時",
-      replyContent: "娜娜子姐接～",
-    },
-    {
-      id: 4,
-      name: "蠟筆小新",
-      account: "@canyon",
-      image:
-        "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-      createdAt: "7小時",
-      replyContent: "師父你又在搞笑哦",
-    },
-  ],
-};
+import { fromNowFilter } from "../utils/mixins";
+
+//Todo: 需要替換為API撈回資料，API含有user資料，不必fetch兩次
 export default {
   name: "TweetReply",
+  mixins: [fromNowFilter],
   data() {
     return {
-      replys: {
-        id: -1,
-        name: "",
-        account: "",
-        image: "",
-        createdAt: "",
-        replyContent: "",
-      },
+      replies: this.initialReplies,
+      userprofile: this.user,
     };
   },
-  created() {
-    this.fetchReply();
-  },
-  methods: {
-    fetchReply() {
-      this.replys = dummyData.replys;
+  props: {
+    initialReplies: {
+      type: Array,
+      required: true,
+    },
+    user: {
+      type: Object,
+      required: true,
     },
   },
+  // methods: {
+  //   fetchReplies() {
+  //     for (let reply of this.initialReplies) {
+  //       this.replies = reply;
+  //     }
+  //   },
+  // },
+  // created() {
+  //   this.fetchReplies();
+  // },
 };
 </script>
 

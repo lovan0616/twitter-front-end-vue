@@ -170,7 +170,7 @@ export default {
 } */
 
 .divider {
-  width: 100$;
+  width: 100%;
   height: 10px;
   background-color: #e6ecf0;
 }
