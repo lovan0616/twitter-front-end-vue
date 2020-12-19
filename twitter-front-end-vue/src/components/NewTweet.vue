@@ -12,11 +12,28 @@
         </a>
       </div>
       <div class="content-area w-100">
-        <form class="w-100 d-flex flex-column align-items-end" @submit.stop.prevent="handleSubmit">
-          <textarea class="w-100" name="text" id="text" cols="20" rows="1" placeholder="有什麼新鮮事？" v-model="description"></textarea>
+        <form
+          class="w-100 d-flex flex-column align-items-end"
+          @submit.stop.prevent="handleSubmit"
+        >
+          <textarea
+            class="w-100"
+            name="text"
+            id="text"
+            cols="20"
+            rows="1"
+            placeholder="有什麼新鮮事？"
+            v-model="description"
+          ></textarea>
 
           <div class="button-control mt-3">
-            <button type="submit" class="btn btn-primary post" :disabled="!description">推文</button>
+            <button
+              type="submit"
+              class="btn btn-primary post"
+              :disabled="!description"
+            >
+              推文
+            </button>
           </div>
         </form>
       </div>
@@ -35,7 +52,12 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <img src="../assets/Close.svg" />
             </button>
           </div>
@@ -52,7 +74,10 @@
                 </a>
               </div>
               <div class="content-area w-100">
-                <form class="w-100 d-flex flex-column align-items-end" @submit.stop.prevent="handleSubmit">
+                <form
+                  class="w-100 d-flex flex-column align-items-end"
+                  @submit.stop.prevent="handleSubmit"
+                >
                   <textarea
                     class="w-100"
                     name="text"
@@ -64,7 +89,13 @@
                   ></textarea>
 
                   <div class="button-control mt-3">
-                    <button type="submit" class="btn btn-primary post" :disabled="!description">推文</button>
+                    <button
+                      type="submit"
+                      class="btn btn-primary post"
+                      :disabled="!description"
+                    >
+                      推文
+                    </button>
                   </div>
                 </form>
               </div>
@@ -78,29 +109,29 @@
 
 <script>
 //Todo: 取回API後記得刪除
-import { v4 as uuidv4 } from "uuid"
-import $ from 'jquery'
+import { v4 as uuidv4 } from "uuid";
+import $ from "jquery";
 export default {
   name: "NewTweet",
   data() {
     return {
       description: "",
-    }
+    };
   },
   methods: {
     handleSubmit() {
-      console.log('1')
-      this.$emit('after-post-submit', {
+      console.log("1");
+      this.$emit("after-post-submit", {
         id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
-        description: this.description
-      })
-      console.log('2')
+        description: this.description,
+      });
+      console.log("2");
 
-    // 發文後清空收入欄、關閉彈跳視窗
-      this.description = ""
-      $('#postModal').modal('hide')
-    }
-  }
+      // 發文後清空收入欄、關閉彈跳視窗
+      this.description = "";
+      $("#postModal").modal("hide");
+    },
+  },
 };
 </script>
 
@@ -124,8 +155,8 @@ export default {
 }
 
 .root.new-tweet-area {
-  border-right: 1px solid #E6ECF0;
-  border-left: 1px solid #E6ECF0;
+  border-right: 1px solid #e6ecf0;
+  border-left: 1px solid #e6ecf0;
 }
 
 /* .new-tweet-area::after {
@@ -139,7 +170,7 @@ export default {
 } */
 
 .divider {
-  width: 100$;
+  width: 100%;
   height: 10px;
   background-color: #e6ecf0;
 }
