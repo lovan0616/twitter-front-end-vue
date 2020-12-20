@@ -1,15 +1,28 @@
 <template>
-  <div class="tweet d-flex p-2">
+  <div class="tweet-wrapper">
+    <router-link :to="{
+      name: 'reply-list',
+      params: 'id: tweet.id'
+    }">
+      <div class="tweet d-flex p-2">
     <div class="image-area mr-3">
-      <a>
+      <router-link :to="{
+        name: 'user-profile',
+        params: {id: tweet.userId}
+      }">
         <div class="image-cropper">
           <img :src="tweet.userAvatar" class="avatar" />
         </div>
-      </a>
+      </router-link>
     </div>
     <div class="content-area">
       <div class="post-info d-flex">
-        <strong class="name">{{ tweet.userName }}</strong>
+        <router-link :to="{
+          name: 'user-profile',
+          params: {id: tweet.userId}
+        }">
+          <strong class="name">{{ tweet.userName }}</strong>
+        </router-link>
         <p class="account ml-1">{{ tweet.userAccount }}</p>
         <p class="created-at">・{{ tweet.createdAt | fromNow }}</p>
       </div>
@@ -33,6 +46,8 @@
         </div>
       </div>
     </div>
+  </div>
+    </router-link>
   </div>
 </template>
 
@@ -104,6 +119,12 @@ export default {
 </script>
 
 <style scoped>
+.tweet-wrapper a,
+.tweet-wrapper a:hover {
+  text-decoration: none;
+  color: #000000;
+}
+
 .tweet {
   border-bottom: 1px solid #E6ECF0;
   border-right: 1px solid #E6ECF0;

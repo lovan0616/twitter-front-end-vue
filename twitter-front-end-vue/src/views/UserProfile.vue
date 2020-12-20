@@ -46,7 +46,9 @@
               <img src="../assets/Noti-clicked.svg">
             </div>
             <div class="followship mr-3">
-              <div class="following" v-if="user.isFollowed" @click.stop.prevent="unfollow">正在跟隨</div>
+              <div class="following" v-if="user.isFollowed">正在跟隨</div>
+               <div class="deleteFollow" v-if="user.isFollowed" @click.stop.prevent="deleteFollow">取消跟隨</div>
+
               <div class="unfollow" v-else @click.stop.prevent="follow">跟隨</div>
             </div>
           </div>
@@ -358,7 +360,7 @@ export default {
         isFollowed: true
       }
     },
-    unfollow() {
+    deleteFollow() {
       this.user = {
         //Todo: 使用API，刪去notcie
         ...this.user,
@@ -473,6 +475,27 @@ export default {
   cursor: pointer;
 }
 
+.deleteFollow {
+  display: none;
+  width: 92px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #c82456;;
+  border-radius: 100px;
+  font-size: 15px;
+  color: #ffffff;
+  text-align: center;
+  cursor: pointer;
+}
+
+.following:hover  {
+  display: none;
+}
+
+.following:hover ~ .deleteFollow {
+  display: block;
+}
+
 .unfollow {
   width: 62px;
   height: 40px;
@@ -483,6 +506,10 @@ export default {
   color: #ff6600;
   border: 1px solid #ff6600;
   cursor: pointer;
+}
+
+.unfollow:hover {
+  background-color: #ffede0;
 }
 
 .intro-wrapper {

@@ -304,8 +304,6 @@ export default {
         repliedCount: 0,
         LikeCount: 0,
       });
-
-      console.log(this.tweets);
     },
   },
   created() {
@@ -332,11 +330,6 @@ export default {
   width: auto;
   display: inline;
   height: 100%;
-}
-
-.tweets-panel {
-  border: 1px solid red;
-  margin-top: 10px;
 }
 
 .make-reply:hover {

@@ -1,9 +1,5 @@
 <template>
   <div class="detail-container">
-    <div class="main-title d-flex">
-      <router-link to="/" class="arrow"></router-link>
-      <div class="title">推文</div>
-    </div>
     <div class="tweet-container">
       <div class="user-info-container d-flex">
         <div class="image-cropper">

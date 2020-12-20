@@ -7,7 +7,7 @@
         </router-link>
 
         <div class="nav-list">
-          <router-link class="nav-item" to="/">
+          <router-link class="nav-item" to="/main">
             <div class="d-flex" style="width:115px">
               <img src="../assets/Home.svg" class="icon"/>
               <img src="../assets/Home-hovered.svg" class="icon-hovered"/>
@@ -121,6 +121,10 @@ li {
   border-radius: 20px;
   margin-top: 27px;
 }
+
+.btn-primary:not(:disabled):not(.disabled):active {
+  background-color: #cc5302;
+} 
 
 .signout-wrapper {
   cursor: pointer;
