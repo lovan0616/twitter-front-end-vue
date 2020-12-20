@@ -55,14 +55,20 @@ const routes = [
   },
   {
     path: '/user/setting',
-    mame: 'user-setting',
+    name: 'user-setting',
     component: () => import('../views/UserSetting.vue')
 
+  },
+  {
+    path: '/user/profile/edit',
+    name: 'user-profile-edit',
+    component: () => import('../views/UserProfileEdit.vue')
   },
   {
     path: '/user/profile/:id/:category?',
     name: 'user-profile',
     component: () => import('../views/UserProfile.vue')
+
   },
   {
     path: '/user/:id/:followship',
