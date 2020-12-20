@@ -1,17 +1,13 @@
 <template>
   <div class="detail-container">
-    <div class="main-title d-flex">
-      <router-link to="/" class="arrow"></router-link>
-      <div class="title">推文</div>
-    </div>
     <div class="tweet-container">
       <div class="user-info-container d-flex">
         <div class="image-cropper">
-          <img :src="presentUser.userAvatar" alt="user-pic" class="avatar" />
+          <img :src="presentTweet.User.avatar" alt="user-pic" class="avatar" />
         </div>
         <div class="user-info-context">
-          <div class="user-name">{{ presentUser.userName }}</div>
-          <div class="user-account">{{ presentUser.userAccount }}</div>
+          <div class="user-name">{{ presentTweet.User.name }}</div>
+          <div class="user-account">{{ presentTweet.User.account }}</div>
         </div>
       </div>
       <div class="tweet-content">
@@ -82,23 +78,19 @@
               <div class="m-reply-container d-flex">
                 <div class="m-reply-photo-area">
                   <img
-                    :src="presentUser.userAvatar"
+                    :src="presentTweet.User.avatar"
                     alt=""
                     class="m-reply-to-photo"
                   />
                   <div class="m-reply-line"></div>
-                  <img
-                    :src="presentUser.userAvatar"
-                    alt=""
-                    class="m-reply-photo"
-                  />
+                  <img :src="presentUser.avatar" alt="" class="m-reply-photo" />
                 </div>
                 <div class="reply-content-area">
                   <div class="m-reply-post-info d-flex">
-                    <strong class="m-reply-name">{{
-                      presentUser.userName
-                    }}</strong>
-                    <p class="m-reply-account">{{ presentUser.userAccount }}</p>
+                    <strong class="m-reply-name">{{ presentUser.name }}</strong>
+                    <p class="m-reply-account">
+                      {{ presentTweet.User.account }}
+                    </p>
                     <p class="m-reply-created-at">・3小時</p>
                   </div>
                   <div class="m-reply-post-content">
@@ -108,7 +100,7 @@
                     <div class="m-reply-to-container d-flex">
                       <div class="m-reply-to">回覆給</div>
                       <div class="m-reply-to-account">
-                        {{ presentUser.userAccount }}
+                        {{ presentTweet.User.account }}
                       </div>
                     </div>
                     <form
@@ -156,11 +148,11 @@ export default {
   name: "TweetDetail",
   mixins: [fromNowFilter],
   props: {
-    user: {
+    initialTweet: {
       type: Object,
       required: true,
     },
-    tweet: {
+    user: {
       type: Object,
       required: true,
     },
@@ -168,12 +160,8 @@ export default {
   data() {
     return {
       newReply: "",
-      presentUser: {
-        userName: "",
-        userAccount: "",
-        userAvatar: "",
-      },
-      presentTweet: this.tweet,
+      presentUser: this.user,
+      presentTweet: this.initialTweet,
     };
   },
   methods: {
@@ -186,22 +174,24 @@ export default {
       // 表單回覆後清空收入欄、關閉彈跳視窗
       this.newReply = "";
       $("#postReply").modal("hide");
+      this.presentTweet.repliedCount++;
+      console.log(this.presentTweet.repliedCount);
     },
-    fetchUser() {
-      // 待套用API撈取使用者資料
-      const { currentUser, isAuthenticated } = this.user;
-      console.log(isAuthenticated);
-      const {
-        account: userAccount,
-        avatar: userAvatar,
-        name: userName,
-      } = currentUser;
-      this.presentUser = {
-        userName,
-        userAccount,
-        userAvatar,
-      };
-    },
+    // fetchUser() {
+    //   // 待套用API撈取使用者資料
+    //   const { currentUser, isAuthenticated } = this.user;
+    //   console.log(isAuthenticated);
+    //   const {
+    //     account: userAccount,
+    //     avatar: userAvatar,
+    //     name: userName,
+    //   } = currentUser;
+    //   this.presentUser = {
+    //     userName,
+    //     userAccount,
+    //     userAvatar,
+    //   };
+    // },
     addLike() {
       this.presentTweet = {
         ...this.presentTweet,
@@ -217,32 +207,13 @@ export default {
       };
     },
   },
-  created() {
-    this.fetchUser();
-  },
+  // created() {
+  //   this.fetchUser();
+  // },
 };
 </script>
 
 <style scoped>
-.main-title {
-  border-bottom: 1px solid #e6ecf0;
-  height: 55px;
-}
-.arrow {
-  background-image: url("https://i.imgur.com/MHQuvWA.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  margin: auto 43px auto 1.3rem;
-  width: 17px;
-  height: 14px;
-}
-.title {
-  padding: 0 10px 10px 0;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 55px;
-}
 .image-cropper {
   width: 50px;
   height: 50px;

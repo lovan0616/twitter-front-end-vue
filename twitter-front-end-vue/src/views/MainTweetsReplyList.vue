@@ -5,11 +5,15 @@
       <Navbar />
     </div>
     <div class="main">
+      <div class="main-title d-flex">
+        <router-link to="/" class="arrow"></router-link>
+        <div class="title">推文</div>
+      </div>
       <div class="tweet-detail-container">
         <!-- 插入TweetDetail -->
         <TweetDetail
           :user="user"
-          :tweet="tweet"
+          :initial-tweet="tweet"
           @after-post-submit="afterPostSubmit"
         />
       </div>
@@ -20,6 +24,7 @@
           :key="reply.id"
           :initial-reply="reply"
           :user="user"
+          :tweet="tweet"
         />
       </div>
     </div>
@@ -36,17 +41,17 @@ import FollowRecommend from "../components/FollowRecommend";
 import TweetReply from "../components/TweetReply";
 import TweetDetail from "../components/TweetDetail";
 
+// GET /api/users/:id
 const dummyUser = {
   currentUser: {
-    id: 11,
+    id: 15,
     email: "user1@example.com",
     password: "123445",
-    name: "user1",
-    avatar:
-      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+    name: "user666",
+    avatar: "https://i.imgur.com/NZWqfN3.jpg",
     introduction: "Quam et veniam.",
     isAdmin: false,
-    account: "@user1",
+    account: "@user666",
     cover:
       "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
     createdAt: "2020-12-16T06:02:24.000Z",
@@ -55,216 +60,105 @@ const dummyUser = {
   isAuthenticated: true,
 };
 
-const dummyData = {
-  tweets: [
+// POST /api/tweets/:id
+const dummyTweet = {
+  id: 1,
+  UserId: 11,
+  description:
+    "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
+  createdAt: "2020-12-16T06:02:25.000Z",
+  updatedAt: "2020-12-16T06:02:25.000Z",
+  User: {
+    id: 11,
+    account: "@user1",
+    name: "user1",
+    avatar:
+      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+  },
+  isLiked: false,
+  repliedCount: 3,
+  LikeCount: 2,
+};
+
+// GET /api/tweets/:id/replies
+const dummyReply = {
+  status: "success",
+  message: "OK",
+  replies: [
     {
-      id: 1,
-      UserId: 11,
-      description:
-        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-      createdAt: "2020-12-16T06:02:25.000Z",
-      updatedAt: "2020-12-16T06:02:25.000Z",
+      id: 31,
+      UserId: 41,
+      TweetId: 1,
+      comment:
+        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
+      createdAt: "2020-12-16T07:38:05.000Z",
+      updatedAt: "2020-12-16T07:38:05.000Z",
       User: {
-        id: 11,
-        email: "user1@example.com",
+        id: 41,
+        email: "user4@example.com",
         password:
-          "$2a$10$0/fxm5Jfb7h2Kdrd.Caoy.X4S.pB/9ifTDcty4WX2MP4mR1E/M2d2",
-        name: "user1",
+          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
+        name: "user4",
         avatar:
-          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-        introduction: "Quam et veniam.",
+          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
+        introduction: "Illo laborum nesciunt dolor nihil.",
         isAdmin: false,
-        account: "@user1",
+        account: "@user4",
         cover:
-          "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-        createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
+          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
+        createdAt: "2020-12-16T07:38:05.000Z",
+        updatedAt: "2020-12-16T07:38:05.000Z",
       },
-      Likes: [
-        {
-          id: 21,
-          UserId: 11,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 31,
-          UserId: 21,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      Replies: [
-        {
-          id: 1,
-          UserId: 11,
-          TweetId: 1,
-          comment: "ut suscipit similique",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 11,
-          UserId: 21,
-          TweetId: 1,
-          comment: "Sunt error facere eaque.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 21,
-          UserId: 31,
-          TweetId: 1,
-          comment:
-            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      isLiked: false,
-      repliedCount: 3,
-      LikeCount: 2,
     },
     {
-      id: 2,
-      UserId: 11,
-      description:
-        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-      createdAt: "2020-12-16T06:02:25.000Z",
-      updatedAt: "2020-12-16T06:02:25.000Z",
+      id: 11,
+      UserId: 41,
+      TweetId: 1,
+      comment:
+        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
+      createdAt: "2020-12-16T07:38:05.000Z",
+      updatedAt: "2020-12-16T07:38:05.000Z",
       User: {
-        id: 11,
-        email: "user1@example.com",
-        password: "123445",
-        name: "user1",
+        id: 42,
+        email: "user5@example.com",
+        password:
+          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
+        name: "user5",
         avatar:
-          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-        introduction: "Quam et veniam.",
+          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
+        introduction: "Illo laborum nesciunt dolor nihil.",
         isAdmin: false,
-        account: "@user1",
+        account: "@user5",
         cover:
-          "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-        createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
+          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
+        createdAt: "2020-12-16T07:38:05.000Z",
+        updatedAt: "2020-12-16T07:38:05.000Z",
       },
-      Likes: [
-        {
-          id: 21,
-          UserId: 11,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 31,
-          UserId: 21,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      Replies: [
-        {
-          id: 1,
-          UserId: 11,
-          TweetId: 1,
-          comment: "ut suscipit similique",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 11,
-          UserId: 21,
-          TweetId: 1,
-          comment: "Sunt error facere eaque.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 21,
-          UserId: 31,
-          TweetId: 1,
-          comment:
-            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      isLiked: true,
-      repliedCount: 3,
-      LikeCount: 2,
     },
     {
-      id: 3,
-      UserId: 11,
-      description:
-        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-      createdAt: "2020-12-16T06:02:25.000Z",
-      updatedAt: "2020-12-16T06:02:25.000Z",
+      id: 21,
+      UserId: 41,
+      TweetId: 1,
+      comment:
+        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
+      createdAt: "2020-12-16T07:38:05.000Z",
+      updatedAt: "2020-12-16T07:38:05.000Z",
       User: {
-        id: 11,
-        email: "user1@example.com",
+        id: 43,
+        email: "user6@example.com",
         password:
-          "$2a$10$0/fxm5Jfb7h2Kdrd.Caoy.X4S.pB/9ifTDcty4WX2MP4mR1E/M2d2",
-        name: "user1",
+          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
+        name: "user6",
         avatar:
-          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-        introduction: "Quam et veniam.",
+          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
+        introduction: "Illo laborum nesciunt dolor nihil.",
         isAdmin: false,
-        account: "@user1",
+        account: "@user6",
         cover:
-          "ttps://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-        createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
+          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
+        createdAt: "2020-12-16T07:38:05.000Z",
+        updatedAt: "2020-12-16T07:38:05.000Z",
       },
-      Likes: [
-        {
-          id: 21,
-          UserId: 11,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 31,
-          UserId: 21,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      Replies: [
-        {
-          id: 1,
-          UserId: 11,
-          TweetId: 1,
-          comment: "ut suscipit similique",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 11,
-          UserId: 21,
-          TweetId: 1,
-          comment: "Sunt error facere eaque.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 21,
-          UserId: 31,
-          TweetId: 1,
-          comment:
-            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      isLiked: false,
-      repliedCount: 3,
-      LikeCount: 2,
     },
   ],
 };
@@ -279,8 +173,17 @@ export default {
   },
   data() {
     return {
-      tweet: [],
       user: {},
+      tweet: {
+        id: -1,
+        UserId: -1,
+        description: "",
+        createdAt: "",
+        User: "",
+        isLiked: false,
+        repliedCount: 0,
+        LikeCount: 0,
+      },
       replies: [],
     };
   },
@@ -288,27 +191,47 @@ export default {
     const { id: tweetId } = this.$route.params;
     this.fetchTweet(tweetId);
 
-    this.fetchUser();
-
     this.fetchReply();
+
+    this.fetchUser();
   },
   methods: {
     // Todo: 待串接 API 資料 / async/await
-    fetchTweet() {
-      const { id: tweetId } = this.$route.params;
-      this.tweet = dummyData.tweets[tweetId];
-      console.log("fetch tweetId", tweetId);
-    },
-    fetchUser() {
-      this.user = dummyUser;
+    fetchTweet(tweetId) {
+      console.log("fetchTweet id:", tweetId);
+      const {
+        id,
+        UserId,
+        description,
+        createdAt,
+        updatedAt,
+        User,
+        isLiked,
+        repliedCount,
+        LikeCount,
+      } = dummyTweet;
+      this.tweet = {
+        id,
+        UserId,
+        description,
+        createdAt,
+        updatedAt,
+        User,
+        isLiked,
+        repliedCount,
+        LikeCount,
+      };
     },
     fetchReply() {
-      // 利用 $route.params 拉取id為N的tweet的replies
-      const { id: tweetId } = this.$route.params;
-      this.replies = dummyData.tweets[tweetId].Replies;
+      // 拉取 API 的推文回覆資料
+      this.replies = dummyReply.replies;
+    },
+    fetchUser() {
+      // 拉取 API 的目前用戶資料
+      this.user = dummyUser.currentUser;
     },
     afterPostSubmit(payload) {
-      const { tweetId } = this.$route.params;
+      const { id: tweetId } = this.$route.params;
       const { id, newReply } = payload;
       this.replies.push({
         id,
@@ -317,6 +240,11 @@ export default {
         createdAt: new Date(),
         updateAt: new Date(),
         comment: newReply,
+        User: {
+          account: dummyUser.currentUser.account,
+          avatar: dummyUser.currentUser.avatar,
+          name: dummyUser.currentUser.name,
+        },
       });
     },
   },
@@ -326,8 +254,35 @@ export default {
 <style scoped>
 .main {
   padding: 0;
-  width: 600px;
-  height: 1200px;
-  border: 1px solid #e6ecf0;
+  width: 500px;
+  height: 10000px;
+  border-left: 1px solid #e6ecf0;
+  border-right: 1px solid #e6ecf0;
+}
+
+.tweet-reply-container {
+  height: 100%;
+}
+
+.main-title {
+  border-bottom: 1px solid #e6ecf0;
+  height: 55px;
+}
+
+.arrow {
+  background-image: url("https://i.imgur.com/MHQuvWA.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  margin: auto 43px auto 1.3rem;
+  width: 17px;
+  height: 14px;
+}
+
+.title {
+  padding: 0 10px 10px 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 55px;
 }
 </style>

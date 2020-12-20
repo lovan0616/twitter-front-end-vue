@@ -2,22 +2,21 @@
   <div class="reply-container">
     <div class="reply-template d-flex">
       <div class="image-cropper">
-        <img :src="userprofile.currentUser.avatar" class="avatar" />
+        <img :src="initialReply.User.avatar" class="avatar" />
       </div>
       <div class="reply-all">
         <div class="user-profile d-flex">
-          <div class="user-name">{{ userprofile.currentUser.name }}</div>
-          <div class="user-account">{{ userprofile.currentUser.account }}</div>
+          <div class="user-name">{{ initialReply.User.name }}</div>
+          <div class="user-account">{{ initialReply.User.account }}</div>
           <div class="dot">・</div>
           <div class="createdAt">
-            {{ userprofile.currentUser.createdAt | fromNow }}
+            {{ initialReply.createdAt | fromNow }}
           </div>
         </div>
         <div class="user-reply d-flex">
           <div class="reply-literal">回覆</div>
-          <div class="reply-account">{{ userprofile.currentUser.account }}</div>
+          <div class="reply-account">{{ tweet.User.account }}</div>
         </div>
-        <!--API為reply.comment-->
         <div class="reply-content">{{ initialReply.comment }}</div>
       </div>
     </div>
@@ -32,9 +31,7 @@ export default {
   name: "TweetReply",
   mixins: [fromNowFilter],
   data() {
-    return {
-      userprofile: this.user,
-    };
+    return {};
   },
   props: {
     initialReply: {
@@ -42,6 +39,10 @@ export default {
       required: true,
     },
     user: {
+      type: Object,
+      required: true,
+    },
+    tweet: {
       type: Object,
       required: true,
     },
@@ -61,7 +62,6 @@ export default {
 
 <style scoped>
 .reply-template {
-  height: 105px;
   border-bottom: 1px solid #e6ecf0;
 }
 .image-cropper {
@@ -78,7 +78,8 @@ export default {
   height: 100%;
 }
 .reply-all {
-  margin-top: 1rem;
+  margin: 1rem 1rem 1rem 0;
+  width: 80%;
 }
 .user-account,
 .dot,
