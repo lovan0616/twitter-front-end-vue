@@ -1,7 +1,6 @@
 <template>
   <div class="container d-flex">
     <div id="navbar-area" class="navbar-area">
-      <!-- 插入NewTweet -->
       <Navbar />
     </div>
     <div class="main">
@@ -26,7 +25,6 @@
           :user="user"
           :tweet="tweet"
         />
-      </div>
     </div>
     <div id="follow-recommend-area" class="follow-recommend-area">
       <!-- 插入FollowRecommend -->
@@ -55,9 +53,9 @@ const dummyUser = {
     cover:
       "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
     createdAt: "2020-12-16T06:02:24.000Z",
-    updatedAt: "2020-12-16T06:02:24.000Z",
+    updatedAt: "2020-12-16T06:02:24.000Z"
   },
-  isAuthenticated: true,
+  isAuthenticated: true
 };
 
 // POST /api/tweets/:id
@@ -169,7 +167,7 @@ export default {
     Navbar,
     FollowRecommend,
     TweetReply,
-    TweetDetail,
+    TweetDetail
   },
   data() {
     return {
@@ -245,13 +243,25 @@ export default {
           avatar: dummyUser.currentUser.avatar,
           name: dummyUser.currentUser.name,
         },
+        comment: newReply
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
+.upper-area-content {
+  display: flex;
+  align-items: top;
+  padding-left: 15px;
+}
+
+.upper-area-content p {
+  margin: 0;
+  line-height: 10px;
+}
+
 .main {
   padding: 0;
   width: 500px;

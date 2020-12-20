@@ -7,8 +7,14 @@
 
     <div id="main-area" class="main-area">
       <div class="upper-area d-flex align-items-top">
-        <div class="upper-area-content">
-          <span class="mr-5 pt-2">&larr;</span>
+        <div class="upper-area-content d-flex align-items-center">
+          <router-link :to="{
+            name: 'user-profile',
+            params: {id: user.id}
+          }">
+            <span class="mr-4" style="color: #000000">&larr;</span>
+          </router-link>
+          
           <div class="user">
             <strong class="name">{{ user.name }}</strong>
             <p class="tweets-count small">{{ userTweetsCount }} 推文</p>
@@ -16,7 +22,7 @@
         </div>
       </div>
       <main>
-        <ul class="nav nav-tabs mt-4">
+        <ul class="nav nav-tabs">
           <li class="nav-item" @click.stop.prevent="toggleTab('followers')">
             <router-link 
             :to="{
@@ -35,6 +41,7 @@
             class="nav-link">正在追隨</router-link>
           </li>
         </ul>
+        
         <div class="followers-panel" v-if="nowTabbed === 'followers'">
           <Follower 
             v-for="follower in followers" 
@@ -76,12 +83,75 @@ const dummyUser = {
 const dummyTweets = {
   tweets: [
     {
-      id: "1",
-      ceatedAt: "Wed Dec 09 2020 14:34:22 GMT+0800 (Taipei Standard Time)",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      UserId: "1"
-    }
+            "id": 1,
+            "UserId": 11,
+            "description": "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
+            "createdAt": "2020-12-16T07:38:05.000Z",
+            "updatedAt": "2020-12-16T07:38:05.000Z",
+            "User": {
+                "id": 11,
+                "email": "user1@example.com",
+                "password": "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
+                "name": "user1",
+                "avatar": "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
+                "introduction": "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
+                "isAdmin": false,
+                "account": "@user1",
+                "cover": "https://loremflickr.com/320/240/background/?random=89.75063535187728",
+                "createdAt": "2020-12-16T07:38:04.000Z",
+                "updatedAt": "2020-12-16T07:38:04.000Z"
+            },
+            "isLiked": true,
+            "repliedCount": 3,
+            "LikeCount": 1
+        },
+     {
+            "id": 2,
+            "UserId": 11,
+            "description": "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
+            "createdAt": "2020-12-16T07:38:05.000Z",
+            "updatedAt": "2020-12-16T07:38:05.000Z",
+            "User": {
+                "id": 11,
+                "email": "user1@example.com",
+                "password": "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
+                "name": "user1",
+                "avatar": "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
+                "introduction": "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
+                "isAdmin": false,
+                "account": "@user1",
+                "cover": "https://loremflickr.com/320/240/background/?random=89.75063535187728",
+                "createdAt": "2020-12-16T07:38:04.000Z",
+                "updatedAt": "2020-12-16T07:38:04.000Z"
+            },
+            "isLiked": true,
+            "repliedCount": 3,
+            "LikeCount": 1
+        },
+     {
+            "id": 3,
+            "UserId": 11,
+            "description": "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
+            "createdAt": "2020-12-16T07:38:05.000Z",
+            "updatedAt": "2020-12-16T07:38:05.000Z",
+            "User": {
+                "id": 11,
+                "email": "user1@example.com",
+                "password": "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
+                "name": "user1",
+                "avatar": "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
+                "introduction": "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
+                "isAdmin": false,
+                "account": "@user1",
+                "cover": "https://loremflickr.com/320/240/background/?random=89.75063535187728",
+                "createdAt": "2020-12-16T07:38:04.000Z",
+                "updatedAt": "2020-12-16T07:38:04.000Z"
+            },
+            "isLiked": true,
+            "repliedCount": 3,
+            "LikeCount": 1
+        },
+
   ]
 };
 
@@ -259,6 +329,20 @@ export default {
 .upper-area-content p {
   margin: 0;
   line-height: 10px;
+}
+
+.name {
+  line-height: 19px;
+  font-size: 19px;
+}
+
+.tweets-count {
+  color: #657786;
+}
+
+.nav {
+  border-left: 1px solid #e6ecf0;
+  border-right: 1px solid #e6ecf0;
 }
 
 .nav-link.active {

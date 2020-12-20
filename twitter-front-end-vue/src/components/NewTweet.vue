@@ -120,12 +120,12 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log("1");
+      if(!this.description.trim()) return
+      
       this.$emit("after-post-submit", {
         id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
         description: this.description,
       });
-      console.log("2");
 
       // 發文後清空收入欄、關閉彈跳視窗
       this.description = "";

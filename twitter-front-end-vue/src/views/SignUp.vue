@@ -1,37 +1,67 @@
 <template>
- <div class="container d-flex justify-content-center py-5">
-    <form class="w-50 mx-0" @submit.stop.prevent="handleSubmit">
-      <div class="text-center">
-        <img src="../assets/Logo.svg">
-        <h4 class="mt-4">建立你的帳號</h4>
-      </div>
+  <div class="container">
+    <form class="w-100 d-flex flex-column align-items-center" @submit.stop.prevent="handleSubmit">
+      <img class="alphitterLogo" src="../assets/Logo.svg" />
+      <h5>建立你的帳號</h5>
 
-      <div class="form-group my-4">
-        <input type="text" id="account" name="account" class="form-control" placeholder="帳號" v-model="account">
-      </div>
+      <input
+        type="text"
+        id="account"
+        name="account"
+        class="form-control"
+        placeholder="帳號"
+        v-model="account"
+        required
+        autofocus
+      />
 
-      <div class="form-group my-4">
-        <input type="email" id="email" name="email" class="form-control" placeholder="Email" v-model="email">
-      </div>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        placeholder="Email"
+        v-model="email"
+        required
+      />
 
-      <div class="form-group my-4">
-        <input type="text" id="name" name="name" class="form-control" placeholder="名稱" v-model="name">
-      </div>
-     
-      <div class="form-group my-4">
-        <input type="password" id="password" name="password" class="form-control" placeholder="密碼" v-model="password">
-      </div>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="form-control"
+        placeholder="名稱"
+        v-model="name"
+        required
+      />
 
-      <div class="form-group my-4">
-        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="密碼確認" v-model="confirmPassword">
-      </div>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        placeholder="密碼"
+        v-model="password"
+        required
+      />
+
+      <input
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        class="form-control"
+        placeholder="密碼確認"
+        v-model="confirmPassword"
+        required
+      />
 
       <button class="btn btn-primary btn-block my-4" type="submit">註冊</button>
 
-      <p class="text-center"><a href="">取消</a></p>
+      <div class="others d-flex justify-content-center">
+        <router-link to="/signin">取消</router-link>
+      </div>
     </form>
- </div>
-  
+  </div>
 </template>
 
 <script>
@@ -43,7 +73,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: ""
-    }
+    };
   },
   methods: {
     handleSubmit() {
@@ -53,11 +83,45 @@ export default {
         name: this.name,
         password: this.password,
         confirmPassword: this.confirmPassword
-      })
+      });
 
       //Todo：向後端驗證使用者登入是否合法
-      console.log('data', data)
+      console.log("data", data);
     }
   }
-}
+};
 </script>
+
+<style scoped>
+.alphitterLogo  {
+  margin-top: 72.51px;
+  height: 50px;
+  width: 50px;
+}
+
+h5 {
+  margin-top: 40px;
+}
+
+input {
+  width: 40%;
+  height: 48px;
+  margin: 10px;
+  padding: 10px;
+  border: 10px;
+  border-bottom: 3px solid #9d9d9d;
+  background-color: #F5F8FA;
+}
+
+.others {
+  width: 40%;
+
+}
+
+button {
+  width: 40%;
+  margin: 15px 0 10px 0;
+  padding: 10px;
+  border-radius: 30px;
+}
+</style>
