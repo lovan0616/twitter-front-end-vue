@@ -2,7 +2,7 @@
   <div class="container">
     <form class="form-container d-flex" @submit.prevent.stop="handleLogin">
       <img
-        src="https://imgur.com/JVhBuMg.png"
+        src="../assets/Logo.svg"
         alt="alphitterLogo"
         class="alphitterLogo"
       />
@@ -83,7 +83,7 @@ input {
   padding: 10px;
   border: 10px;
   border-bottom: 3px solid #9d9d9d;
-  background-color: #f0f0f0;
+  background-color: #F5F8FA;
 }
 button {
   width: 40%;

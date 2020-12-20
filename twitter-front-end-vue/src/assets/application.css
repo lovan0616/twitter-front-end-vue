@@ -22,12 +22,12 @@ html, body, #twitter {
 }
 
 #main-area {
-  width: 45%;
+  width: 48%;
   height: 100%;
 }
 
 #follow-recommend-area {
-  width: 33%;
+  width: 30%;
   height: 100%;
   padding-left: 31px;
 }
@@ -44,9 +44,14 @@ html, body, #twitter {
   color: FFFFFF;
 }
 
-.btn-primary:hover, .btn-primary:disabled, .btn-primary:active  {
-  background-color: #de5b04
+.btn-primary:hover, .btn-primary:disabled {
+  background-color: #ed5f00
 }
+
+
+.btn-primary:not(:disabled):not(.disabled):focus {
+  background-color: #cc5302;
+} 
 
 .badge-primary {
   border: none;
@@ -58,4 +63,12 @@ html, body, #twitter {
   border: 1px solid #FF6600;
   background-color: FFFFF;
   color: #FF6600;
+}
+
+.tweet:hover {
+  background-color: #f7f7f7;
+}
+
+.tweet .like-icon {
+  position: relative;
 }

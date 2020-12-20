@@ -1,26 +1,22 @@
 <template>
   <div class="container d-flex">
     <div id="navbar-area" class="navbar-area">
-      <!-- 插入NewTweet -->
       <Navbar />
     </div>
     <div class="main">
+      <div class="upper-area d-flex align-items-top">
+        <div class="upper-area-content d-flex align-items-center">
+          <span class="mr-4" style="color: #000000; cursor: pointer" @click="$router.back()">&larr;</span>
+          <strong class="title">推文</strong>
+        </div>
+      </div>
       <div class="tweet-detail-container">
         <!-- 插入TweetDetail -->
-        <TweetDetail
-          :user="user"
-          :tweet="tweet"
-          @after-post-submit="afterPostSubmit"
-        />
+        <TweetDetail :user="user" :tweet="tweet" @after-post-submit="afterPostSubmit" />
       </div>
       <div class="tweet-reply-container">
         <!-- 插入TweetReply -->
-        <TweetReply
-          v-for="reply in replies"
-          :key="reply.id"
-          :initial-reply="reply"
-          :user="user"
-        />
+        <TweetReply v-for="reply in replies" :key="reply.id" :initial-reply="reply" :user="user" />
       </div>
     </div>
     <div id="follow-recommend-area" class="follow-recommend-area">
@@ -50,9 +46,9 @@ const dummyUser = {
     cover:
       "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
     createdAt: "2020-12-16T06:02:24.000Z",
-    updatedAt: "2020-12-16T06:02:24.000Z",
+    updatedAt: "2020-12-16T06:02:24.000Z"
   },
-  isAuthenticated: true,
+  isAuthenticated: true
 };
 
 const dummyData = {
@@ -78,7 +74,7 @@ const dummyData = {
         cover:
           "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
         createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
+        updatedAt: "2020-12-16T06:02:24.000Z"
       },
       Likes: [
         {
@@ -86,15 +82,15 @@ const dummyData = {
           UserId: 11,
           TweetId: 1,
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 31,
           UserId: 21,
           TweetId: 1,
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
+          updatedAt: "2020-12-16T06:02:25.000Z"
+        }
       ],
       Replies: [
         {
@@ -103,7 +99,7 @@ const dummyData = {
           TweetId: 1,
           comment: "ut suscipit similique",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 11,
@@ -111,7 +107,7 @@ const dummyData = {
           TweetId: 1,
           comment: "Sunt error facere eaque.",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 21,
@@ -120,12 +116,12 @@ const dummyData = {
           comment:
             "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
+          updatedAt: "2020-12-16T06:02:25.000Z"
+        }
       ],
       isLiked: false,
       repliedCount: 3,
-      LikeCount: 2,
+      LikeCount: 2
     },
     {
       id: 2,
@@ -147,7 +143,7 @@ const dummyData = {
         cover:
           "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
         createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
+        updatedAt: "2020-12-16T06:02:24.000Z"
       },
       Likes: [
         {
@@ -155,15 +151,15 @@ const dummyData = {
           UserId: 11,
           TweetId: 1,
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 31,
           UserId: 21,
           TweetId: 1,
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
+          updatedAt: "2020-12-16T06:02:25.000Z"
+        }
       ],
       Replies: [
         {
@@ -172,7 +168,7 @@ const dummyData = {
           TweetId: 1,
           comment: "ut suscipit similique",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 11,
@@ -180,7 +176,7 @@ const dummyData = {
           TweetId: 1,
           comment: "Sunt error facere eaque.",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 21,
@@ -189,12 +185,12 @@ const dummyData = {
           comment:
             "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
+          updatedAt: "2020-12-16T06:02:25.000Z"
+        }
       ],
       isLiked: true,
       repliedCount: 3,
-      LikeCount: 2,
+      LikeCount: 2
     },
     {
       id: 3,
@@ -217,7 +213,7 @@ const dummyData = {
         cover:
           "ttps://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
         createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
+        updatedAt: "2020-12-16T06:02:24.000Z"
       },
       Likes: [
         {
@@ -225,15 +221,15 @@ const dummyData = {
           UserId: 11,
           TweetId: 1,
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 31,
           UserId: 21,
           TweetId: 1,
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
+          updatedAt: "2020-12-16T06:02:25.000Z"
+        }
       ],
       Replies: [
         {
@@ -242,7 +238,7 @@ const dummyData = {
           TweetId: 1,
           comment: "ut suscipit similique",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 11,
@@ -250,7 +246,7 @@ const dummyData = {
           TweetId: 1,
           comment: "Sunt error facere eaque.",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
+          updatedAt: "2020-12-16T06:02:25.000Z"
         },
         {
           id: 21,
@@ -259,14 +255,14 @@ const dummyData = {
           comment:
             "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
           createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
+          updatedAt: "2020-12-16T06:02:25.000Z"
+        }
       ],
       isLiked: false,
       repliedCount: 3,
-      LikeCount: 2,
-    },
-  ],
+      LikeCount: 2
+    }
+  ]
 };
 
 export default {
@@ -275,13 +271,13 @@ export default {
     Navbar,
     FollowRecommend,
     TweetReply,
-    TweetDetail,
+    TweetDetail
   },
   data() {
     return {
       tweet: [],
       user: {},
-      replies: [],
+      replies: []
     };
   },
   created() {
@@ -316,14 +312,25 @@ export default {
         UserId: dummyUser.currentUser.id,
         createdAt: new Date(),
         updateAt: new Date(),
-        comment: newReply,
+        comment: newReply
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
+.upper-area-content {
+  display: flex;
+  align-items: top;
+  padding-left: 15px;
+}
+
+.upper-area-content p {
+  margin: 0;
+  line-height: 10px;
+}
+
 .main {
   padding: 0;
   width: 600px;

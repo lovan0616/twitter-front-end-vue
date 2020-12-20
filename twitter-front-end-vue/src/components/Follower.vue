@@ -87,6 +87,8 @@ export default {
   border-bottom: 1px solid #e6ecf0;
   position: relative;
   padding: 12px 15px 10px 15px;
+  border-left: 1px solid #e6ecf0;
+  border-right: 1px solid #e6ecf0;
 }
 
 .info {

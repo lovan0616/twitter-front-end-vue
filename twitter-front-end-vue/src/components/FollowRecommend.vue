@@ -4,7 +4,11 @@
       <strong>跟隨誰</strong>
     </div>
     <div class="card-body">
-      <div class="recommend d-flex" v-for="recommend in recommends" :key="recommend.id">
+      <div class="recommend" v-for="recommend in recommends" :key="recommend.id">
+        <router-link :to="{
+          name: 'user-profile',
+          params: {id: recommend.id}
+        }" class="d-flex">
         <div class="info d-flex align-items-center">
           <div class="image-area mr-2">
             <div class="image-cropper">
@@ -17,9 +21,11 @@
           </div>
         </div>
         <div class="follow-badge ml-auto">
-          <div class="badge badge-pill badge-primary" v-if="recommend.isFollowed">正在跟隨</div>
-          <div class="badge badge-pill badge-outline-primary" v-else>跟隨</div>
+          <div class="following badge badge-pill badge-primary" v-if="recommend.isFollowed">正在跟隨</div>
+          <div class="deleteFollow badge badge-pill" v-if="recommend.isFollowed" @click.stop.prevent="deleteFollow(recommend)">取消跟隨</div>
+          <div class="unfollow badge badge-pill badge-outline-primary" v-else @click.stop.prevent="follow(recommend)">跟隨</div>
         </div>
+        </router-link>
       </div>
     </div>
     <div class="card-footer more" @click.stop.prevent="showAllRecommends" v-if="!recommendsAllShowed">顯示更多</div>
@@ -116,6 +122,12 @@ export default {
     showAllRecommends() {
       this.recommendsAllShowed = true
       this.fetchData(10)
+    },
+    follow(recommend) {
+      recommend.isFollowed = true
+    },
+    deleteFollow(recommend) {
+      recommend.isFollowed = false
     }
   },
   created() {
@@ -136,7 +148,7 @@ export default {
   }
 
   .card-body {
-    padding: 0 20px 0 20px;
+    padding: 0;
   }
   
   .image-cropper {
@@ -145,12 +157,13 @@ export default {
     position: relative;
     overflow: hidden;
     border-radius: 50%;
+    margin-left: 20px;
   }
 
   .avatar {
     width: auto;
-    display: inline;
     height: 100%;
+    display: inline;
   }
 
   .info-text p {
@@ -159,19 +172,55 @@ export default {
   }
 
   .recommend {
-    border-top: 1px solid #E6ECF0;
-    border-bottom: 1px solid #E6ECF0;
     padding: 10px 0 10px 0;
+    border-bottom: 1px solid #E6ECF0;
+  }
+
+  .recommend:first-child {
+    border-top: 1px solid #E6ECF0;
   }
 
   .recommend p {
     margin-bottom: 0;
   }
 
+  .recommend a {
+    text-decoration: none;
+    color: #000000;
+  }
+
+  .recommend:hover, .card-footer:hover {
+    background-color: #EBEEF0;
+  }
+
+  .card-footer {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+
   .badge-pill {
     padding: 7px 16px;
     cursor: pointer;
+    margin-right: 20px ;
   }
+
+  .deleteFollow {
+    background-color: #c82456;
+    color: #ffffff;
+    display: none
+  }
+
+  .following:hover {
+    display: none;
+  }
+
+  .following:hover ~ .deleteFollow {
+    display: block;
+  }
+
+  .unfollow:hover {
+  background-color: #ffede0;
+}
 
   .more {
     color: #ff6600;
