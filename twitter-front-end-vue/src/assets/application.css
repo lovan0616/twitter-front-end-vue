@@ -26,6 +26,12 @@ html, body, #twitter {
   height: 100%;
 }
 
+#all-container {
+  width: 78%;
+  height: 100%;
+  border-left: 1px solid #e6ecf0;
+}
+
 #follow-recommend-area {
   width: 30%;
   height: 100%;
