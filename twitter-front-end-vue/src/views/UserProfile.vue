@@ -722,8 +722,8 @@ export default {
     const { id } = this.$route.params;
     this.fetchUserTweets()
     this.fetchUserLikes()
-    this.fetchUser()
-    this.fetchReplies(id)
+    this.fetchUser(id)
+    this.fetchReplies()
   },
   watch: {
     // 控制名字 & 自介字數上限
