@@ -50,9 +50,9 @@ const dummyUser = {
     cover:
       "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
     createdAt: "2020-12-16T06:02:24.000Z",
-    updatedAt: "2020-12-16T06:02:24.000Z"
+    updatedAt: "2020-12-16T06:02:24.000Z",
   },
-  isAuthenticated: true
+  isAuthenticated: true,
 };
 
 // POST /api/tweets/:id
@@ -164,7 +164,7 @@ export default {
     Navbar,
     FollowRecommend,
     TweetReply,
-    TweetDetail
+    TweetDetail,
   },
   data() {
     return {
@@ -228,7 +228,7 @@ export default {
     afterPostSubmit(payload) {
       const { id: tweetId } = this.$route.params;
       const { id, newReply } = payload;
-      this.replies.push({
+      this.replies.unshift({
         id,
         TweetId: tweetId,
         UserId: dummyUser.currentUser.id,
@@ -241,8 +241,8 @@ export default {
           name: dummyUser.currentUser.name
         },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
