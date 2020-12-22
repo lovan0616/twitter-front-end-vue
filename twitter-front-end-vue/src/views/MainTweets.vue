@@ -21,6 +21,7 @@
             v-for="tweet in tweets"
             :key="tweet.id"
             :initial-tweet="tweet"
+            :current-user="currentUser"
           />
         </div>
       </main>
@@ -126,13 +127,13 @@ const dummyData = {
     },
     {
       id: 2,
-      UserId: 11,
+      UserId: 10,
       description:
         "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
       createdAt: "2020-12-16T06:02:25.000Z",
       updatedAt: "2020-12-16T06:02:25.000Z",
       User: {
-        id: 11,
+        id: 10,
         email: "user1@example.com",
         password: "123445",
         name: "user1",
@@ -281,9 +282,13 @@ export default {
   data() {
     return {
       tweets: [],
+      currentUser: {}
     };
   },
   methods: {
+    fetchCurrentUser() {
+      this.currentUser = {...dummyUser.currentUser}
+    },
     fetchReply() {
       //待串 API 資料
       this.$router.push(`/tweet/:id/reply-list`);
@@ -294,7 +299,7 @@ export default {
     afterPostSubmit(payload) {
       const { id, description } = payload;
       // 注意：新推文的資料，未納入Likes和Replys的陣列
-      this.tweets.push({
+      this.tweets.unshift({
         id,
         description,
         UserId: dummyUser.currentUser.id,
@@ -308,6 +313,7 @@ export default {
   },
   created() {
     this.fetchData();
+    this.fetchCurrentUser()
   },
 };
 </script>

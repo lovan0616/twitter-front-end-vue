@@ -10,11 +10,7 @@
       </div>
       <div class="tweet-detail-container">
         <!-- 插入TweetDetail -->
-        <TweetDetail
-          :user="user"
-          :initial-tweet="tweet"
-          @after-post-submit="afterPostSubmit"
-        />
+        <TweetDetail :user="user" :initial-tweet="tweet" @after-post-submit="afterPostSubmit" />
       </div>
       <div class="tweet-reply-container">
         <!-- 插入TweetReply -->
@@ -25,6 +21,7 @@
           :user="user"
           :tweet="tweet"
         />
+      </div>
     </div>
     <div id="follow-recommend-area" class="follow-recommend-area">
       <!-- 插入FollowRecommend -->
@@ -71,11 +68,11 @@ const dummyTweet = {
     account: "@user1",
     name: "user1",
     avatar:
-      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
+      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg"
   },
   isLiked: false,
   repliedCount: 3,
-  LikeCount: 2,
+  LikeCount: 2
 };
 
 // GET /api/tweets/:id/replies
@@ -105,8 +102,8 @@ const dummyReply = {
         cover:
           "https://loremflickr.com/320/240/background/?random=83.0081940325029",
         createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z",
-      },
+        updatedAt: "2020-12-16T07:38:05.000Z"
+      }
     },
     {
       id: 11,
@@ -130,8 +127,8 @@ const dummyReply = {
         cover:
           "https://loremflickr.com/320/240/background/?random=83.0081940325029",
         createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z",
-      },
+        updatedAt: "2020-12-16T07:38:05.000Z"
+      }
     },
     {
       id: 21,
@@ -155,10 +152,10 @@ const dummyReply = {
         cover:
           "https://loremflickr.com/320/240/background/?random=83.0081940325029",
         createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z",
-      },
-    },
-  ],
+        updatedAt: "2020-12-16T07:38:05.000Z"
+      }
+    }
+  ]
 };
 
 export default {
@@ -180,9 +177,9 @@ export default {
         User: "",
         isLiked: false,
         repliedCount: 0,
-        LikeCount: 0,
+        LikeCount: 0
       },
-      replies: [],
+      replies: []
     };
   },
   created() {
@@ -206,7 +203,7 @@ export default {
         User,
         isLiked,
         repliedCount,
-        LikeCount,
+        LikeCount
       } = dummyTweet;
       this.tweet = {
         id,
@@ -217,7 +214,7 @@ export default {
         User,
         isLiked,
         repliedCount,
-        LikeCount,
+        LikeCount
       };
     },
     fetchReply() {
@@ -241,9 +238,8 @@ export default {
         User: {
           account: dummyUser.currentUser.account,
           avatar: dummyUser.currentUser.avatar,
-          name: dummyUser.currentUser.name,
+          name: dummyUser.currentUser.name
         },
-        comment: newReply
       });
     }
   }
