@@ -1,414 +1,105 @@
 <template>
-  <div class="all-container">
-    <h5 class="my-3">使用者列表</h5>
-    <div class="usercontainer">
-      <div class="usercard">
-        <div class="row row-cols-1 row-cols-md-4 mx-2">
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">John Doe</h6>
-                <h6 class="user-account">@heyjohn</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
+  <div class="usercontainer">
+    <div class="usercard">
+      <div class="row row-cols-1 row-cols-md-4 mx-1">
+        <div class="col" style="max-width: 20rem">
+          <div class="card">
+            <img
+              :src="user.cover | emptyImage"
+              class="card-img-top"
+              alt="user-cover"
+            />
+            <img :src="user.avatar" class="user-photo" />
+            <div class="card-body">
+              <h6 class="user-name">{{ user.name }}</h6>
+              <h6 class="user-account">{{ user.account }}</h6>
+              <div class="user-status d-flex">
+                <img
+                  src="http://i.imgur.com/kbKBExh.png"
+                  alt=""
+                  class="user-chat"
+                />
+                <p class="chat-number">{{ user.tweetsCount }}</p>
+                <img
+                  src="http://i.imgur.com/0euPu42.png"
+                  alt=""
+                  class="user-like"
+                />
+                <p class="like-number">{{ user.likesCount }}</p>
+              </div>
+              <div class="userfollowstatus d-flex">
+                <p class="user-following">{{ user.followingsCount }}個</p>
+                <p>跟隨中</p>
+                <p class="user-follower">{{ user.followersCount }}位</p>
+                <p>跟隨者</p>
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Robert Fox</h6>
-                <h6 class="user-account">@robfox</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
+        </div>
+        <div class="col" style="max-width: 20rem">
+          <div class="card">
+            <img
+              :src="user.cover | emptyImage"
+              class="card-img-top"
+              alt="user-cover"
+            />
+            <img :src="user.avatar" class="user-photo" />
+            <div class="card-body">
+              <h6 class="user-name">{{ user.name }}</h6>
+              <h6 class="user-account">{{ user.account }}</h6>
+              <div class="user-status d-flex">
+                <img
+                  src="http://i.imgur.com/kbKBExh.png"
+                  alt=""
+                  class="user-chat"
+                />
+                <p class="chat-number">{{ user.tweetsCount }}</p>
+                <img
+                  src="http://i.imgur.com/0euPu42.png"
+                  alt=""
+                  class="user-like"
+                />
+                <p class="like-number">{{ user.likesCount }}</p>
+              </div>
+              <div class="userfollowstatus d-flex">
+                <p class="user-following">{{ user.followingsCount }}個</p>
+                <p>跟隨中</p>
+                <p class="user-follower">{{ user.followersCount }}位</p>
+                <p>跟隨者</p>
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Leslie Alexander</h6>
-                <h6 class="user-account">@lesAlex</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
+        </div>
+        <div class="col" style="max-width: 20rem">
+          <div class="card">
+            <img
+              :src="user.cover | emptyImage"
+              class="card-img-top"
+              alt="user-cover"
+            />
+            <img :src="user.avatar" class="user-photo" />
+            <div class="card-body">
+              <h6 class="user-name">{{ user.name }}</h6>
+              <h6 class="user-account">{{ user.account }}</h6>
+              <div class="user-status d-flex">
+                <img
+                  src="http://i.imgur.com/kbKBExh.png"
+                  alt=""
+                  class="user-chat"
+                />
+                <p class="chat-number">{{ user.tweetsCount }}</p>
+                <img
+                  src="http://i.imgur.com/0euPu42.png"
+                  alt=""
+                  class="user-like"
+                />
+                <p class="like-number">{{ user.likesCount }}</p>
               </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Arlene McCoy</h6>
-                <h6 class="user-account">@alcoy</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">John Doe</h6>
-                <h6 class="user-account">@heyjohn</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Robert Fox</h6>
-                <h6 class="user-account">@robfox</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Leslie Alexander</h6>
-                <h6 class="user-account">@lesAlex</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Arlene McCoy</h6>
-                <h6 class="user-account">@alcoy</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">John Doe</h6>
-                <h6 class="user-account">@heyjohn</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Robert Fox</h6>
-                <h6 class="user-account">@robfox</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Leslie Alexander</h6>
-                <h6 class="user-account">@lesAlex</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <img
-                :src="user.image | emptyImage"
-                class="card-img-top"
-                alt="..."
-              />
-              <img src="https://i.imgur.com/NZWqfN3.jpg" class="user-photo" />
-              <div class="card-body">
-                <h6 class="user-name">Arlene McCoy</h6>
-                <h6 class="user-account">@alcoy</h6>
-                <div class="user-status d-flex">
-                  <img
-                    src="http://i.imgur.com/kbKBExh.png"
-                    alt=""
-                    class="user-chat"
-                  />
-                  <p class="chat-number">1.5k</p>
-                  <img
-                    src="http://i.imgur.com/0euPu42.png"
-                    alt=""
-                    class="user-like"
-                  />
-                  <p class="like-number">2k</p>
-                </div>
-                <div class="userfollowstatus d-flex">
-                  <p class="user-following">34個</p>
-                  <p>跟隨中</p>
-                  <p class="user-follower">59位</p>
-                  <p>跟隨者</p>
-                </div>
+              <div class="userfollowstatus d-flex">
+                <p class="user-following">{{ user.followingsCount }}個</p>
+                <p>跟隨中</p>
+                <p class="user-follower">{{ user.followersCount }}位</p>
+                <p>跟隨者</p>
               </div>
             </div>
           </div>
@@ -421,23 +112,27 @@
 <script>
 import { emptyImageFilter } from "../utils/mixins";
 
-const user = {
-  image: "",
-};
 export default {
   name: "AdminUserCard",
   mixins: [emptyImageFilter],
+  props: {
+    initialUser: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      user: {
-        image: "",
-      },
+      user: {},
     };
   },
   methods: {
-    fetchUserImage() {
-      this.user.image = user.image;
+    fetchUser() {
+      this.user = this.initialUser;
     },
+  },
+  created() {
+    this.fetchUser();
   },
 };
 </script>
@@ -447,9 +142,19 @@ h5 {
   border-bottom: 1px solid #e6ecf0;
   padding: 0 10px 10px 30px;
 }
-.all-container {
-  width: 90%;
+.usercontainer,
+.usercard,
+.row {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
+
+.row-cols-md-4 {
+  width: 100%;
+  margin-right: 0;
+}
+
 .card {
   height: 350px;
   min-width: 200px;
@@ -460,8 +165,13 @@ h5 {
   margin-bottom: 10px;
   overflow: hidden;
 }
+
+.card-body {
+  padding: 0;
+}
+
 .user-name {
-  margin-top: 3rem;
+  margin-top: 2.2rem;
   text-align: center;
   font-weight: 700;
 }
@@ -476,7 +186,7 @@ p {
   margin-top: 1rem;
 }
 .user-status {
-  height: 40px;
+  height: 30px;
   align-items: center;
   justify-content: center;
 }
@@ -498,7 +208,7 @@ p {
 .chat-number {
   font-size: 14px;
   color: black;
-  line-height: 40px;
+  line-height: 30px;
   margin: 0 1rem 0 5px;
 }
 .userfollowstatus {
@@ -513,5 +223,6 @@ p {
   transform: translate(-50%, -50%);
   height: 100px;
   width: 100px;
+  object-fit: cover;
 }
 </style>

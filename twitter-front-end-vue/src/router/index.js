@@ -60,11 +60,6 @@ const routes = [
 
   },
   {
-    path: '/user/profile/edit',
-    name: 'user-profile-edit',
-    component: () => import('../views/UserProfileEdit.vue')
-  },
-  {
     path: '/user/profile/:id/:category?',
     name: 'user-profile',
     component: () => import('../views/UserProfile.vue')

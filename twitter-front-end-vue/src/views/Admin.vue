@@ -1,13 +1,9 @@
 <template>
   <div class="container">
     <form class="form-container d-flex" @submit.prevent.stop="handleLogin">
-      <img
-        src="../assets/Logo.svg"
-        alt="alphitterLogo"
-        class="alphitterLogo"
-      />
+      <img src="../assets/Logo.svg" alt="alphitterLogo" class="alphitterLogo" />
       <h5>後台登入</h5>
-      <input type="email" placeholder="帳號" v-model="admin.account" required />
+      <input type="text" placeholder="帳號" v-model="admin.account" required />
       <input type="text" placeholder="密碼" v-model="admin.password" required />
       <div class="buttonContainer">
         <button class="button" :disabled="isProcessing">登入</button>
@@ -19,11 +15,7 @@
 
 <script>
 import { Toast } from "../utils/helpers";
-
-const dummyAdmin = {
-  account: "root@example.com",
-  password: "12345678",
-};
+import authorizationAPI from "../apis/authorization";
 
 export default {
   data() {
@@ -36,27 +28,42 @@ export default {
     };
   },
   methods: {
-    //Todo: 改使用 Async/await 串接 API
-    handleLogin() {
-      if (!this.admin.account || !this.admin.password) {
-        Toast.fire({
-          icon: "warning",
-          title: "請填入 email 和 password",
-        });
-        return;
-      } else if (
-        this.admin.account === dummyAdmin.account &&
-        this.admin.password === dummyAdmin.password
-      ) {
-        // 避免急躁管理員瘋狂點擊
+    async handleLogin() {
+      try {
+        if (!this.admin.account || !this.admin.password) {
+          Toast.fire({
+            icon: "warning",
+            title: "請確實填入帳號和密碼！",
+          });
+          return;
+        }
+
         this.isProcessing = true;
-        this.$router.push("/admin/main");
-      } else {
+
+        const response = await authorizationAPI.adminSignIn({
+          account: this.admin.account,
+          password: this.admin.password,
+        });
+
+        // 報錯處理
+        const { data } = response;
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        // 將token存放入本地瀏覽器localStorage
+        localStorage.setItem("token", data.token);
+
+        //成功驗證後轉址
+        this.$route.push({ name: "admin-main" });
+      } catch (error) {
+        console.log("error:", error);
+        this.isProcessing = false;
+        this.admin.password = "";
+        // 錯誤提示
         Toast.fire({
           icon: "error",
           title: "帳號或密碼輸入有誤，請重新確認！",
         });
-        return;
       }
     },
   },
@@ -83,7 +90,7 @@ input {
   padding: 10px;
   border: 10px;
   border-bottom: 3px solid #9d9d9d;
-  background-color: #F5F8FA;
+  background-color: #f5f8fa;
 }
 button {
   width: 40%;
