@@ -54,7 +54,7 @@
 <script>
 import { fromNowFilter } from '../utils/mixins'
 export default {
-  name: "Tweet",
+  name: "UserLikedTweets",
   props: {
     initialLike: {
       type: Object,

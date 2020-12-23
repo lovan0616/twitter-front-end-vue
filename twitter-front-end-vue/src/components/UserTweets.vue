@@ -133,7 +133,7 @@
 <script>
 import { fromNowFilter } from '../utils/mixins'
 export default {
-  name: "Tweet",
+  name: "UserTweets",
   props: {
     initialTweet: {
       type: Object,
@@ -164,8 +164,8 @@ export default {
   },
   methods: {
     fetchData() {
-      const {id, UserId: userId, description, createdAt, User: user, repliesCount, likesCount, isLike: isLiked } = this.initialTweet
-      const {name: userName, account: userAccount, avatar: userAvatar} = user
+      const {id, UserId: userId, description, createdAt, repliesCount, likesCount, isLike: isLiked } = this.initialTweet
+      const {name: userName, account: userAccount, avatar: userAvatar} = this.user
 
       this.tweet = {
         ...this.tweet,
@@ -173,9 +173,9 @@ export default {
         userId,
         description,
         createdAt,
-        userName,
-        userAccount,
-        userAvatar,
+        userName: userName,
+        userAccount: userAccount,
+        userAvatar: userAvatar,
         repliesCount,
         likesCount,
         isLiked
@@ -203,6 +203,9 @@ export default {
     }
   },
   created() {
+    this.fetchData()
+  },
+  beforeRouteUpdate() {
     this.fetchData()
   }
 };

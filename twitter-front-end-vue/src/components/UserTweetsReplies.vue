@@ -13,7 +13,7 @@
             <router-link
               :to="{
             name: 'user-profile',
-            params: {id: presentTweet.Userid}
+            params: {id: presentTweet.User.id}
           }"
             >
               <div class="image-cropper">
