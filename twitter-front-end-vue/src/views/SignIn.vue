@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <form class="w-100 d-flex flex-column align-items-center" @submit.stop.prevent="handleSubmit">
-        <img class="alphitterLogo " src="../assets/Logo.svg" />
-        <h5>登入 Alphitter</h5>
+      <img class="alphitterLogo" src="../assets/Logo.svg" />
+      <h5>登入 Alphitter</h5>
 
       <input
         type="text"
@@ -25,7 +25,7 @@
         required
       />
 
-      <button class="btn btn-primary btn-block" type="submit">登入</button>
+      <button class="btn btn-primary btn-block" type="submit" :disabled="isProcessing">登入</button>
 
       <div class="others d-flex justify-content-end pt-4">
         <router-link to="/signup">註冊 Alphitter</router-link>·
@@ -36,29 +36,60 @@
 </template>
 
 <script>
+import authorizationAPI from '../apis/authorization'
+import { Toast } from '../utils/helpers'
 export default {
   data() {
     return {
       account: "",
-      password: ""
+      password: "",
+      isProcessing: false
     };
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
+    async handleSubmit() {
+      try {
+
+        if(!this.account || !this.password) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請填入account和password'
+        })
+        return
+      }
+
+        this.isProcessing = true
+
+        const { data } = await authorizationAPI.signIn({
         account: this.account,
         password: this.password
-      });
+      })
 
-      //Todo：向後端驗證使用者登入是否合法
-      console.log("data", data);
+        if(data.status !== "success") {
+          throw new Error(data.message)
+        }
+
+        localStorage.setItem('token', data.token)
+
+        this.$router.push('/main')
+
+
+      } catch(error) {
+        this.isProcessing = false
+        this.password = ""
+        Toast.fire({
+          icon: 'error',
+          title: '請確認您輸入了正確的密碼'
+        })
+         console.log('error', error)
+      }
     }
   }
-};
+}
 </script>
 
 <style scoped>
-.alphitterLogo  {
+.alphitterLogo {
   margin-top: 72.51px;
   height: 50px;
   width: 50px;
@@ -75,12 +106,11 @@ input {
   padding: 10px;
   border: 10px;
   border-bottom: 3px solid #9d9d9d;
-  background-color: #F5F8FA;
+  background-color: #f5f8fa;
 }
 
 .others {
   width: 40%;
-
 }
 
 button {
