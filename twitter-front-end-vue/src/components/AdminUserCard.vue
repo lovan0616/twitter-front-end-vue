@@ -1,8 +1,8 @@
 <template>
   <div class="usercontainer">
-    <div class="usercard">
-      <div class="row row-cols-1 row-cols-md-4 mx-1">
-        <div class="col" style="max-width: 20rem">
+    <div class="usercard d-flex">
+      <div class="row row-cols-1 row-cols-md-4 my-2">
+        <div class="col d-flex" style="max-width: 20rem">
           <div class="card">
             <img
               :src="user.cover | emptyImage"
@@ -15,82 +15,14 @@
               <h6 class="user-account">{{ user.account }}</h6>
               <div class="user-status d-flex">
                 <img
-                  src="http://i.imgur.com/kbKBExh.png"
-                  alt=""
+                  src="../assets/Reply.svg"
+                  alt="chat-icon"
                   class="user-chat"
                 />
                 <p class="chat-number">{{ user.tweetsCount }}</p>
                 <img
-                  src="http://i.imgur.com/0euPu42.png"
-                  alt=""
-                  class="user-like"
-                />
-                <p class="like-number">{{ user.likesCount }}</p>
-              </div>
-              <div class="userfollowstatus d-flex">
-                <p class="user-following">{{ user.followingsCount }}個</p>
-                <p>跟隨中</p>
-                <p class="user-follower">{{ user.followersCount }}位</p>
-                <p>跟隨者</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col" style="max-width: 20rem">
-          <div class="card">
-            <img
-              :src="user.cover | emptyImage"
-              class="card-img-top"
-              alt="user-cover"
-            />
-            <img :src="user.avatar" class="user-photo" />
-            <div class="card-body">
-              <h6 class="user-name">{{ user.name }}</h6>
-              <h6 class="user-account">{{ user.account }}</h6>
-              <div class="user-status d-flex">
-                <img
-                  src="http://i.imgur.com/kbKBExh.png"
-                  alt=""
-                  class="user-chat"
-                />
-                <p class="chat-number">{{ user.tweetsCount }}</p>
-                <img
-                  src="http://i.imgur.com/0euPu42.png"
-                  alt=""
-                  class="user-like"
-                />
-                <p class="like-number">{{ user.likesCount }}</p>
-              </div>
-              <div class="userfollowstatus d-flex">
-                <p class="user-following">{{ user.followingsCount }}個</p>
-                <p>跟隨中</p>
-                <p class="user-follower">{{ user.followersCount }}位</p>
-                <p>跟隨者</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col" style="max-width: 20rem">
-          <div class="card">
-            <img
-              :src="user.cover | emptyImage"
-              class="card-img-top"
-              alt="user-cover"
-            />
-            <img :src="user.avatar" class="user-photo" />
-            <div class="card-body">
-              <h6 class="user-name">{{ user.name }}</h6>
-              <h6 class="user-account">{{ user.account }}</h6>
-              <div class="user-status d-flex">
-                <img
-                  src="http://i.imgur.com/kbKBExh.png"
-                  alt=""
-                  class="user-chat"
-                />
-                <p class="chat-number">{{ user.tweetsCount }}</p>
-                <img
-                  src="http://i.imgur.com/0euPu42.png"
-                  alt=""
+                  src="../assets/Like.svg"
+                  alt="like-icon"
                   class="user-like"
                 />
                 <p class="like-number">{{ user.likesCount }}</p>
@@ -145,16 +77,10 @@ h5 {
 .usercontainer,
 .usercard,
 .row {
-  width: 100%;
+  width: 25%;
   padding: 0;
   margin: 0;
 }
-
-.row-cols-md-4 {
-  width: 100%;
-  margin-right: 0;
-}
-
 .card {
   height: 350px;
   min-width: 200px;
@@ -164,6 +90,11 @@ h5 {
   position: relative;
   margin-bottom: 10px;
   overflow: hidden;
+}
+
+.card-img-top {
+  height: 45%;
+  object-fit: cover;
 }
 
 .card-body {

@@ -18,86 +18,8 @@
 <script>
 import AdminNav from "../components/AdminNav";
 import AdminTweet from "../components/AdminTweet";
-
-// GET /api/admin/tweets
-// DELETE /api/admin/tweets/:id
-
-const dummyTweets = [
-  {
-    id: 5,
-    UserId: 11,
-    description: "Molestias.",
-    createdAt: "2020-12-16T08:46:08.000Z",
-    updatedAt: "2020-12-16T08:46:08.000Z",
-    User: {
-      id: 11,
-      account: "@user1",
-      name: "user1",
-      avatar:
-        "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-    },
-  },
-  {
-    id: 2,
-    UserId: 11,
-    description:
-      "Molestias dolor voluptatibus eveniet et cupiditate ipsum aperiam eius necessitatibus. Facilis voluptas exercitationem ut consequatur maxime eligendi optio. Provident reiciendis labore voluptates mollitia quasi harum sed rerum debitis. Et voluptas aut placeat. Id cum animi soluta consequuntur odit est porro.",
-    createdAt: "2020-12-16T08:46:08.000Z",
-    updatedAt: "2020-12-16T08:46:08.000Z",
-    User: {
-      id: 11,
-      account: "@user1",
-      name: "user1",
-      avatar:
-        "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-    },
-  },
-  {
-    id: 1,
-    UserId: 11,
-    description:
-      "Molestias dolor voluptatibus eveniet et cupiditate ipsum aperiam eius necessitatibus. Facilis voluptas exercitationem ut consequatur maxime eligendi optio. Provident reiciendis labore voluptates mollitia quasi harum sed rerum debitis. Et voluptas aut placeat. Id cum animi soluta consequuntur odit est porro.",
-    createdAt: "2020-12-16T08:46:08.000Z",
-    updatedAt: "2020-12-16T08:46:08.000Z",
-    User: {
-      id: 11,
-      account: "@user1",
-      name: "user1",
-      avatar:
-        "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-    },
-  },
-  {
-    id: 3,
-    UserId: 11,
-    description:
-      "Molestias dolor voluptatibus eveniet et cupiditate ipsum aperiam eius necessitatibus. Facilis voluptas exercitationem ut consequatur maxime eligendi optio. Provident reiciendis labore voluptates mollitia quasi harum sed rerum debitis. Et voluptas aut placeat. Id cum animi soluta consequuntur odit est porro.",
-    createdAt: "2020-12-16T08:46:08.000Z",
-    updatedAt: "2020-12-16T08:46:08.000Z",
-    User: {
-      id: 11,
-      account: "@user1",
-      name: "user1",
-      avatar:
-        "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-    },
-  },
-  {
-    id: 4,
-    UserId: 11,
-    description:
-      "Molestias dolor voluptatibus eveniet et cupiditate ipsum aperiam eius necessitatibus. Facilis voluptas exercitationem ut consequatur maxime eligendi optio. Provident reiciendis labore voluptates mollitia quasi harum sed rerum debitis. Et voluptas aut placeat. Id cum animi soluta consequuntur odit est porro.",
-    createdAt: "2020-12-16T08:46:08.000Z",
-    updatedAt: "2020-12-16T08:46:08.000Z",
-    User: {
-      id: 11,
-      account: "@user1",
-      name: "user1",
-      avatar:
-        "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-    },
-  },
-];
+import AdminAPI from "../apis/admin";
+import { Toast } from "../utils/helpers";
 
 export default {
   components: {
@@ -110,14 +32,37 @@ export default {
     };
   },
   methods: {
-    // GET /api/admin/tweets
-    fetchAdminTweets() {
-      this.tweets = [...dummyTweets];
+    async fetchAdminTweets() {
+      try {
+        const { data } = await AdminAPI.getAdminTweets();
+        console.log(data);
+        this.tweets = [...data];
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "warning",
+          title: "暫時無法取得推文，請稍候再試！",
+        });
+      }
     },
-    deleteTweet(tweetId) {
-      // 把子層回傳id 解構賦值取出
-      const { id } = tweetId;
-      this.tweets = this.tweets.filter((tweet) => tweet.id !== id);
+    async deleteTweet(tweetId) {
+      try {
+        // 把子層回傳id跟API串連
+        console.log(tweetId);
+        const { data } = await AdminAPI.deleteTweet(tweetId);
+
+        // 寫入資料狀態報錯的情境
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法刪除推文，請稍候再試！",
+        });
+      }
     },
   },
   created() {

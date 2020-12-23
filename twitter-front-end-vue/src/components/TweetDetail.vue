@@ -87,7 +87,9 @@
                 </div>
                 <div class="reply-content-area">
                   <div class="m-reply-post-info d-flex">
-                    <strong class="m-reply-name">{{ presentTweet.User.name }}</strong>
+                    <strong class="m-reply-name">{{
+                      presentTweet.User.name
+                    }}</strong>
                     <p class="m-reply-account">
                       {{ presentTweet.User.account }}
                     </p>
@@ -162,6 +164,7 @@ export default {
       newReply: "",
       presentUser: this.user,
       presentTweet: this.initialTweet,
+      isLoading: true,
     };
   },
   methods: {
@@ -207,9 +210,6 @@ export default {
       };
     },
   },
-  // created() {
-  //   this.fetchUser();
-  // },
 };
 </script>
 

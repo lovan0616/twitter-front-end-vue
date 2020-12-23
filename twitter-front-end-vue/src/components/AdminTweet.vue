@@ -11,11 +11,11 @@
           <div class="dot">·</div>
           <div class="tweettime">{{ tweet.createdAt | fromNow }}</div>
         </div>
-        <div class="tweetcontent" v-if="tweet.trimmedTweet">
+        <div class="tweetcontent" v-if="tweet.overFifty">
           {{ tweet.trimmedTweet }} ...
         </div>
-        <button class="btn-primary" v-if="tweet.trimmedTweet" @click="showMore">
-          more
+        <button class="btn-primary" v-if="tweet.overFifty" @click="showMore">
+          Show All
         </button>
         <div class="tweetcontent" v-else>
           {{ tweet.description }}
@@ -26,7 +26,7 @@
           src="../assets/Close.svg"
           alt="delete"
           class="delete-img"
-          @click="deleteTweet()"
+          @click="deleteTweet(tweet.id)"
         />
       </div>
     </div>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       tweet: {},
+      // overFifty: false,
     };
   },
   methods: {
@@ -54,18 +55,20 @@ export default {
       this.tweet = this.initialTweet;
       const { description } = this.tweet;
       if (description.length > 50) {
+        this.tweet.overFifty = true;
         const fifty = description.substr(0, 50);
         this.tweet.trimmedTweet = fifty;
       }
       return;
     },
     deleteTweet() {
-      this.$emit("delete-tweet", {
-        id: this.tweet.id,
-      });
+      this.$emit("delete-tweet", this.tweet.id);
     },
     showMore() {
-      this.tweet.trimmedTweet = null;
+      this.tweet = {
+        ...this.tweet,
+        overFifty: !this.tweet.overFifty,
+      };
     },
   },
   created() {

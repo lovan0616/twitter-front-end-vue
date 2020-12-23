@@ -134,14 +134,12 @@
                       <img src="../assets/camera.svg" class="cover-camera" />
                       <img src="../assets/plus.svg" alt class="cover-plus" />
                       <div class="cancel-edit">
-                        <!-- <a href=""> -->
                         <img
                           src="../assets/closeWhite.svg"
                           alt
                           class="cancal-edit"
                           @click="cancelEdit"
                         />
-                        <!-- </a> -->
                       </div>
                     </div>
                     <div class="avatar-edit-wrapper">
@@ -296,7 +294,7 @@ export default {
     FollowRecommend,
     UserTweets,
     UserLikedTweets,
-    UserTweetsReplies
+    UserTweetsReplies,
   },
   mixins: [emptyImageFilter],
   data() {
@@ -418,18 +416,19 @@ export default {
     },
     // modal表單資料交付
     handleEditSubmit(e) {
+      if (!this.name.trim()) return;
       const form = e.target;
       const formData = new FormData(form);
       console.log(formData);
       for (let [name, value] of formData.entries()) {
         console.log(name + ":" + value);
+        // 將欲更改的資料儲存至vue data 提交給後端
       }
       // Toast.fire({
       //   icon: "warning",
       //   title: "即將更改個人資料，確定更改？",
       // });
       $("#postEdit").modal("hide");
-      this.name = "";
     },
     handleCoverChange(e) {
       const { files } = e.target;
