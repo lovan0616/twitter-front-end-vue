@@ -109,7 +109,7 @@
 
 <script>
 //Todo: 取回API後記得刪除
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import $ from "jquery";
 export default {
   name: "NewTweet",
@@ -119,13 +119,18 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      if(!this.description.trim()) return
+    handleSubmit(e) {
+      if (!this.description.trim()) return;
 
-      this.$emit("after-post-submit", {
-        id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
-        description: this.description,
-      });
+      const form = e.target;
+      console.log(e.target);
+      const formData = new FormData(form);
+      this.$emit("after-post-submit", formData);
+      console.log(formData);
+      // this.$emit("after-post-submit", {
+      //   id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
+      //   description: this.description,
+      // });
 
       // 發文後清空收入欄、關閉彈跳視窗
       this.description = "";

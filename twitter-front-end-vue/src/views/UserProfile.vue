@@ -714,6 +714,7 @@ export default {
     },
     // modal表單資料交付
     handleEditSubmit(e) {
+      if (!this.name.trim()) return;
       const form = e.target;
       const formData = new FormData(form);
       console.log(formData);

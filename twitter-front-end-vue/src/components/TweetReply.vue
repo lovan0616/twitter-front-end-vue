@@ -26,7 +26,6 @@
 <script>
 import { fromNowFilter } from "../utils/mixins";
 
-//Todo: 需要替換為API撈回資料，API含有user資料，不必fetch兩次
 export default {
   name: "TweetReply",
   mixins: [fromNowFilter],
@@ -47,16 +46,6 @@ export default {
       required: true,
     },
   },
-  // methods: {
-  //   fetchReplies() {
-  //     for (let reply of this.initialReplies) {
-  //       this.replies = reply;
-  //     }
-  //   },
-  // },
-  // created() {
-  //   this.fetchReplies();
-  // },
 };
 </script>
 

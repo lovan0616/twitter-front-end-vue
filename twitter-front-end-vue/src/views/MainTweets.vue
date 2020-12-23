@@ -97,19 +97,31 @@ export default {
         });
       }
     },
-    afterPostSubmit(payload) {
-      const { id, description } = payload;
-      // 注意：新推文的資料，未納入Likes和Replys的陣列
-      this.tweets.unshift({
-        id,
-        description,
-        UserId: dummyUser.currentUser.id,
-        createdAt: new Date(),
-        User: dummyUser.currentUser,
-        isLiked: false,
-        repliedCount: 0,
-        LikeCount: 0,
-      });
+    async afterPostSubmit(formData) {
+      try {
+        const { data } = await TweetsAPI.post({ formData });
+        console.log(data.id);
+        const { id, description } = data;
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        // 注意：新推文的資料，未納入Likes和Replys的陣列
+        this.tweets.unshift({
+          id,
+          description,
+          UserId: dummyUser.currentUser.id,
+          createdAt: new Date(),
+          isLiked: false,
+          repliedCount: 0,
+          LikeCount: 0,
+        });
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法新增推文，請稍候再試！",
+        });
+      }
     },
   },
   created() {

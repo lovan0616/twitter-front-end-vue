@@ -5,7 +5,7 @@
     </div>
     <div class="main">
       <div class="main-title d-flex">
-        <router-link to="/" class="arrow"></router-link>
+        <router-link :to="{ name: 'main-tweets' }" class="arrow"></router-link>
         <div class="title">推文</div>
       </div>
       <div class="tweet-detail-container">
@@ -19,6 +19,9 @@
       </div>
       <div class="tweet-reply-container">
         <!-- 插入TweetReply -->
+        <h5 class="no-reply" v-if="replies.length < 1">
+          本推文目前沒有回覆Q__Q
+        </h5>
         <TweetReply
           v-for="reply in replies"
           :key="reply.id"
@@ -83,89 +86,6 @@ const dummyTweet = {
   LikeCount: 2,
 };
 
-// GET /api/tweets/:id/replies
-const dummyReply = {
-  status: "success",
-  message: "OK",
-  replies: [
-    {
-      id: 31,
-      UserId: 41,
-      TweetId: 1,
-      comment:
-        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
-      createdAt: "2020-12-16T07:38:05.000Z",
-      updatedAt: "2020-12-16T07:38:05.000Z",
-      User: {
-        id: 41,
-        email: "user4@example.com",
-        password:
-          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
-        name: "user4",
-        avatar:
-          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
-        introduction: "Illo laborum nesciunt dolor nihil.",
-        isAdmin: false,
-        account: "@user4",
-        cover:
-          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
-        createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z",
-      },
-    },
-    {
-      id: 11,
-      UserId: 41,
-      TweetId: 1,
-      comment:
-        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
-      createdAt: "2020-12-16T07:38:05.000Z",
-      updatedAt: "2020-12-16T07:38:05.000Z",
-      User: {
-        id: 42,
-        email: "user5@example.com",
-        password:
-          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
-        name: "user5",
-        avatar:
-          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
-        introduction: "Illo laborum nesciunt dolor nihil.",
-        isAdmin: false,
-        account: "@user5",
-        cover:
-          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
-        createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z",
-      },
-    },
-    {
-      id: 21,
-      UserId: 41,
-      TweetId: 1,
-      comment:
-        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
-      createdAt: "2020-12-16T07:38:05.000Z",
-      updatedAt: "2020-12-16T07:38:05.000Z",
-      User: {
-        id: 43,
-        email: "user6@example.com",
-        password:
-          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
-        name: "user6",
-        avatar:
-          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
-        introduction: "Illo laborum nesciunt dolor nihil.",
-        isAdmin: false,
-        account: "@user6",
-        cover:
-          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
-        createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z",
-      },
-    },
-  ],
-};
-
 export default {
   name: "MainTweetsReplyList",
   components: {
@@ -209,10 +129,8 @@ export default {
   methods: {
     async fetchTweet(tweetId) {
       try {
-        console.log("fetchTweet id:", tweetId);
         console.log(dummyTweet);
         const { data } = await TweetAPI.read(tweetId);
-        console.log(data);
         this.tweet = data;
       } catch (error) {
         console.log("error:", error);
@@ -224,7 +142,6 @@ export default {
     },
     async fetchReply(replyId) {
       try {
-        console.log(dummyReply);
         const { data } = await ReplyAPI.getReply(replyId);
         this.replies = [...data];
       } catch (error) {
@@ -306,5 +223,9 @@ export default {
   font-size: 18px;
   font-weight: 700;
   line-height: 55px;
+}
+
+.no-reply {
+  margin: 15% 25%;
 }
 </style>

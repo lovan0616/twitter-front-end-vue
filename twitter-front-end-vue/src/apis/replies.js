@@ -7,9 +7,12 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  getUser(userId) {
-    return apiHelper.get(`/api/users/${userId}`, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
+  // getUser(userId) {
+  //   return apiHelper.get(`/api/users/${userId}`, {
+  //     headers: { Authorization: `Bearer ${getToken()}` }
+  //   })
+  // },
+  addReply(tweetId) {
+    return apiHelper.post(`/api/tweets/${tweetId}/replies`, {},)
   }
 }
