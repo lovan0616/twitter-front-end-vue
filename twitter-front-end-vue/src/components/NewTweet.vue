@@ -80,8 +80,8 @@
                 >
                   <textarea
                     class="w-100"
-                    name="text"
-                    id="text"
+                    name="description"
+                    id="description"
                     cols="20"
                     rows="4"
                     placeholder="有什麼新鮮事？"
@@ -121,7 +121,7 @@ export default {
   methods: {
     handleSubmit() {
       if(!this.description.trim()) return
-      
+
       this.$emit("after-post-submit", {
         id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
         description: this.description,

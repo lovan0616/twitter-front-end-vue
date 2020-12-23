@@ -2,7 +2,7 @@
   <div class="tweet-wrapper">
     <router-link :to="{
       name: 'reply-list',
-      params: 'id: tweet.id'
+      params: {id: tweet.id}
     }">
       <div class="tweet d-flex p-2">
     <div class="image-area mr-3">
@@ -35,14 +35,14 @@
           <a>
             <img src="../assets/Reply.svg" />
           </a>
-          <p class="reply-counts mb-0 ml-2">{{ tweet.repliedCount }}</p>
+          <p class="reply-counts mb-0 ml-2">{{ tweet.replisdCount }}</p>
         </div>
 
         <div class="like-control d-flex ml-3">
           <img class="like-icon" src="../assets/Like.svg"  v-if="!tweet.isLiked" @click.stop.prevent="addLike"/>
           <img class="like-icon" src="../assets/Like-liked.svg"  v-else @click.stop.prevent="deleteLike"/>
-          <p class="like-counts mb-0 ml-2" v-if="!tweet.isLiked">{{ tweet.likedCount }}</p>
-          <p class="red like-counts mb-0 ml-2" v-else>{{ tweet.likedCount }}</p>
+          <p class="like-counts mb-0 ml-2" v-if="!tweet.isLiked">{{ tweet.likesCount }}</p>
+          <p class="red like-counts mb-0 ml-2" v-else>{{ tweet.likesCount }}</p>
         </div>
       </div>
     </div>
@@ -56,7 +56,7 @@ import { fromNowFilter } from '../utils/mixins'
 export default {
   name: "Tweet",
   props: {
-    initialTweet: {
+    initialLike: {
       type: Object,
       required: true
     }
@@ -72,16 +72,17 @@ export default {
         userName: "",
         userAccount: "",
         userAvatar: "",
-        repliedCount: -1,
-        likedCount: -1,
+        repliesCount: -1,
+        likesCount: -1,
         isLiked: false
       }
     }
   },
   methods: {
     fetchData() {
-      const {id, UserId: userId, description, createdAt, User: user, repliedCount, LikeCount: likedCount, isLiked } = this.initialTweet
-      const {name: userName, account: userAccount, avatar: userAvatar} = user
+      const { id, UserId: userId, description, createdAt, repliesCount, likesCount, isLike: isLiked } = this.initialLike.Tweet
+
+      const { name: userName, account: userAccount, avatar: userAvatar} = this.initialLike.Tweet.User
 
       this.tweet = {
         ...this.tweet,
@@ -92,8 +93,8 @@ export default {
         userName,
         userAccount,
         userAvatar,
-        repliedCount,
-        likedCount,
+        repliesCount,
+        likesCount,
         isLiked
       }
     },
@@ -101,14 +102,14 @@ export default {
       this.tweet = {
         ...this.tweet,
         isLiked: true,
-        likedCount: this.tweet.likedCount + 1
+        likesCount: this.tweet.likesCount + 1
       }
     },
     deleteLike() {
       this.tweet = {
         ...this.tweet,
         isLiked: false,
-        likedCount: this.tweet.likedCount - 1
+        likesCount: this.tweet.likesCount - 1
       }
     }
   },
