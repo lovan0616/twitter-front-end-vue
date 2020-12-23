@@ -10,7 +10,11 @@
       </div>
       <div class="tweet-detail-container">
         <!-- 插入TweetDetail -->
-        <TweetDetail :user="user" :initial-tweet="tweet" @after-post-submit="afterPostSubmit" />
+        <TweetDetail
+          :user="user"
+          :initial-tweet="tweet"
+          @after-post-submit="afterPostSubmit"
+        />
       </div>
       <div class="tweet-reply-container">
         <!-- 插入TweetReply -->
@@ -35,6 +39,8 @@ import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import TweetReply from "../components/TweetReply";
 import TweetDetail from "../components/TweetDetail";
+import { Toast } from "../utils/helpers";
+import ReplyAPI from "../apis/reply";
 
 // GET /api/users/:id
 const dummyUser = {
@@ -68,11 +74,11 @@ const dummyTweet = {
     account: "@user1",
     name: "user1",
     avatar:
-      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg"
+      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
   },
   isLiked: false,
   repliedCount: 3,
-  LikeCount: 2
+  LikeCount: 2,
 };
 
 // GET /api/tweets/:id/replies
@@ -102,8 +108,8 @@ const dummyReply = {
         cover:
           "https://loremflickr.com/320/240/background/?random=83.0081940325029",
         createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z"
-      }
+        updatedAt: "2020-12-16T07:38:05.000Z",
+      },
     },
     {
       id: 11,
@@ -127,8 +133,8 @@ const dummyReply = {
         cover:
           "https://loremflickr.com/320/240/background/?random=83.0081940325029",
         createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z"
-      }
+        updatedAt: "2020-12-16T07:38:05.000Z",
+      },
     },
     {
       id: 21,
@@ -152,10 +158,10 @@ const dummyReply = {
         cover:
           "https://loremflickr.com/320/240/background/?random=83.0081940325029",
         createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z"
-      }
-    }
-  ]
+        updatedAt: "2020-12-16T07:38:05.000Z",
+      },
+    },
+  ],
 };
 
 export default {
@@ -174,12 +180,13 @@ export default {
         UserId: -1,
         description: "",
         createdAt: "",
+        updatedAt: "",
         User: "",
         isLiked: false,
         repliedCount: 0,
-        LikeCount: 0
+        LikeCount: 0,
       },
-      replies: []
+      replies: [],
     };
   },
   created() {
@@ -192,30 +199,44 @@ export default {
   },
   methods: {
     // Todo: 待串接 API 資料 / async/await
-    fetchTweet(tweetId) {
-      console.log("fetchTweet id:", tweetId);
-      const {
-        id,
-        UserId,
-        description,
-        createdAt,
-        updatedAt,
-        User,
-        isLiked,
-        repliedCount,
-        LikeCount
-      } = dummyTweet;
-      this.tweet = {
-        id,
-        UserId,
-        description,
-        createdAt,
-        updatedAt,
-        User,
-        isLiked,
-        repliedCount,
-        LikeCount
-      };
+    async fetchTweet(e) {
+      try {
+        console.log(dummyTweet);
+        const { data } = await ReplyAPI.getTweet(e);
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        console.log("fetchTweet id:", e);
+        const {
+          id,
+          UserId,
+          description,
+          createdAt,
+          updatedAt,
+          User,
+          isLiked,
+          repliedCount,
+          LikeCount,
+        } = data;
+        this.tweet = {
+          id,
+          UserId,
+          description,
+          createdAt,
+          updatedAt,
+          User,
+          isLiked,
+          repliedCount,
+          LikeCount,
+        };
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得推文細節，請稍候再試！",
+        });
+      }
     },
     fetchReply() {
       // 拉取 API 的推文回覆資料
@@ -238,7 +259,7 @@ export default {
         User: {
           account: dummyUser.currentUser.account,
           avatar: dummyUser.currentUser.avatar,
-          name: dummyUser.currentUser.name
+          name: dummyUser.currentUser.name,
         },
       });
     },
