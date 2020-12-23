@@ -2,11 +2,6 @@ import { apiHelper } from '../utils/helpers'
 const getToken = () => localStorage.getItem('token')
 
 export default {
-  getTweet(tweetId) {
-    return apiHelper.post(`/api/tweets/${tweetId}`, null, {
-      headers: { Authorization: `Bearer ${getToken()}` }
-    })
-  },
   getReply(tweetId) {
     return apiHelper.get(`/api/tweets/${tweetId}/replies`, {
       headers: { Authorization: `Bearer ${getToken()}` }

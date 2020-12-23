@@ -14,6 +14,7 @@
           :user="user"
           :initial-tweet="tweet"
           @after-post-submit="afterPostSubmit"
+          v-if="tweet.id !== -1"
         />
       </div>
       <div class="tweet-reply-container">
@@ -40,7 +41,8 @@ import FollowRecommend from "../components/FollowRecommend";
 import TweetReply from "../components/TweetReply";
 import TweetDetail from "../components/TweetDetail";
 import { Toast } from "../utils/helpers";
-import ReplyAPI from "../apis/reply";
+import ReplyAPI from "../apis/replies";
+import TweetAPI from "../apis/tweets";
 
 // GET /api/users/:id
 const dummyUser = {
@@ -181,10 +183,16 @@ export default {
         description: "",
         createdAt: "",
         updatedAt: "",
-        User: "",
+        User: {
+          id: -1,
+          account: "",
+          name: "",
+          avatar: "",
+        },
         isLiked: false,
         repliedCount: 0,
         LikeCount: 0,
+        isSelf: false,
       },
       replies: [],
     };
@@ -193,43 +201,19 @@ export default {
     const { id: tweetId } = this.$route.params;
     this.fetchTweet(tweetId);
 
-    this.fetchReply();
+    const { id: replyId } = this.$route.params;
+    this.fetchReply(replyId);
 
     this.fetchUser();
   },
   methods: {
-    // Todo: 待串接 API 資料 / async/await
-    async fetchTweet(e) {
+    async fetchTweet(tweetId) {
       try {
+        console.log("fetchTweet id:", tweetId);
         console.log(dummyTweet);
-        const { data } = await ReplyAPI.getTweet(e);
-        if (data.status !== "success") {
-          throw new Error(data.message);
-        }
-
-        console.log("fetchTweet id:", e);
-        const {
-          id,
-          UserId,
-          description,
-          createdAt,
-          updatedAt,
-          User,
-          isLiked,
-          repliedCount,
-          LikeCount,
-        } = data;
-        this.tweet = {
-          id,
-          UserId,
-          description,
-          createdAt,
-          updatedAt,
-          User,
-          isLiked,
-          repliedCount,
-          LikeCount,
-        };
+        const { data } = await TweetAPI.read(tweetId);
+        console.log(data);
+        this.tweet = data;
       } catch (error) {
         console.log("error:", error);
         Toast.fire({
@@ -238,12 +222,23 @@ export default {
         });
       }
     },
-    fetchReply() {
-      // 拉取 API 的推文回覆資料
-      this.replies = dummyReply.replies;
+    async fetchReply(replyId) {
+      try {
+        console.log(dummyReply);
+        const { data } = await ReplyAPI.getReply(replyId);
+        this.replies = [...data];
+      } catch (error) {
+        console.log("error:", error);
+        const { data } = await ReplyAPI.getReply(replyId);
+        if (data.length === 0) return;
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得推文回覆，請稍候再試！",
+        });
+      }
     },
     fetchUser() {
-      // 拉取 API 的目前用戶資料
+      // 待拉取 API 的當前用戶資料
       this.user = dummyUser.currentUser;
     },
     afterPostSubmit(payload) {
