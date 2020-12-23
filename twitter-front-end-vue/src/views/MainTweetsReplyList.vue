@@ -5,15 +5,23 @@
     </div>
     <div class="main">
       <div class="main-title d-flex">
-        <router-link to="/" class="arrow"></router-link>
+        <router-link :to="{ name: 'main-tweets' }" class="arrow"></router-link>
         <div class="title">推文</div>
       </div>
       <div class="tweet-detail-container">
         <!-- 插入TweetDetail -->
-        <TweetDetail :user="user" :initial-tweet="tweet" @after-post-submit="afterPostSubmit" />
+        <TweetDetail
+          :user="user"
+          :initial-tweet="tweet"
+          @after-post-submit="afterPostSubmit"
+          v-if="tweet.id !== -1"
+        />
       </div>
       <div class="tweet-reply-container">
         <!-- 插入TweetReply -->
+        <h5 class="no-reply" v-if="replies.length < 1">
+          本推文目前沒有回覆Q__Q
+        </h5>
         <TweetReply
           v-for="reply in replies"
           :key="reply.id"
@@ -35,6 +43,9 @@ import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import TweetReply from "../components/TweetReply";
 import TweetDetail from "../components/TweetDetail";
+import { Toast } from "../utils/helpers";
+import ReplyAPI from "../apis/replies";
+import TweetAPI from "../apis/tweets";
 
 // GET /api/users/:id
 const dummyUser = {
@@ -68,94 +79,11 @@ const dummyTweet = {
     account: "@user1",
     name: "user1",
     avatar:
-      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg"
+      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
   },
   isLiked: false,
   repliedCount: 3,
-  LikeCount: 2
-};
-
-// GET /api/tweets/:id/replies
-const dummyReply = {
-  status: "success",
-  message: "OK",
-  replies: [
-    {
-      id: 31,
-      UserId: 41,
-      TweetId: 1,
-      comment:
-        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
-      createdAt: "2020-12-16T07:38:05.000Z",
-      updatedAt: "2020-12-16T07:38:05.000Z",
-      User: {
-        id: 41,
-        email: "user4@example.com",
-        password:
-          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
-        name: "user4",
-        avatar:
-          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
-        introduction: "Illo laborum nesciunt dolor nihil.",
-        isAdmin: false,
-        account: "@user4",
-        cover:
-          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
-        createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z"
-      }
-    },
-    {
-      id: 11,
-      UserId: 41,
-      TweetId: 1,
-      comment:
-        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
-      createdAt: "2020-12-16T07:38:05.000Z",
-      updatedAt: "2020-12-16T07:38:05.000Z",
-      User: {
-        id: 42,
-        email: "user5@example.com",
-        password:
-          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
-        name: "user5",
-        avatar:
-          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
-        introduction: "Illo laborum nesciunt dolor nihil.",
-        isAdmin: false,
-        account: "@user5",
-        cover:
-          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
-        createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z"
-      }
-    },
-    {
-      id: 21,
-      UserId: 41,
-      TweetId: 1,
-      comment:
-        "Sed voluptas dignissimos vitae quod sed possimus necessitatibus incidunt quis. Velit optio fugiat. Quo dolore ut error nisi dolorem beatae qui fugit. Similique assumenda tenetur nemo illum eligendi adipisci. Blanditiis voluptatem porro beatae.",
-      createdAt: "2020-12-16T07:38:05.000Z",
-      updatedAt: "2020-12-16T07:38:05.000Z",
-      User: {
-        id: 43,
-        email: "user6@example.com",
-        password:
-          "$2a$10$J/h9rW.IX.OrE2xVNhcrBue/4VWKXOMW.bs1.UPqRoKuBHVzQRyFe",
-        name: "user6",
-        avatar:
-          "https://loremflickr.com/320/240/avatar/?random=44.52934043122782",
-        introduction: "Illo laborum nesciunt dolor nihil.",
-        isAdmin: false,
-        account: "@user6",
-        cover:
-          "https://loremflickr.com/320/240/background/?random=83.0081940325029",
-        createdAt: "2020-12-16T07:38:05.000Z",
-        updatedAt: "2020-12-16T07:38:05.000Z"
-      }
-    }
-  ]
+  LikeCount: 2,
 };
 
 export default {
@@ -174,55 +102,60 @@ export default {
         UserId: -1,
         description: "",
         createdAt: "",
-        User: "",
+        updatedAt: "",
+        User: {
+          id: -1,
+          account: "",
+          name: "",
+          avatar: "",
+        },
         isLiked: false,
         repliedCount: 0,
-        LikeCount: 0
+        LikeCount: 0,
+        isSelf: false,
       },
-      replies: []
+      replies: [],
     };
   },
   created() {
     const { id: tweetId } = this.$route.params;
     this.fetchTweet(tweetId);
 
-    this.fetchReply();
+    const { id: replyId } = this.$route.params;
+    this.fetchReply(replyId);
 
     this.fetchUser();
   },
   methods: {
-    // Todo: 待串接 API 資料 / async/await
-    fetchTweet(tweetId) {
-      console.log("fetchTweet id:", tweetId);
-      const {
-        id,
-        UserId,
-        description,
-        createdAt,
-        updatedAt,
-        User,
-        isLiked,
-        repliedCount,
-        LikeCount
-      } = dummyTweet;
-      this.tweet = {
-        id,
-        UserId,
-        description,
-        createdAt,
-        updatedAt,
-        User,
-        isLiked,
-        repliedCount,
-        LikeCount
-      };
+    async fetchTweet(tweetId) {
+      try {
+        console.log(dummyTweet);
+        const { data } = await TweetAPI.read(tweetId);
+        this.tweet = data;
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得推文細節，請稍候再試！",
+        });
+      }
     },
-    fetchReply() {
-      // 拉取 API 的推文回覆資料
-      this.replies = dummyReply.replies;
+    async fetchReply(replyId) {
+      try {
+        const { data } = await ReplyAPI.getReply(replyId);
+        this.replies = [...data];
+      } catch (error) {
+        console.log("error:", error);
+        const { data } = await ReplyAPI.getReply(replyId);
+        if (data.length === 0) return;
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得推文回覆，請稍候再試！",
+        });
+      }
     },
     fetchUser() {
-      // 拉取 API 的目前用戶資料
+      // 待拉取 API 的當前用戶資料
       this.user = dummyUser.currentUser;
     },
     afterPostSubmit(payload) {
@@ -238,7 +171,7 @@ export default {
         User: {
           account: dummyUser.currentUser.account,
           avatar: dummyUser.currentUser.avatar,
-          name: dummyUser.currentUser.name
+          name: dummyUser.currentUser.name,
         },
       });
     },
@@ -290,5 +223,9 @@ export default {
   font-size: 18px;
   font-weight: 700;
   line-height: 55px;
+}
+
+.no-reply {
+  margin: 15% 25%;
 }
 </style>

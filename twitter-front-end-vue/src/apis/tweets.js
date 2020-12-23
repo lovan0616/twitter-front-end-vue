@@ -1,20 +1,19 @@
 import { apiHelper } from '../utils/helpers'
 const getToken = () => localStorage.getItem('token')
 
-
 export default {
-  getAdminTweets() {
-    return apiHelper.get('/api/admin/tweets', {
+  readAll() {
+    return apiHelper.get('/api/tweets', {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  getAdminUsers() {
-    return apiHelper.get('/api/admin/users', {
+  read(tweetId) {
+    return apiHelper.get(`/api/tweets/${tweetId}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  deleteTweet(tweetId) {
-    return apiHelper.delete(`/api/admin/tweets/${tweetId}`, {
+  post(formData) {
+    return apiHelper.post(`/api/tweets`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   }

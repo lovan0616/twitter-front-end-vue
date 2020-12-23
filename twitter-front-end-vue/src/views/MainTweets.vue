@@ -16,6 +16,7 @@
         <NewTweet @after-post-submit="afterPostSubmit" />
 
         <!-- 插入Tweet -->
+        <Spinner v-if="isLoading" />
         <div class="tweets-panel">
           <Tweet
             v-for="tweet in tweets"
@@ -53,224 +54,14 @@ const dummyUser = {
   isAuthenticated: true,
 };
 
-const dummyData = {
-  tweets: [
-    {
-      id: 1,
-      UserId: 11,
-      description:
-        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-      createdAt: "2020-12-16T06:02:25.000Z",
-      updatedAt: "2020-12-16T06:02:25.000Z",
-      User: {
-        id: 11,
-        email: "user1@example.com",
-        password:
-          "$2a$10$0/fxm5Jfb7h2Kdrd.Caoy.X4S.pB/9ifTDcty4WX2MP4mR1E/M2d2",
-        name: "user1",
-        avatar:
-          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-        introduction: "Quam et veniam.",
-        isAdmin: false,
-        account: "@user1",
-        cover:
-          "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-        createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
-      },
-      Likes: [
-        {
-          id: 21,
-          UserId: 11,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 31,
-          UserId: 21,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      Replies: [
-        {
-          id: 1,
-          UserId: 11,
-          TweetId: 1,
-          comment: "ut suscipit similique",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 11,
-          UserId: 21,
-          TweetId: 1,
-          comment: "Sunt error facere eaque.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 21,
-          UserId: 31,
-          TweetId: 1,
-          comment:
-            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      isLiked: false,
-      repliedCount: 3,
-      LikeCount: 2,
-    },
-    {
-      id: 2,
-      UserId: 10,
-      description:
-        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-      createdAt: "2020-12-16T06:02:25.000Z",
-      updatedAt: "2020-12-16T06:02:25.000Z",
-      User: {
-        id: 10,
-        email: "user1@example.com",
-        password: "123445",
-        name: "user1",
-        avatar:
-          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-        introduction: "Quam et veniam.",
-        isAdmin: false,
-        account: "@user1",
-        cover:
-          "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-        createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
-      },
-      Likes: [
-        {
-          id: 21,
-          UserId: 11,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 31,
-          UserId: 21,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      Replies: [
-        {
-          id: 1,
-          UserId: 11,
-          TweetId: 1,
-          comment: "ut suscipit similique",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 11,
-          UserId: 21,
-          TweetId: 1,
-          comment: "Sunt error facere eaque.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 21,
-          UserId: 31,
-          TweetId: 1,
-          comment:
-            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      isLiked: true,
-      repliedCount: 3,
-      LikeCount: 2,
-    },
-    {
-      id: 3,
-      UserId: 11,
-      description:
-        "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-      createdAt: "2020-12-16T06:02:25.000Z",
-      updatedAt: "2020-12-16T06:02:25.000Z",
-      User: {
-        id: 11,
-        email: "user1@example.com",
-        password:
-          "$2a$10$0/fxm5Jfb7h2Kdrd.Caoy.X4S.pB/9ifTDcty4WX2MP4mR1E/M2d2",
-        name: "user1",
-        avatar:
-          "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-        introduction: "Quam et veniam.",
-        isAdmin: false,
-        account: "@user1",
-        cover:
-          "ttps://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-        createdAt: "2020-12-16T06:02:24.000Z",
-        updatedAt: "2020-12-16T06:02:24.000Z",
-      },
-      Likes: [
-        {
-          id: 21,
-          UserId: 11,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 31,
-          UserId: 21,
-          TweetId: 1,
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      Replies: [
-        {
-          id: 1,
-          UserId: 11,
-          TweetId: 1,
-          comment: "ut suscipit similique",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 11,
-          UserId: 21,
-          TweetId: 1,
-          comment: "Sunt error facere eaque.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-        {
-          id: 21,
-          UserId: 31,
-          TweetId: 1,
-          comment:
-            "Non rem ipsa sint hic quis qui. Et in sunt et ipsa dicta dolorum. Illum molestiae dolorem. Tempore omnis numquam impedit enim ipsam totam dolores. Voluptas qui consectetur provident odit quas esse dolor.",
-          createdAt: "2020-12-16T06:02:25.000Z",
-          updatedAt: "2020-12-16T06:02:25.000Z",
-        },
-      ],
-      isLiked: false,
-      repliedCount: 3,
-      LikeCount: 2,
-    },
-  ],
-};
-
 import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import NewTweet from "../components/NewTweet";
 import Tweet from "../components/Tweet";
+import TweetsAPI from "../apis/tweets";
+import { Toast } from "../utils/helpers";
+import Spinner from "../components/Spinner";
+
 export default {
   name: "Main",
   components: {
@@ -278,42 +69,64 @@ export default {
     FollowRecommend,
     NewTweet,
     Tweet,
+    Spinner,
   },
   data() {
     return {
       tweets: [],
-      currentUser: {}
+      currentUser: {},
+      isLoading: true,
     };
   },
   methods: {
     fetchCurrentUser() {
-      this.currentUser = {...dummyUser.currentUser}
+      this.currentUser = { ...dummyUser.currentUser };
     },
-    fetchReply() {
-      //待串 API 資料
-      this.$router.push(`/tweet/:id/reply-list`);
+    async fetchData() {
+      try {
+        this.isLoading = true;
+        const { data } = await TweetsAPI.readAll();
+        this.tweets = [...data];
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得所有推文，請稍候再試！",
+        });
+      }
     },
-    fetchData() {
-      this.tweets = [...dummyData.tweets];
-    },
-    afterPostSubmit(payload) {
-      const { id, description } = payload;
-      // 注意：新推文的資料，未納入Likes和Replys的陣列
-      this.tweets.unshift({
-        id,
-        description,
-        UserId: dummyUser.currentUser.id,
-        createdAt: new Date(),
-        User: dummyUser.currentUser,
-        isLiked: false,
-        repliedCount: 0,
-        LikeCount: 0,
-      });
+    async afterPostSubmit(formData) {
+      try {
+        const { data } = await TweetsAPI.post({ formData });
+        console.log(data.id);
+        const { id, description } = data;
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        // 注意：新推文的資料，未納入Likes和Replys的陣列
+        this.tweets.unshift({
+          id,
+          description,
+          UserId: dummyUser.currentUser.id,
+          createdAt: new Date(),
+          isLiked: false,
+          repliedCount: 0,
+          LikeCount: 0,
+        });
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法新增推文，請稍候再試！",
+        });
+      }
     },
   },
   created() {
     this.fetchData();
-    this.fetchCurrentUser()
+    this.fetchCurrentUser();
   },
 };
 </script>
