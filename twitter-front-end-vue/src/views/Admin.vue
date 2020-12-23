@@ -4,7 +4,12 @@
       <img src="../assets/Logo.svg" alt="alphitterLogo" class="alphitterLogo" />
       <h5>後台登入</h5>
       <input type="text" placeholder="帳號" v-model="admin.account" required />
-      <input type="text" placeholder="密碼" v-model="admin.password" required />
+      <input
+        type="password"
+        placeholder="密碼"
+        v-model="admin.password"
+        required
+      />
       <div class="buttonContainer">
         <button class="button" :disabled="isProcessing">登入</button>
         <router-link to="/" class="toFront">前台登入</router-link>
@@ -30,6 +35,7 @@ export default {
   methods: {
     async handleLogin() {
       try {
+        // 首先過濾無輸入任何資訊的情境
         if (!this.admin.account || !this.admin.password) {
           Toast.fire({
             icon: "warning",
@@ -54,7 +60,7 @@ export default {
         localStorage.setItem("token", data.token);
 
         //成功驗證後轉址
-        this.$route.push({ name: "admin-main" });
+        this.$router.push({ name: "admin-main" });
       } catch (error) {
         console.log("error:", error);
         this.isProcessing = false;
