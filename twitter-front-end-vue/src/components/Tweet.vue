@@ -154,6 +154,8 @@
 
 <script>
 import { fromNowFilter } from "../utils/mixins";
+import { Toast } from '../utils/helpers';
+import likesAPI from '../apis/likes'
 export default {
   name: "Tweet",
   props: {
@@ -212,12 +214,24 @@ export default {
         isLiked
       };
     },
-    addLike() {
-      this.tweet = {
+    async addLike(createdAt, UserId, tweetId) {
+      try {
+        const response = await likesAPI.like({ createdAt, UserId, tweetId })
+        console.log(response)
+
+        this.tweet = {
         ...this.tweet,
         isLiked: true,
         likedCount: this.tweet.likedCount + 1
       };
+        
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法點擊愛心，請稍後再試'
+        })
+      }
     },
     deleteLike() {
       this.tweet = {

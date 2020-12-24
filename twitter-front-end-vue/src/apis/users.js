@@ -21,5 +21,10 @@ export default {
     return apiHelper.get(`/api/users/${id}/replied_tweets`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
-  }
+  },
+  getCurrentUser() {
+    return apiHelper.get(`/api/current_user`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
 }

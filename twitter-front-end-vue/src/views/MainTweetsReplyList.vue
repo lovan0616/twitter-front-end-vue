@@ -143,22 +143,37 @@ export default {
       // 待拉取 API 的當前用戶資料
       this.user = dummyUser.currentUser;
     },
-    afterPostSubmit(payload) {
-      const { id: tweetId } = this.$route.params;
-      const { id, newReply } = payload;
-      this.replies.unshift({
-        id,
-        TweetId: tweetId,
-        UserId: dummyUser.currentUser.id,
-        createdAt: new Date(),
-        updateAt: new Date(),
-        comment: newReply,
-        User: {
-          account: dummyUser.currentUser.account,
-          avatar: dummyUser.currentUser.avatar,
-          name: dummyUser.currentUser.name,
-        },
-      });
+    async afterPostSubmit(formData) {
+      try {
+        for (let [key, value] of formData.entries()) {
+          console.log(key + ", " + value);
+        }
+        const { id: tweetId } = this.$route.params;
+        // 將後端所需資料回拋給 API
+        const { data } = await ReplyAPI.addReply({ tweetId, formData });
+        // 拉資料回前端渲染
+        const { id, newReply } = data;
+        this.replies.unshift({
+          id,
+          TweetId: tweetId,
+          UserId: dummyUser.currentUser.id,
+          createdAt: new Date(),
+          updateAt: new Date(),
+          comment: newReply,
+          User: {
+            account: dummyUser.currentUser.account,
+            avatar: dummyUser.currentUser.avatar,
+            name: dummyUser.currentUser.name,
+          },
+        });
+        this.tweet.repliedCount++;
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法新增回覆，請稍候再試！",
+        });
+      }
     },
   },
 };

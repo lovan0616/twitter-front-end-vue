@@ -95,13 +95,16 @@ export default {
         });
       }
     },
-    async afterPostSubmit(form) {
+    async afterPostSubmit(formData) {
       try {
-        const { data } = await TweetsAPI.post({ form });
-        const { description } = data;
+        for (let [key, value] of formData.entries()) {
+          console.log(key + ", " + value);
+        }
+        const { data } = await TweetsAPI.post({ formData });
         if (data.status !== "success") {
           throw new Error(data.message);
         }
+        const { description } = data.description;
         // 注意：新推文的資料，未納入Likes和Replys的陣列
         this.tweets.unshift({
           id: dummyUser.currentUser.id,
