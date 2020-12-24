@@ -50,10 +50,10 @@
               <div
                 class="deleteFollow"
                 v-if="user.isFollowed"
-                @click.stop.prevent="deleteFollow"
+                @click.stop.prevent="deleteFollow(user.id)"
               >取消跟隨</div>
 
-              <div class="unfollow" v-else @click.stop.prevent="follow">跟隨</div>
+              <div class="unfollow" v-else @click.stop.prevent="follow(user.id)">跟隨</div>
             </div>
           </div>
         </div>
@@ -299,10 +299,11 @@ import UserLikedTweets from "../components/UserLikedTweets";
 import UserTweetsReplies from "../components/UserTweetsReplies";
 import { Toast } from "../utils/helpers";
 import { emptyImageFilter } from "../utils/mixins";
-import usersAPI from "../apis/users";
 import $ from "jquery";
 import { mapState } from 'vuex'
 import Spinner from '../components/Spinner'
+import usersAPI from "../apis/users";
+import followshipAPI from '../apis/followship'
 
 export default {
   name: "UserProfile",
@@ -425,19 +426,44 @@ export default {
     toggleTab(item) {
       this.nowTabbed = item;
     },
-    follow() {
-      this.user = {
-        //Todo: 使用API，加入follow
+    async follow(id) {
+      try {
+        const response = await followshipAPI.follow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        console.log(response)
+        this.user = {
         ...this.user,
         isFollowed: true
       };
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法成功追蹤，請稍後再試'
+        })
+      }
     },
-    deleteFollow() {
-      this.user = {
-        //Todo: 使用API，刪去notcie
+    async deleteFollow(id) {
+      try {
+        const response = await followshipAPI.unfollow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        console.log(response)
+        this.user = {
         ...this.user,
         isFollowed: false
       };
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取消追蹤，請稍後再試'
+        })
+      }
     },
     // modal表單資料交付
     handleEditSubmit(e) {
@@ -478,11 +504,12 @@ export default {
     this.fetchUser(id);
     this.fetchReplies(id);
   },
-  beforeRouteUpdate() {
-    const { id } = this.$route.params;
+  beforeRouteUpdate(to, from, next) {
+    const { id } = to.params;
     this.fetchUser(id);
     this.fetchReplies(id);
     this.fetchUserLikes(id)
+    next();
   },
   watch: {
     // 控制名字 & 自介字數上限

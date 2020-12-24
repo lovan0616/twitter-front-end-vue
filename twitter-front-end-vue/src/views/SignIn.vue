@@ -65,10 +65,13 @@ export default {
         password: this.password
       })
 
-        if(data.status !== "success") {
-          throw new Error(data.message)
+        // 防範管理員誤登前台
+        if (data.user.role !== 'user') {
+          this.$router.push('/admin')
+          return
         }
-
+        
+      
         localStorage.setItem('token', data.token)
 
         //將user資料放到vuex當中
