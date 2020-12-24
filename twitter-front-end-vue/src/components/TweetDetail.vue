@@ -210,6 +210,15 @@ export default {
       };
     },
   },
+  watch: {
+    initialTweet(newValue) {
+      console.log({ newValue });
+      this.presentTweet = {
+        ...this.presentTweet,
+        ...newValue,
+      };
+    },
+  },
 };
 </script>
 

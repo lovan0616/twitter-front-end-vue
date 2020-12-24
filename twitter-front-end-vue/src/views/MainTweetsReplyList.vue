@@ -66,26 +66,6 @@ const dummyUser = {
   isAuthenticated: true,
 };
 
-// POST /api/tweets/:id
-const dummyTweet = {
-  id: 1,
-  UserId: 11,
-  description:
-    "你回來了！是我回來了才對！美冴大屁股！爸爸的襪子好臭！最喜歡去正男家吃水果！風間最喜歡的偶像是P醬～",
-  createdAt: "2020-12-16T06:02:25.000Z",
-  updatedAt: "2020-12-16T06:02:25.000Z",
-  User: {
-    id: 11,
-    account: "@user1",
-    name: "user1",
-    avatar:
-      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-  },
-  isLiked: false,
-  repliedCount: 3,
-  LikeCount: 2,
-};
-
 export default {
   name: "MainTweetsReplyList",
   components: {
@@ -117,6 +97,12 @@ export default {
       replies: [],
     };
   },
+  beforeRouteUpdate(to, from, next) {
+    const { id } = to.params;
+    this.fetchTweet(id);
+    this.fetchReply(id);
+    next();
+  },
   created() {
     const { id: tweetId } = this.$route.params;
     this.fetchTweet(tweetId);
@@ -129,7 +115,6 @@ export default {
   methods: {
     async fetchTweet(tweetId) {
       try {
-        console.log(dummyTweet);
         const { data } = await TweetAPI.read(tweetId);
         this.tweet = data;
       } catch (error) {
