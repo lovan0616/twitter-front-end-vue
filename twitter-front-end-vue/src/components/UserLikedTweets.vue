@@ -38,10 +38,10 @@
           <p class="reply-counts mb-0 ml-2">{{ tweet.replisdCount }}</p>
         </div>
 
-        <div class="like-control d-flex ml-3">
-          <img class="like-icon" src="../assets/Like.svg"  v-if="!tweet.isLiked" @click.stop.prevent="addLike"/>
-          <img class="like-icon" src="../assets/Like-liked.svg"  v-else @click.stop.prevent="deleteLike"/>
-          <p class="like-counts mb-0 ml-2" v-if="!tweet.isLiked">{{ tweet.likesCount }}</p>
+        <div class="like-control d-flex ml-3" v-if="!isSelfTweet()">
+          <img class="like-icon" src="../assets/Like.svg"  v-if="!tweet.isLike" @click.stop.prevent="addLike(tweet.id)"/>
+          <img class="like-icon" src="../assets/Like-liked.svg"  v-else @click.stop.prevent="deleteLike(tweet.id)"/>
+          <p class="like-counts mb-0 ml-2" v-if="!tweet.isLike">{{ tweet.likesCount }}</p>
           <p class="red like-counts mb-0 ml-2" v-else>{{ tweet.likesCount }}</p>
         </div>
       </div>
@@ -53,10 +53,16 @@
 
 <script>
 import { fromNowFilter } from '../utils/mixins'
+import likesAPI from '../apis/likes'
+import { Toast } from '../utils/helpers'
 export default {
   name: "UserLikedTweets",
   props: {
     initialLike: {
+      type: Object,
+      required: true
+    },
+    currentUser: {
       type: Object,
       required: true
     }
@@ -74,13 +80,16 @@ export default {
         userAvatar: "",
         repliesCount: -1,
         likesCount: -1,
-        isLiked: false
+        isLike: false
+      },
+      isSelfTweet() {
+        return this.currentUser.id === this.tweet.userId
       }
     }
   },
   methods: {
     fetchData() {
-      const { id, UserId: userId, description, createdAt, repliesCount, likesCount, isLike: isLiked } = this.initialLike.Tweet
+      const { id, UserId: userId, description, createdAt, repliesCount, likesCount, isLike: isLike } = this.initialLike.Tweet
 
       const { name: userName, account: userAccount, avatar: userAvatar} = this.initialLike.Tweet.User
 
@@ -95,23 +104,47 @@ export default {
         userAvatar,
         repliesCount,
         likesCount,
-        isLiked
+        isLike
       }
     },
-    addLike() {
-      this.tweet = {
+    async addLike(tweetId) {
+      try {
+        const response = await likesAPI.like({ tweetId })
+        console.log(response)
+
+        this.tweet = {
         ...this.tweet,
-        isLiked: true,
+        isLike: true,
         likesCount: this.tweet.likesCount + 1
+      };
+        
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法點擊愛心，請稍後再試'
+        })
       }
     },
-    deleteLike() {
-      this.tweet = {
+    async deleteLike(tweetId) {
+      try {
+        const response = await likesAPI.unlike({ tweetId })
+        console.log(response)
+
+        this.tweet = {
         ...this.tweet,
-        isLiked: false,
+        isLike: false,
         likesCount: this.tweet.likesCount - 1
+      };
+        
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法收回愛心，請稍後再試'
+        })
       }
-    }
+    },
   },
   created() {
     this.fetchData()

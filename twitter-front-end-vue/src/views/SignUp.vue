@@ -47,11 +47,11 @@
 
       <input
         type="password"
-        id="confirmPassword"
-        name="confirmPassword"
+        id="checkPassword"
+        name="checkPassword"
         class="form-control"
         placeholder="密碼確認"
-        v-model="confirmPassword"
+        v-model="checkPassword"
         required
       />
 
@@ -72,7 +72,7 @@ export default {
       email: "",
       name: "",
       password: "",
-      confirmPassword: ""
+      checkPassword: ""
     };
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
         email: this.email,
         name: this.name,
         password: this.password,
-        confirmPassword: this.confirmPassword
+        checkPassword: this.checkPassword
       });
 
       //Todo：向後端驗證使用者登入是否合法

@@ -231,38 +231,53 @@
 
         <div class="tweets-area">
           <div class="user-tweets-panel" v-if="!nowTabbed">
+            <!-- 拉取資料完成前顯示Spinner -->
+            <Spinner v-if="isLoading" />
             <!-- 綁入UserTweets.vue -->
             <UserTweets
+              v-else-if="!isLoading"
               v-for="tweet in tweets"
               :key="tweet.id"
               :initial-tweet="tweet"
               :user="user"
+              :current-user="currentUser"
             />
             <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-if="!tweets.length">
+            <div class="no-data" v-else-if="!isLoading && !tweets.length">
               <h3>尚未建立任何推文</h3>
             </div>
           </div>
 
           <div class="user-tweets-replies-panel" v-if="nowTabbed === 'with_replies'">
+            <!-- 拉取資料完成前顯示Spinner -->
+            <Spinner v-if="isLoading" />
             <!-- 綁入UserTweetsReplies.vue -->
             <UserTweetsReplies
+              v-else-if="!isLoading"
               v-for="reply in replies"
               :key="reply.id"
               :initial-reply="reply"
               :user="user"
+              :current-user="currentUser"
             />
             <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-if="!replies.length">
+            <div class="no-data" v-else-if="!isLoading && !replies.length">
               <h3>尚未回覆任何推文</h3>
             </div>
           </div>
 
           <div class="user-liked-tweets-panel" v-if="nowTabbed === 'likes'">
+            <!-- 拉取資料完成前顯示Spinner -->
+            <Spinner v-if="isLoading" />
             <!-- 綁入UserLikedTweets.vue -->
-            <UserLikedTweets v-for="like in likes" :key="like.id" :initial-like="like" />
+            <UserLikedTweets 
+              v-else-if="!isLoading" 
+              v-for="like in likes" 
+              :key="like.id" 
+              :initial-like="like"
+              :current-user="currentUser" />
             <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-if="!likes.length">
+            <div class="no-data" v-else-if="!isLoading && !likes.length">
               <h3>尚未有喜愛的推文</h3>
             </div>
           </div>
@@ -286,6 +301,8 @@ import { Toast } from "../utils/helpers";
 import { emptyImageFilter } from "../utils/mixins";
 import usersAPI from "../apis/users";
 import $ from "jquery";
+import { mapState } from 'vuex'
+import Spinner from '../components/Spinner'
 
 export default {
   name: "UserProfile",
@@ -295,8 +312,12 @@ export default {
     UserTweets,
     UserLikedTweets,
     UserTweetsReplies,
+    Spinner
   },
   mixins: [emptyImageFilter],
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
+  },
   data() {
     return {
       tweets: [],
@@ -307,7 +328,8 @@ export default {
       cover: "",
       avatar: "",
       name: "",
-      introduction: ""
+      introduction: "",
+      isLoading: true
     };
   },
   methods: {
@@ -321,7 +343,9 @@ export default {
 
         const { data } = response;
         this.tweets = [...data];
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         console.log(error);
         
         Toast.fire({
@@ -331,10 +355,7 @@ export default {
       }
     },
     async fetchUserLikes(id) {
-      console.log("step1");
       try {
-        console.log("step1");
-
         const response = await usersAPI.readLikes({ id });
         console.log(response);
 
@@ -344,7 +365,9 @@ export default {
 
         const { data } = response;
         this.likes = [...data];
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         console.log(error);
         Toast.fire({
           icon: "error",
@@ -389,7 +412,9 @@ export default {
         this.replies = data.filter(reply =>
           !set.has(reply.TweetId) ? set.add(reply.TweetId) : false
         );
+        this.isLoading = false
       } catch (error) {
+        this.isLoading = false
         console.log(error);
         Toast.fire({
           icon: "error",
@@ -456,6 +481,8 @@ export default {
   beforeRouteUpdate() {
     const { id } = this.$route.params;
     this.fetchUser(id);
+    this.fetchReplies(id);
+    this.fetchUserLikes(id)
   },
   watch: {
     // 控制名字 & 自介字數上限
