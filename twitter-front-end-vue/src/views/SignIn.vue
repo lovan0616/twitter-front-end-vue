@@ -71,6 +71,9 @@ export default {
 
         localStorage.setItem('token', data.token)
 
+        //將user資料放到vuex當中
+        this.$store.commit('setCurrentUser', data.user)
+
         this.$router.push('/main')
 
 

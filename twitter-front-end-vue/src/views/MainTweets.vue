@@ -36,28 +36,26 @@
 
 <script>
 const dummyUser = {
-  currentUser: {
-    id: 11,
-    email: "user1@example.com",
-    password: "123445",
-    name: "user1",
-    avatar:
-      "https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg",
-    introduction: "Quam et veniam.",
-    isAdmin: false,
-    account: "@user1",
-    cover:
-      "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-    createdAt: "2020-12-16T06:02:24.000Z",
-    updatedAt: "2020-12-16T06:02:24.000Z",
-  },
-  isAuthenticated: true,
-};
+  "user": {
+        "id": 11,
+        "email": "user1@example.com",
+        "password": "$2a$10$2tdllKdK2VPeGKsJeec2XObzIK3kA4lt5W8PVu/.OPWkRQjbCsiDq",
+        "name": "user1",
+        "avatar": "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
+        "introduction": "Quia consequatur optio consequatur dolor commodi et.",
+        "account": "@user1",
+        "cover": "https://loremflickr.com/320/240/background/?random=34.0538352094005",
+        "role": "user",
+        "createdAt": "2020-12-16T08:46:08.000Z",
+        "updatedAt": "2020-12-16T08:46:08.000Z"
+    }
+}
 
 import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import NewTweet from "../components/NewTweet";
 import Tweet from "../components/Tweet";
+import { mapState } from 'vuex'
 import TweetsAPI from "../apis/tweets";
 import { Toast } from "../utils/helpers";
 import Spinner from "../components/Spinner";
@@ -71,17 +69,16 @@ export default {
     Tweet,
     Spinner,
   },
+  computed: {
+    ...mapState(['currentUser','isAuthenticated'])
+  },
   data() {
     return {
       tweets: [],
-      currentUser: {},
-      isLoading: true,
+      isLoading: false
     };
   },
   methods: {
-    fetchCurrentUser() {
-      this.currentUser = { ...dummyUser.currentUser };
-    },
     async fetchData() {
       try {
         this.isLoading = true;
@@ -126,7 +123,6 @@ export default {
   },
   created() {
     this.fetchData();
-    this.fetchCurrentUser();
   },
 };
 </script>
