@@ -1,16 +1,19 @@
 <template>
-  <div class="tweet-wrapper">
-    <router-link class="router-link" :to="{
-  name: 'reply-list',
-  params: {id: tweet.id}
-}">
+  <div class="tweet-wrapper" v-if="this.presentUser !== ''">
+    <router-link
+      class="router-link"
+      :to="{
+        name: 'reply-list',
+        params: { id: tweet.id },
+      }"
+    >
       <div class="tweet d-flex p-2">
         <div class="image-area mr-3">
           <router-link
             :to="{
-            name: 'user-profile',
-            params: {id: tweet.userId}
-          }"
+              name: 'user-profile',
+              params: { id: tweet.userId },
+            }"
           >
             <div class="image-cropper">
               <img :src="tweet.userAvatar" class="avatar" />
@@ -21,9 +24,9 @@
           <div class="post-info d-flex">
             <router-link
               :to="{
-            name: 'user-profile',
-            params: {id: tweet.userId}
-          }"
+                name: 'user-profile',
+                params: { id: tweet.userId },
+              }"
             >
               <strong class="name">{{ tweet.userName }}</strong>
             </router-link>
@@ -31,12 +34,18 @@
             <p class="account ml-1">{{ tweet.userAccount }}</p>
             <p class="created-at">・{{ tweet.createdAt | fromNow }}</p>
 
-            <div class="setting-control" v-show="currentUser.id === tweet.userId">
-              <div class="dot-wrapper" @click.stop.prevent="toggleList" ref="button">
+            <div
+              class="setting-control"
+              v-show="presentUser.id === tweet.userId"
+            >
+              <div
+                class="dot-wrapper"
+                @click.stop.prevent="toggleList"
+                ref="button"
+              >
                 <span class="setting-dot"></span>
               </div>
             </div>
-            
           </div>
           <div class="post-content">
             <p style="word-wrap: break-word">{{ tweet.description }}</p>
@@ -45,30 +54,34 @@
             <div class="reply-control d-flex mr-3">
               <router-link
                 :to="{
-            name: 'reply-list',
-            params: {id: tweet.id}
-          }"
+                  name: 'reply-list',
+                  params: { id: tweet.id },
+                }"
               >
                 <img src="../assets/Reply.svg" />
               </router-link>
               <p class="reply-counts mb-0 ml-2">{{ tweet.repliedCount }}</p>
             </div>
 
-            <div class="like-control d-flex ml-3">
+            <div class="like-control d-flex ml-3" v-if="!isSelfTweet()">
               <img
                 class="like-icon"
                 src="../assets/Like.svg"
                 v-if="!tweet.isLiked"
-                @click.stop.prevent="addLike"
+                @click.stop.prevent="addLike(tweet.id)"
               />
               <img
                 class="like-icon"
                 src="../assets/Like-liked.svg"
                 v-else
-                @click.stop.prevent="deleteLike"
+                @click.stop.prevent="deleteLike(tweet.id)"
               />
-              <p class="like-counts mb-0 ml-2" v-if="!tweet.isLiked">{{ tweet.likedCount }}</p>
-              <p class="red like-counts mb-0 ml-2" v-else>{{ tweet.likedCount }}</p>
+              <p class="like-counts mb-0 ml-2" v-if="!tweet.isLiked">
+                {{ tweet.likedCount }}
+              </p>
+              <p class="red like-counts mb-0 ml-2" v-else>
+                {{ tweet.likedCount }}
+              </p>
             </div>
           </div>
         </div>
@@ -80,9 +93,9 @@
       class="list-wrapper"
       v-show="listPopup"
       v-closable="{
-                exclude: ['button'],
-                handler: 'onClose'
-              }"
+        exclude: ['button'],
+        handler: 'onClose',
+      }"
     >
       <div class="list-group setting-list">
         <button
@@ -95,7 +108,9 @@
           <p class="mb-0">編輯</p>
         </button>
         <!-- Todo: 刪除按鈕綁v-on，完成刪除事件 -->
-        <button class="list-group-item list-item delete-tweet d-flex align-items-center">
+        <button
+          class="list-group-item list-item delete-tweet d-flex align-items-center"
+        >
           <img class="list-icon" src="../assets/Trash-can.svg" />
           <p class="mb-0">刪除</p>
         </button>
@@ -115,7 +130,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="editTweetModalLabel">編輯推文</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -135,15 +155,17 @@
 
             <form>
               <textarea
-                    class="w-100 mt-3"
-                    name="description"
-                    id="description"
-                    cols="20"
-                    rows="4"
-                    v-model="tweet.description"
-                  ></textarea>
-                  <!-- Todo: 儲存按鈕綁v-on，完成儲存事件 -->
-              <button type="submit" class="save-edit btn btn-primary btn-block">儲存</button>
+                class="w-100 mt-3"
+                name="description"
+                id="description"
+                cols="20"
+                rows="4"
+                v-model="tweet.description"
+              ></textarea>
+              <!-- Todo: 儲存按鈕綁v-on，完成儲存事件 -->
+              <button type="submit" class="save-edit btn btn-primary btn-block">
+                儲存
+              </button>
             </form>
           </div>
         </div>
@@ -154,19 +176,20 @@
 
 <script>
 import { fromNowFilter } from "../utils/mixins";
-import { Toast } from '../utils/helpers';
-import likesAPI from '../apis/likes'
+import { Toast } from "../utils/helpers";
+import likesAPI from "../apis/likes";
+
 export default {
   name: "Tweet",
   props: {
     initialTweet: {
       type: Object,
-      required: true
+      required: true,
     },
-    currentUser: {
+    initialUser: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   mixins: [fromNowFilter],
   data() {
@@ -181,9 +204,10 @@ export default {
         userAvatar: "",
         repliedCount: -1,
         likedCount: -1,
-        isLiked: false
+        isLiked: false,
       },
-      listPopup: false
+      listPopup: false,
+      presentUser: this.initialUser,
     };
   },
   methods: {
@@ -193,12 +217,15 @@ export default {
         UserId: userId,
         description,
         createdAt,
-        User: user,
         repliedCount,
         LikeCount: likedCount,
-        isLiked
+        isLiked,
       } = this.initialTweet;
-      const { name: userName, account: userAccount, avatar: userAvatar } = user;
+      const {
+        name: userName,
+        account: userAccount,
+        avatar: userAvatar,
+      } = this.initialUser;
 
       this.tweet = {
         ...this.tweet,
@@ -211,45 +238,58 @@ export default {
         userAvatar,
         repliedCount,
         likedCount,
-        isLiked
+        isLiked,
       };
     },
-    async addLike(createdAt, UserId, tweetId) {
+    async addLike(tweetId) {
       try {
-        const response = await likesAPI.like({ createdAt, UserId, tweetId })
-        console.log(response)
+        const response = await likesAPI.like({ tweetId });
+        console.log(response);
 
         this.tweet = {
-        ...this.tweet,
-        isLiked: true,
-        likedCount: this.tweet.likedCount + 1
-      };
-        
-      } catch(error) {
-        console.log(error)
+          ...this.tweet,
+          isLiked: true,
+          likedCount: this.tweet.likedCount + 1,
+        };
+      } catch (error) {
+        console.log(error);
         Toast.fire({
-          icon: 'error',
-          title: '無法點擊愛心，請稍後再試'
-        })
+          icon: "error",
+          title: "無法點擊愛心，請稍後再試",
+        });
       }
     },
-    deleteLike() {
-      this.tweet = {
-        ...this.tweet,
-        isLiked: false,
-        likedCount: this.tweet.likedCount - 1
-      };
+    async deleteLike(tweetId) {
+      try {
+        const response = await likesAPI.unlike({ tweetId });
+        console.log(response);
+
+        this.tweet = {
+          ...this.tweet,
+          isLiked: false,
+          likedCount: this.tweet.likedCount - 1,
+        };
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法收回愛心，請稍候再試！",
+        });
+      }
     },
     toggleList() {
       this.listPopup = !this.listPopup;
     },
     onClose() {
       this.listPopup = false;
-    }
+    },
+    isSelfTweet() {
+      return this.presentUser.id === this.tweet.userId;
+    },
   },
   created() {
     this.fetchData();
-  }
+  },
 };
 </script>
 

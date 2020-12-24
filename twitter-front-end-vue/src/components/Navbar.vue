@@ -8,36 +8,50 @@
 
         <div class="nav-list">
           <router-link class="nav-item" to="/main">
-            <div class="d-flex" style="width:115px">
-              <img src="../assets/Home.svg" class="icon"/>
-              <img src="../assets/Home-hovered.svg" class="icon-hovered"/>
+            <div class="d-flex" style="width: 115px">
+              <img src="../assets/Home.svg" class="icon" />
+              <img src="../assets/Home-hovered.svg" class="icon-hovered" />
               <p>首頁</p>
             </div>
           </router-link>
-          <router-link class="nav-item" :to="{
-            name: 'user-profile',
-            params: { id: currentUser.id}
-          }">
-            <div class="d-flex"  style="width:143px">
-              <img src="../assets/User.svg" class="icon"/>
-              <img src="../assets/User-hovered.svg" class="icon-hovered"/>
+          <router-link
+            class="nav-item"
+            :to="{
+              name: 'user-profile',
+              params: { id: currentUser.id },
+            }"
+          >
+            <div class="d-flex" style="width: 143px">
+              <img src="../assets/User.svg" class="icon" />
+              <img src="../assets/User-hovered.svg" class="icon-hovered" />
               <p>個人資料</p>
             </div>
           </router-link>
           <router-link class="nav-item" to="/user/setting">
-            <div class="d-flex"  style="width:115px">
-              <img src="../assets/Setting.svg" class="icon"/>
-              <img src="../assets/Setting-hovered.svg" class="icon-hovered"/>
+            <div class="d-flex" style="width: 115px">
+              <img src="../assets/Setting.svg" class="icon" />
+              <img src="../assets/Setting-hovered.svg" class="icon-hovered" />
               <p>設定</p>
             </div>
           </router-link>
         </div>
 
-        <div type="button" class="btn btn-primary post" data-toggle="modal" data-target="#postModal">推文</div>
+        <div
+          type="button"
+          class="btn btn-primary post"
+          data-toggle="modal"
+          data-target="#postModal"
+        >
+          推文
+        </div>
       </div>
 
       <div class="bottom-area mt-auto">
-        <div class="signout-wrapper d-flex"  style="width:115px" @click.stop.prevent="handleSignOut">
+        <div
+          class="signout-wrapper d-flex"
+          style="width: 115px"
+          @click.stop.prevent="handleSignOut"
+        >
           <img src="../assets/Signout.svg" class="icon" />
           <p>登出</p>
         </div>
@@ -47,25 +61,22 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
-  name: 'Navbar',
-  components: {
-  },
+  name: "Navbar",
+  components: {},
   computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
     handleSignOut() {
-      // 用API發送登出請求
-
       // 清空token
-
+      this.$store.commit("revokeAuthentication");
       // 導向/sginin
-      this.$router.push({name: 'sign-in'})
+      this.$router.push({ name: "sign-in" });
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -100,7 +111,7 @@ li {
 }
 
 .nav-item:hover p {
-  color: #FF6600;
+  color: #ff6600;
 }
 
 .nav-item:hover .icon {
@@ -112,7 +123,7 @@ li {
 }
 
 .active p {
-  color: #FF6600;
+  color: #ff6600;
 }
 
 .active .icon {
@@ -131,7 +142,7 @@ li {
 
 .btn-primary:not(:disabled):not(.disabled):active {
   background-color: #cc5302;
-} 
+}
 
 .signout-wrapper {
   cursor: pointer;

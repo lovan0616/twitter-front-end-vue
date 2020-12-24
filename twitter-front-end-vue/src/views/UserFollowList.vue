@@ -8,13 +8,15 @@
     <div id="main-area" class="main-area">
       <div class="upper-area d-flex align-items-top">
         <div class="upper-area-content d-flex align-items-center">
-          <router-link :to="{
-            name: 'user-profile',
-            params: {id: user.id}
-          }">
+          <router-link
+            :to="{
+              name: 'user-profile',
+              params: { id: user.id },
+            }"
+          >
             <span class="mr-4" style="color: #000000">&larr;</span>
           </router-link>
-          
+
           <div class="user">
             <strong class="name">{{ user.name }}</strong>
             <p class="tweets-count small">{{ userTweetsCount }} 推文</p>
@@ -24,35 +26,40 @@
       <main>
         <ul class="nav nav-tabs">
           <li class="nav-item" @click.stop.prevent="toggleTab('followers')">
-            <router-link 
-            :to="{
-              name: 'user-followlist',
-              params: {id: user.id, followship: 'followers' }
-            }" 
-            class="nav-link"
-           >追隨者</router-link>
+            <router-link
+              :to="{
+                name: 'user-followlist',
+                params: { id: user.id, followship: 'followers' },
+              }"
+              class="nav-link"
+              >追隨者</router-link
+            >
           </li>
           <li class="nav-item" @click.stop.prevent="toggleTab('followings')">
-            <router-link 
-            :to="{
-              name: 'user-followlist',
-              params: {id: user.id, followship: 'followings'}
-            }"
-            class="nav-link">正在追隨</router-link>
+            <router-link
+              :to="{
+                name: 'user-followlist',
+                params: { id: user.id, followship: 'followings' },
+              }"
+              class="nav-link"
+              >正在追隨</router-link
+            >
           </li>
         </ul>
-        
+
         <div class="followers-panel" v-if="nowTabbed === 'followers'">
-          <Follower 
-            v-for="follower in followers" 
-            :key="follower.id" 
-            :initial-follower="follower"/>
+          <Follower
+            v-for="follower in followers"
+            :key="follower.id"
+            :initial-follower="follower"
+          />
         </div>
         <div class="followings-panel" v-if="nowTabbed === 'followings'">
           <Following
-            v-for="following in followings" 
-            :key="following.id" 
-            :initial-following="following"/>
+            v-for="following in followings"
+            :key="following.id"
+            :initial-following="following"
+          />
         </div>
       </main>
     </div>
@@ -75,84 +82,98 @@ const dummyUser = {
     isAdmin: "false",
     introduction: "My name is user1",
     avatar: "https://i.imgur.com/user1.jpg",
-    cover: "https://i.imgur.com/user1_cover.jpg"
-  }
+    cover: "https://i.imgur.com/user1_cover.jpg",
+  },
 };
 
 // Todo：暫用dummyTweets，需要發/api/users/:id/tweets 取得資料
 const dummyTweets = {
   tweets: [
     {
-            "id": 1,
-            "UserId": 11,
-            "description": "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
-            "createdAt": "2020-12-16T07:38:05.000Z",
-            "updatedAt": "2020-12-16T07:38:05.000Z",
-            "User": {
-                "id": 11,
-                "email": "user1@example.com",
-                "password": "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
-                "name": "user1",
-                "avatar": "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
-                "introduction": "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
-                "isAdmin": false,
-                "account": "@user1",
-                "cover": "https://loremflickr.com/320/240/background/?random=89.75063535187728",
-                "createdAt": "2020-12-16T07:38:04.000Z",
-                "updatedAt": "2020-12-16T07:38:04.000Z"
-            },
-            "isLiked": true,
-            "repliedCount": 3,
-            "LikeCount": 1
-        },
-     {
-            "id": 2,
-            "UserId": 11,
-            "description": "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
-            "createdAt": "2020-12-16T07:38:05.000Z",
-            "updatedAt": "2020-12-16T07:38:05.000Z",
-            "User": {
-                "id": 11,
-                "email": "user1@example.com",
-                "password": "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
-                "name": "user1",
-                "avatar": "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
-                "introduction": "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
-                "isAdmin": false,
-                "account": "@user1",
-                "cover": "https://loremflickr.com/320/240/background/?random=89.75063535187728",
-                "createdAt": "2020-12-16T07:38:04.000Z",
-                "updatedAt": "2020-12-16T07:38:04.000Z"
-            },
-            "isLiked": true,
-            "repliedCount": 3,
-            "LikeCount": 1
-        },
-     {
-            "id": 3,
-            "UserId": 11,
-            "description": "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
-            "createdAt": "2020-12-16T07:38:05.000Z",
-            "updatedAt": "2020-12-16T07:38:05.000Z",
-            "User": {
-                "id": 11,
-                "email": "user1@example.com",
-                "password": "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
-                "name": "user1",
-                "avatar": "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
-                "introduction": "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
-                "isAdmin": false,
-                "account": "@user1",
-                "cover": "https://loremflickr.com/320/240/background/?random=89.75063535187728",
-                "createdAt": "2020-12-16T07:38:04.000Z",
-                "updatedAt": "2020-12-16T07:38:04.000Z"
-            },
-            "isLiked": true,
-            "repliedCount": 3,
-            "LikeCount": 1
-        },
-
-  ]
+      id: 1,
+      UserId: 11,
+      description:
+        "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
+      createdAt: "2020-12-16T07:38:05.000Z",
+      updatedAt: "2020-12-16T07:38:05.000Z",
+      User: {
+        id: 11,
+        email: "user1@example.com",
+        password:
+          "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
+        name: "user1",
+        avatar:
+          "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
+        introduction:
+          "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
+        isAdmin: false,
+        account: "@user1",
+        cover:
+          "https://loremflickr.com/320/240/background/?random=89.75063535187728",
+        createdAt: "2020-12-16T07:38:04.000Z",
+        updatedAt: "2020-12-16T07:38:04.000Z",
+      },
+      isLiked: true,
+      repliedCount: 3,
+      LikeCount: 1,
+    },
+    {
+      id: 2,
+      UserId: 11,
+      description:
+        "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
+      createdAt: "2020-12-16T07:38:05.000Z",
+      updatedAt: "2020-12-16T07:38:05.000Z",
+      User: {
+        id: 11,
+        email: "user1@example.com",
+        password:
+          "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
+        name: "user1",
+        avatar:
+          "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
+        introduction:
+          "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
+        isAdmin: false,
+        account: "@user1",
+        cover:
+          "https://loremflickr.com/320/240/background/?random=89.75063535187728",
+        createdAt: "2020-12-16T07:38:04.000Z",
+        updatedAt: "2020-12-16T07:38:04.000Z",
+      },
+      isLiked: true,
+      repliedCount: 3,
+      LikeCount: 1,
+    },
+    {
+      id: 3,
+      UserId: 11,
+      description:
+        "Sequi ipsa iste ipsam modi aut sit magni ratione. Quis facilis asperiores nostrum quia quia aliquam maxime. Maxime tempore voluptates sed exercitationem eos eveniet necessitatibus. Ea aperiam aspernatur neque earum. Asperiores qui fuga dolores dignissimos dolore dolore id et voluptates. Reprehenderit accusantium ut ex laboriosam provident facilis expedita.",
+      createdAt: "2020-12-16T07:38:05.000Z",
+      updatedAt: "2020-12-16T07:38:05.000Z",
+      User: {
+        id: 11,
+        email: "user1@example.com",
+        password:
+          "$2a$10$kj1Atngw9xyWvsjbaEFA5e/9MnexJxkL.KwMu3eeFiIZYQ9UksIPq",
+        name: "user1",
+        avatar:
+          "https://loremflickr.com/320/240/avatar/?random=9.615596198051989",
+        introduction:
+          "Possimus repellendus sit sunt.\nOfficia veritatis sed.\nCulpa atque explicabo sit alias consequuntur id.\nNihil dolorum tenetur vero.\nNam assumenda optio qui ullam.",
+        isAdmin: false,
+        account: "@user1",
+        cover:
+          "https://loremflickr.com/320/240/background/?random=89.75063535187728",
+        createdAt: "2020-12-16T07:38:04.000Z",
+        updatedAt: "2020-12-16T07:38:04.000Z",
+      },
+      isLiked: true,
+      repliedCount: 3,
+      LikeCount: 1,
+    },
+  ],
 };
 
 // Todo：暫用dummyFollowers，需要發/api/users/:id/followers 取得資料
@@ -170,11 +191,12 @@ const dummyFollowers = {
         email: "user1@example.com",
         password: "12345678",
         isAdmin: "false",
-        introduction: "My name is follower3. It's nice to meet you, how are u, I'm fine and you? This is an apple.",
+        introduction:
+          "My name is follower3. It's nice to meet you, how are u, I'm fine and you? This is an apple.",
         avatar: "https://i.imgur.com/user1.jpg",
-        cover: "https://i.imgur.com/user1_cover.jpg"
+        cover: "https://i.imgur.com/user1_cover.jpg",
       },
-      isFollowed: true
+      isFollowed: true,
     },
     {
       id: "2",
@@ -190,9 +212,9 @@ const dummyFollowers = {
         isAdmin: "false",
         introduction: "My name is follower2",
         avatar: "https://i.imgur.com/user1.jpg",
-        cover: "https://i.imgur.com/user1_cover.jpg"
+        cover: "https://i.imgur.com/user1_cover.jpg",
       },
-      isFollowed: true
+      isFollowed: true,
     },
     {
       id: "3",
@@ -208,11 +230,11 @@ const dummyFollowers = {
         isAdmin: "false",
         introduction: "My name is follower7",
         avatar: "https://i.imgur.com/user1.jpg",
-        cover: "https://i.imgur.com/user1_cover.jpg"
+        cover: "https://i.imgur.com/user1_cover.jpg",
       },
-      isFollowed: true
-    }
-  ]
+      isFollowed: true,
+    },
+  ],
 };
 
 // Todo：暫用dummyFollowings，需要發/api/users/:id/followings 取得資料
@@ -232,7 +254,7 @@ const dummyFollowings = {
         isAdmin: "false",
         introduction: "My name is following2",
         avatar: "https://i.imgur.com/user1.jpg",
-        cover: "https://i.imgur.com/user1_cover.jpg"
+        cover: "https://i.imgur.com/user1_cover.jpg",
       },
     },
     {
@@ -249,7 +271,7 @@ const dummyFollowings = {
         isAdmin: "false",
         introduction: "My name is following8",
         avatar: "https://i.imgur.com/user1.jpg",
-        cover: "https://i.imgur.com/user1_cover.jpg"
+        cover: "https://i.imgur.com/user1_cover.jpg",
       },
     },
     {
@@ -266,10 +288,10 @@ const dummyFollowings = {
         isAdmin: "false",
         introduction: "My name is following7",
         avatar: "https://i.imgur.com/user1.jpg",
-        cover: "https://i.imgur.com/user1_cover.jpg"
+        cover: "https://i.imgur.com/user1_cover.jpg",
       },
-    }
-  ]
+    },
+  ],
 };
 
 import Navbar from "../components/Navbar";
@@ -282,7 +304,7 @@ export default {
     Navbar,
     FollowRecommend,
     Follower,
-    Following
+    Following,
   },
   data() {
     return {
@@ -301,21 +323,21 @@ export default {
       this.userTweetsCount = dummyTweets.tweets.length;
     },
     fetchFollowers() {
-      this.followers = [...dummyFollowers.followers]
+      this.followers = [...dummyFollowers.followers];
     },
     fetchFollowings() {
-      this.followings = [...dummyFollowings.followings]
+      this.followings = [...dummyFollowings.followings];
     },
     toggleTab(item) {
-      this.nowTabbed = item
-    }
+      this.nowTabbed = item;
+    },
   },
   created() {
-    this.fetchUser()
-    this.fetchUserTweetsCount()
-    this.fetchFollowers()
-    this.fetchFollowings()
-  }
+    this.fetchUser();
+    this.fetchUserTweetsCount();
+    this.fetchFollowers();
+    this.fetchFollowings();
+  },
 };
 </script>
 
@@ -347,8 +369,8 @@ export default {
 
 .nav-link.active {
   border: hidden;
-  border-bottom: 2px solid #FF6600;
-  color: #FF6600
+  border-bottom: 2px solid #ff6600;
+  color: #ff6600;
 }
 
 .nav-link {

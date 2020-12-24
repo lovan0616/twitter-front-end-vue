@@ -7,19 +7,10 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  // getUser(userId) {
-  //   return apiHelper.get(`/api/users/${userId}`, {
-  //     headers: { Authorization: `Bearer ${getToken()}` }
-  //   })
-  // },
-  addReply({ tweetId, formData }) {
-    return apiHelper.post(`/api/tweets/${tweetId}/replies`, formData, {
+  addReply(tweetId, { comment }) {
+    return apiHelper.post(`/api/tweets/${tweetId}/replies`, { comment }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  // addLike(tweetId) {
-  //   return apiHelper.post(`/api/tweets/${tweetId}/like`, null, {
-  //     headers: { Authorization: `Bearer ${getToken()}` }
-  //   })
-  // }
+
 }

@@ -51,17 +51,21 @@
                 class="deleteFollow"
                 v-if="user.isFollowed"
                 @click.stop.prevent="deleteFollow"
-              >取消跟隨</div>
+              >
+                取消跟隨
+              </div>
 
-              <div class="unfollow" v-else @click.stop.prevent="follow">跟隨</div>
+              <div class="unfollow" v-else @click.stop.prevent="follow">
+                跟隨
+              </div>
             </div>
           </div>
         </div>
 
         <div class="intro-wrapper px-2">
-          <strong class="name">{{user.name}}</strong>
-          <p class="account">{{user.account}}</p>
-          <p class="introduction">{{user.introduction}}</p>
+          <strong class="name">{{ user.name }}</strong>
+          <p class="account">{{ user.account }}</p>
+          <p class="introduction">{{ user.introduction }}</p>
         </div>
 
         <div class="followship-wrapper p-2 d-flex">
@@ -71,7 +75,9 @@
               params: { id: user.id, followship: 'followings' },
             }"
           >
-            <p class="followings-count mr-2">{{user.followingsCount}}個跟隨中</p>
+            <p class="followings-count mr-2">
+              {{ user.followingsCount }}個跟隨中
+            </p>
           </router-link>
           <router-link
             :to="{
@@ -79,7 +85,7 @@
               params: { id: user.id, followship: 'followers' },
             }"
           >
-            <p class="followers-count">{{user.followersCount}}位跟隨者</p>
+            <p class="followers-count">{{ user.followersCount }}位跟隨者</p>
           </router-link>
         </div>
         <!--modal-->
@@ -98,7 +104,12 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
                     <img src="../assets/Close.svg" />
                   </button>
                   <strong class="title">編輯個人資料</strong>
@@ -111,14 +122,21 @@
                       this.name.length === 0 ||
                       this.introduction.length === 0
                     "
-                  >儲存</button>
+                  >
+                    儲存
+                  </button>
                 </div>
                 <div class="modal-body px-0">
                   <div class="edit-cover">
                     <div class="cover-edit-wrapper d-flex">
-                      <img :src="cover" alt="cover-thumbnail" class="cover-sample" v-if="cover" />
                       <img
-                        src="https://loremflickr.com/320/240/background/?random=89.75063535187728"
+                        :src="cover"
+                        alt="cover-thumbnail"
+                        class="cover-sample"
+                        v-if="cover"
+                      />
+                      <img
+                        :src="user.cover"
                         alt="present-cover"
                         class="edit-cover-photo"
                         v-else
@@ -151,7 +169,7 @@
                           v-if="avatar"
                         />
                         <img
-                          src="https://loremflickr.com/320/240/avatar/?random=9.615596198051989"
+                          :src="user.avatar"
                           alt="present-avatar"
                           class="edit-avatar-photo"
                           v-else
@@ -165,7 +183,11 @@
                           @change="handleAvatarChange"
                         />
                         <img src="../assets/camera.svg" class="avatar-camera" />
-                        <img src="../assets/plus.svg" alt="avatar-plus" class="avatar-plus" />
+                        <img
+                          src="../assets/plus.svg"
+                          alt="avatar-plus"
+                          class="avatar-plus"
+                        />
                       </div>
                     </div>
                   </div>
@@ -179,8 +201,11 @@
                       cols="20"
                       rows="1"
                       v-model="name"
+                      :placeholder="user.name"
                     ></textarea>
-                    <div class="name-edit-num-limit">{{ this.name.length }}/50</div>
+                    <div class="name-edit-num-limit">
+                      {{ this.name.length }}/50
+                    </div>
                     <div class="edit-title">自我介紹</div>
                     <textarea
                       name="introduction"
@@ -189,8 +214,11 @@
                       cols="20"
                       rows="6"
                       v-model="introduction"
+                      :placeholder="user.introduction"
                     ></textarea>
-                    <div class="intro-edit-num-limit">{{ this.introduction.length }}/160</div>
+                    <div class="intro-edit-num-limit">
+                      {{ this.introduction.length }}/160
+                    </div>
                   </div>
                 </div>
               </div>
@@ -206,16 +234,21 @@
                   params: { id: user.id },
                 }"
                 class="nav-link"
-              >推文</router-link>
+                >推文</router-link
+              >
             </li>
-            <li class="nav-item" @click.stop.prevent="toggleTab('with_replies')">
+            <li
+              class="nav-item"
+              @click.stop.prevent="toggleTab('with_replies')"
+            >
               <router-link
                 :to="{
                   name: 'user-profile',
                   params: { id: user.id, category: 'with_replies' },
                 }"
                 class="nav-link"
-              >推文與回覆</router-link>
+                >推文與回覆</router-link
+              >
             </li>
             <li class="nav-item" @click.stop.prevent="toggleTab('likes')">
               <router-link
@@ -224,7 +257,8 @@
                   params: { id: user.id, category: 'likes' },
                 }"
                 class="nav-link"
-              >喜歡的內容</router-link>
+                >喜歡的內容</router-link
+              >
             </li>
           </ul>
         </div>
@@ -248,7 +282,10 @@
             </div>
           </div>
 
-          <div class="user-tweets-replies-panel" v-if="nowTabbed === 'with_replies'">
+          <div
+            class="user-tweets-replies-panel"
+            v-if="nowTabbed === 'with_replies'"
+          >
             <!-- 拉取資料完成前顯示Spinner -->
             <Spinner v-if="isLoading" />
             <!-- 綁入UserTweetsReplies.vue -->
@@ -270,12 +307,13 @@
             <!-- 拉取資料完成前顯示Spinner -->
             <Spinner v-if="isLoading" />
             <!-- 綁入UserLikedTweets.vue -->
-            <UserLikedTweets 
-              v-else-if="!isLoading" 
-              v-for="like in likes" 
-              :key="like.id" 
+            <UserLikedTweets
+              v-else-if="!isLoading"
+              v-for="like in likes"
+              :key="like.id"
               :initial-like="like"
-              :current-user="currentUser" />
+              :current-user="currentUser"
+            />
             <!-- 無建立任何推文時，顯示註明文字 -->
             <div class="no-data" v-else-if="!isLoading && !likes.length">
               <h3>尚未有喜愛的推文</h3>
@@ -301,8 +339,8 @@ import { Toast } from "../utils/helpers";
 import { emptyImageFilter } from "../utils/mixins";
 import usersAPI from "../apis/users";
 import $ from "jquery";
-import { mapState } from 'vuex'
-import Spinner from '../components/Spinner'
+import { mapState } from "vuex";
+import Spinner from "../components/Spinner";
 
 export default {
   name: "UserProfile",
@@ -312,11 +350,11 @@ export default {
     UserTweets,
     UserLikedTweets,
     UserTweetsReplies,
-    Spinner
+    Spinner,
   },
   mixins: [emptyImageFilter],
   computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   data() {
     return {
@@ -329,7 +367,7 @@ export default {
       avatar: "",
       name: "",
       introduction: "",
-      isLoading: true
+      isLoading: true,
     };
   },
   methods: {
@@ -343,14 +381,14 @@ export default {
 
         const { data } = response;
         this.tweets = [...data];
-        this.isLoading = false
+        this.isLoading = false;
       } catch (error) {
-        this.isLoading = false
+        this.isLoading = false;
         console.log(error);
-        
+
         Toast.fire({
           icon: "error",
-          title: "無法取得使用者推文，請稍後再試"
+          title: "無法取得使用者推文，請稍後再試",
         });
       }
     },
@@ -365,13 +403,13 @@ export default {
 
         const { data } = response;
         this.likes = [...data];
-        this.isLoading = false
+        this.isLoading = false;
       } catch (error) {
-        this.isLoading = false
+        this.isLoading = false;
         console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法取得使用者喜歡的內容，請稍後再試"
+          title: "無法取得使用者喜歡的內容，請稍後再試",
         });
       }
     },
@@ -386,17 +424,15 @@ export default {
         const { data } = response;
         this.user = {
           ...this.user,
-          ...data
+          ...data,
         };
       } catch (error) {
         console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法取得使用者資料，請稍後再試"
+          title: "無法取得使用者資料，請稍後再試",
         });
       }
-      //補帶入userId
-      // this.user = dummyUser.user;
     },
     async fetchReplies(id) {
       try {
@@ -409,16 +445,16 @@ export default {
         const { data } = response;
         //建構set()建構子實例，取出TweetId不重複的物件
         const set = new Set();
-        this.replies = data.filter(reply =>
+        this.replies = data.filter((reply) =>
           !set.has(reply.TweetId) ? set.add(reply.TweetId) : false
         );
-        this.isLoading = false
+        this.isLoading = false;
       } catch (error) {
-        this.isLoading = false
+        this.isLoading = false;
         console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法取得使用者推文與回覆，請稍後再試"
+          title: "無法取得使用者推文與回覆，請稍後再試",
         });
       }
     },
@@ -429,25 +465,36 @@ export default {
       this.user = {
         //Todo: 使用API，加入follow
         ...this.user,
-        isFollowed: true
+        isFollowed: true,
       };
     },
     deleteFollow() {
       this.user = {
         //Todo: 使用API，刪去notcie
         ...this.user,
-        isFollowed: false
+        isFollowed: false,
       };
     },
     // modal表單資料交付
-    handleEditSubmit(e) {
-      if (!this.name.trim()) return;
-      const form = e.target;
-      const formData = new FormData(form);
-      console.log(formData);
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ":" + value);
-        // 將欲更改的資料儲存至vue data 提交給後端
+    async handleEditSubmit(e) {
+      try {
+        if (!this.name.trim()) return;
+        const form = e.target;
+        const formData = new FormData(form);
+        for (let [name, value] of formData.entries()) {
+          console.log(name + ":" + value);
+        }
+        const { id: userId } = this.$route.params;
+        const { data } = await usersAPI.updateUser({ userId, formData });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法更新用戶資料，請稍候再試！",
+        });
       }
       // Toast.fire({
       //   icon: "warning",
@@ -469,7 +516,8 @@ export default {
     },
     cancelEdit() {
       this.cover = "";
-    }
+      this.avatar = "";
+    },
   },
   created() {
     const { id } = this.$route.params;
@@ -482,7 +530,7 @@ export default {
     const { id } = this.$route.params;
     this.fetchUser(id);
     this.fetchReplies(id);
-    this.fetchUserLikes(id)
+    this.fetchUserLikes(id);
   },
   watch: {
     // 控制名字 & 自介字數上限
@@ -490,26 +538,26 @@ export default {
     // this.$refs.count.setAttribute("maxlength", limit);
     // this.name = limit - $refs.count.value.length;
     name: {
-      handler: function(value) {
+      handler: function (value) {
         if (value.length > 50) {
           Toast.fire({
             icon: "error",
-            title: "名字字數不可超過上限，煩請重新編輯！"
+            title: "名字字數不可超過上限，煩請重新編輯！",
           });
         }
-      }
+      },
     },
     introduction: {
-      handler: function(value) {
+      handler: function (value) {
         if (value.length > 160) {
           Toast.fire({
             icon: "error",
-            title: "自我介紹字數不可超過上限，煩請重新編輯！"
+            title: "自我介紹字數不可超過上限，煩請重新編輯！",
           });
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
@@ -896,7 +944,6 @@ textarea:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  color:#657786;
-  
+  color: #657786;
 }
 </style>
