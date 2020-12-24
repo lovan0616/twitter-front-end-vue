@@ -51,22 +51,22 @@
                 <p class="reply-counts mb-0 ml-2">{{ presentTweet.repliesCount }}</p>
               </div>
 
-              <div class="like-control d-flex ml-3">
+              <div class="like-control d-flex ml-3" v-if="!isSelfTweet()">
                 <img
                   class="like-icon"
                   src="../assets/Like.svg"
-                  v-if="!presentTweet.isLiked"
-                  @click.stop.prevent="addLike"
+                  v-if="!presentTweet.isLike"
+                  @click.stop.prevent="addLike(presentTweet.id)"
                 />
                 <img
                   class="like-icon"
                   src="../assets/Like-liked.svg"
                   v-else
-                  @click.stop.prevent="deleteLike"
+                  @click.stop.prevent="deleteLike(presentTweet.id)"
                 />
                 <p
                   class="like-counts mb-0 ml-2"
-                  v-if="!presentTweet.isLiked"
+                  v-if="!presentTweet.isLike"
                 >{{ presentTweet.likesCount }}</p>
                 <p class="red like-counts mb-0 ml-2" v-else>{{ presentTweet.likesCount }}</p>
               </div>
@@ -110,6 +110,8 @@
 
 <script>
 import { fromNowFilter } from "../utils/mixins";
+import likesAPI from "../apis/likes";
+import { Toast } from "../utils/helpers";
 export default {
   name: "UserTweetsReplies",
   props: {
@@ -120,12 +122,19 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    currentUser: {
+      type: Object,
+      required: true
     }
   },
   mixins: [fromNowFilter],
   data() {
     return {
-      presentTweet: {}
+      presentTweet: {},
+      isSelfTweet() {
+        return this.currentUser.id === this.presentTweet.UserId
+      }
     };
   },
   methods: {
@@ -135,26 +144,55 @@ export default {
         ...Tweet
       };
     },
-    addLike() {
-      //Todo: 串ADD LIKE API
-      this.presentTweet = {
-        ...this.presentTweet,
-        isLiked: true,
-        likesCount: this.presentTweet.likesCount + 1
-      };
+    async addLike(tweetId) {
+      try {
+        const response = await likesAPI.like({ tweetId });
+        console.log(response);
+
+        this.presentTweet = {
+          ...this.presentTweet,
+          isLike: true,
+          likesCount: this.presentTweet.likesCount + 1
+        };
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法點擊愛心，請稍後再試"
+        });
+      }
     },
-    deleteLike() {
-      //Todo: 串DELETE LIKE API
+    async deleteLike(tweetId) {
+      try {
+        const response = await likesAPI.unlike({ tweetId });
+        console.log(response);
+
+        this.presentTweet = {
+          ...this.presentTweet,
+          isLike: false,
+          likesCount: this.presentTweet.likesCount - 1
+        };
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法收回愛心，請稍後再試"
+        });
+      }
+    }
+  },
+  watch: {
+    initialReply(newValue) {
+      const { Tweet } = newValue
       this.presentTweet = {
         ...this.presentTweet,
-        isLiked: false,
-        likesCount: this.presentTweet.likesCount - 1
-      };
+        ...Tweet
+      }
     }
   },
   created() {
     this.fetchTweet();
-  }
+  },
 };
 </script>
 

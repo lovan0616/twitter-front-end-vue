@@ -14,7 +14,10 @@
               <p>首頁</p>
             </div>
           </router-link>
-          <router-link class="nav-item" to="/user/profile">
+          <router-link class="nav-item" :to="{
+            name: 'user-profile',
+            params: { id: currentUser.id}
+          }">
             <div class="d-flex"  style="width:143px">
               <img src="../assets/User.svg" class="icon"/>
               <img src="../assets/User-hovered.svg" class="icon-hovered"/>
@@ -44,9 +47,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Navbar',
   components: {
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
   },
   methods: {
     handleSignOut() {

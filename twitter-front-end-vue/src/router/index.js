@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound'
 import SignIn from '../views/SignIn'
 import Main from '../views/MainTweets'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -81,6 +82,11 @@ const routes = [
 const router = new VueRouter({
   linkExactActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router
