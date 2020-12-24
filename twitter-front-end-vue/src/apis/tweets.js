@@ -12,9 +12,14 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  post(formData) {
+  post({ formData }) {
     return apiHelper.post(`/api/tweets`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
-  }
+  },
+  // like(tweetId) {
+  //   return apiHelper.post(`/api/tweets/${tweetId}/like`, null, {
+  //     headers: { Authorization: `Bearer ${getToken()}` }
+  //   })
+  // }
 }

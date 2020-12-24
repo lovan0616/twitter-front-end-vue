@@ -110,7 +110,7 @@
                       @submit.stop.prevent="handleSubmit"
                     >
                       <textarea
-                        name="text"
+                        name="comment"
                         class="w-100"
                         id="text"
                         cols="20"
@@ -142,9 +142,11 @@
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import $ from "jquery";
 import { fromNowFilter } from "../utils/mixins";
+// import ReplyAPI from "../apis/replies";
+// import { Toast } from "../utils/helpers";
 
 export default {
   name: "TweetDetail",
@@ -168,17 +170,17 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      this.$emit("after-post-submit", {
-        id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
-        newReply: this.newReply,
-      });
+    handleSubmit(e) {
+      const form = e.target;
+      const formData = new FormData(form);
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ", " + value);
+      }
+      this.$emit("after-post-submit", formData);
       console.log(this.newReply);
       // 表單回覆後清空收入欄、關閉彈跳視窗
       this.newReply = "";
       $("#postReply").modal("hide");
-      this.presentTweet.repliedCount++;
-      console.log(this.presentTweet.repliedCount);
     },
     // fetchUser() {
     //   // 待套用API撈取使用者資料
@@ -195,18 +197,41 @@ export default {
     //     userAvatar,
     //   };
     // },
-    addLike() {
-      this.presentTweet = {
-        ...this.presentTweet,
-        isLiked: true,
-        LikeCount: this.presentTweet.LikeCount + 1,
-      };
-    },
+    // async addLike() {
+    //   try {
+    //     const { id } = this.$route.params;
+    //     const { data } = await ReplyAPI.addLike(id);
+    //     if (data.status !== "success") {
+    //       throw new Error(data.message);
+    //     }
+
+    //     this.presentTweet = {
+    //       ...this.presentTweet,
+    //       isLiked: true,
+    //       LikeCount: this.presentTweet.LikeCount + 1,
+    //     };
+    //   } catch (error) {
+    //     console.log("error:", error);
+    //     Toast.fire({
+    //       icon: "error",
+    //       title: '暫時無法愛上，請稍候>"<',
+    //     });
+    //   }
+    // },
     deleteLike() {
       this.presentTweet = {
         ...this.presentTweet,
         isLiked: false,
         LikeCount: this.presentTweet.LikeCount - 1,
+      };
+    },
+  },
+  watch: {
+    initialTweet(newValue) {
+      console.log({ newValue });
+      this.presentTweet = {
+        ...this.presentTweet,
+        ...newValue,
       };
     },
   },

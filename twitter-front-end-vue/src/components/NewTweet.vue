@@ -18,7 +18,7 @@
         >
           <textarea
             class="w-100"
-            name="text"
+            name="description"
             id="text"
             cols="20"
             rows="1"
@@ -121,16 +121,12 @@ export default {
   methods: {
     handleSubmit(e) {
       if (!this.description.trim()) return;
-
       const form = e.target;
-      console.log(e.target);
       const formData = new FormData(form);
+      for (let [key, value] of formData.entries()) {
+        console.log(key + ", " + value);
+      }
       this.$emit("after-post-submit", formData);
-      console.log(formData);
-      // this.$emit("after-post-submit", {
-      //   id: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
-      //   description: this.description,
-      // });
 
       // 發文後清空收入欄、關閉彈跳視窗
       this.description = "";

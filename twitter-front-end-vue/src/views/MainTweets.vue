@@ -36,26 +36,27 @@
 
 <script>
 const dummyUser = {
-  "user": {
-        "id": 11,
-        "email": "user1@example.com",
-        "password": "$2a$10$2tdllKdK2VPeGKsJeec2XObzIK3kA4lt5W8PVu/.OPWkRQjbCsiDq",
-        "name": "user1",
-        "avatar": "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-        "introduction": "Quia consequatur optio consequatur dolor commodi et.",
-        "account": "@user1",
-        "cover": "https://loremflickr.com/320/240/background/?random=34.0538352094005",
-        "role": "user",
-        "createdAt": "2020-12-16T08:46:08.000Z",
-        "updatedAt": "2020-12-16T08:46:08.000Z"
-    }
-}
+  user: {
+    id: 11,
+    email: "user1@example.com",
+    password: "$2a$10$2tdllKdK2VPeGKsJeec2XObzIK3kA4lt5W8PVu/.OPWkRQjbCsiDq",
+    name: "user1",
+    avatar: "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
+    introduction: "Quia consequatur optio consequatur dolor commodi et.",
+    account: "@user1",
+    cover:
+      "https://loremflickr.com/320/240/background/?random=34.0538352094005",
+    role: "user",
+    createdAt: "2020-12-16T08:46:08.000Z",
+    updatedAt: "2020-12-16T08:46:08.000Z",
+  },
+};
 
 import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import NewTweet from "../components/NewTweet";
 import Tweet from "../components/Tweet";
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 import TweetsAPI from "../apis/tweets";
 import { Toast } from "../utils/helpers";
 import Spinner from "../components/Spinner";
@@ -70,12 +71,12 @@ export default {
     Spinner,
   },
   computed: {
-    ...mapState(['currentUser','isAuthenticated'])
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   data() {
     return {
       tweets: [],
-      isLoading: false
+      isLoading: false,
     };
   },
   methods: {
@@ -96,15 +97,17 @@ export default {
     },
     async afterPostSubmit(formData) {
       try {
+        for (let [key, value] of formData.entries()) {
+          console.log(key + ", " + value);
+        }
         const { data } = await TweetsAPI.post({ formData });
-        console.log(data.id);
-        const { id, description } = data;
         if (data.status !== "success") {
           throw new Error(data.message);
         }
+        const { description } = data.description;
         // 注意：新推文的資料，未納入Likes和Replys的陣列
         this.tweets.unshift({
-          id,
+          id: dummyUser.currentUser.id,
           description,
           UserId: dummyUser.currentUser.id,
           createdAt: new Date(),
