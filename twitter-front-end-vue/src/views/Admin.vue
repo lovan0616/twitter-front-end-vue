@@ -53,9 +53,7 @@ export default {
 
         // 報錯處理
         const { data } = response;
-        if (data.status !== "success") {
-          throw new Error(data.message);
-        }
+
         // 將token存放入本地瀏覽器localStorage
         localStorage.setItem("token", data.token);
 

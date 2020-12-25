@@ -92,6 +92,7 @@ export default {
         this.tweets.unshift({
           id: data.tweet.id,
           description,
+          User: this.presentUser,
           UserId: this.presentUser.id,
           createdAt: new Date(),
           isLiked: false,
