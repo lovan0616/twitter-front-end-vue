@@ -27,7 +27,7 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  updateUser({ userId, formData }) {
+  updateUser(userId, formData) {
     return apiHelper.put(`/api/user/${userId}`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })

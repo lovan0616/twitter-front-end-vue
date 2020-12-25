@@ -485,7 +485,7 @@ export default {
           console.log(name + ":" + value);
         }
         const { id: userId } = this.$route.params;
-        const { data } = await usersAPI.updateUser({ userId, formData });
+        const { data } = await usersAPI.updateUser(userId, formData);
         if (data.status !== "success") {
           throw new Error(data.message);
         }
@@ -496,10 +496,6 @@ export default {
           title: "暫時無法更新用戶資料，請稍候再試！",
         });
       }
-      // Toast.fire({
-      //   icon: "warning",
-      //   title: "即將更改個人資料，確定更改？",
-      // });
       $("#postEdit").modal("hide");
     },
     handleCoverChange(e) {

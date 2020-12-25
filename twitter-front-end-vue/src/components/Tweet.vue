@@ -215,17 +215,14 @@ export default {
       const {
         id,
         UserId: userId,
+        User: user,
         description,
         createdAt,
         repliedCount,
         LikeCount: likedCount,
         isLiked,
       } = this.initialTweet;
-      const {
-        name: userName,
-        account: userAccount,
-        avatar: userAvatar,
-      } = this.initialUser;
+      const { name: userName, account: userAccount, avatar: userAvatar } = user;
 
       this.tweet = {
         ...this.tweet,

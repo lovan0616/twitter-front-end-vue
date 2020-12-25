@@ -17,4 +17,9 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
+  update(tweetId, { description }) {
+    return apiHelper.put(`/api/tweets/${tweetId}`, { description }, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  }
 }

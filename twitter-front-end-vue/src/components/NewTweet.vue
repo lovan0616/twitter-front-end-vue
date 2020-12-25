@@ -62,11 +62,8 @@
             <div class="modal-new-tweet-area d-flex">
               <div class="image-area mr-3">
                 <a>
-                  <div class="image-cropper">
-                    <img
-                      src="https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg"
-                      class="avatar"
-                    />
+                  <div class="image-cropper" v-if="currentUser !== ''">
+                    <img :src="currentUser.avatar" class="avatar" />
                   </div>
                 </a>
               </div>
