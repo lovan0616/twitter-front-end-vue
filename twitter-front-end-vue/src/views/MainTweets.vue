@@ -98,6 +98,9 @@ export default {
           repliedCount: 0,
           LikeCount: 0,
         });
+
+        this.fetchData()
+        this.fetchCurrentUser()
       } catch (error) {
         console.log("error:", error);
         Toast.fire({

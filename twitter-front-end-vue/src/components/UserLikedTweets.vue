@@ -15,7 +15,7 @@
         </div>
       </router-link>
     </div>
-    <div class="content-area">
+    <div class="content-area w-100">
       <div class="post-info d-flex">
         <router-link :to="{
           name: 'user-profile',

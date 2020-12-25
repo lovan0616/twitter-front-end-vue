@@ -20,7 +20,7 @@
             </div>
           </router-link>
         </div>
-        <div class="content-area">
+        <div class="content-area w-100">
           <div class="post-info d-flex">
             <router-link
               :to="{
@@ -291,6 +291,14 @@ export default {
   created() {
     this.fetchData();
   },
+  watch: {
+    initialTweet(newValue) {
+      this.tweet = {
+        ...this.tweet,
+        ...newValue
+      }
+    },
+  }
 };
 </script>
 

@@ -27,7 +27,6 @@
             <button
               type="submit"
               class="btn btn-primary post"
-              :disabled="!description"
             >
               推文
             </button>
@@ -103,6 +102,7 @@
 
 <script>
 import $ from "jquery";
+import { Toast } from '../utils/helpers';
 export default {
   name: "NewTweet",
   props: {
@@ -119,7 +119,14 @@ export default {
   },
   methods: {
     handleSubmit() {
-      if (!this.description.trim()) return;
+      if (!this.description.trim()) {
+        Toast.fire({
+          icon: 'warning',
+          title: '推文不能為空白'
+        })
+        $("#postModal").modal("hide");
+        return
+      }
       // const form = e.target;
       // const formData = new FormData(form);
       // for (let [key, value] of formData.entries()) {
