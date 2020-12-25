@@ -12,7 +12,11 @@
         <div class="info d-flex align-items-center">
           <div class="image-area mr-2">
             <div class="image-cropper">
+<<<<<<< HEAD
             <img :src="recommend.image | emptyImage" class="avatar">
+=======
+            <img :src="recommend.avatar | emptyImage" class="avatar">
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
           </div>          
           </div>
           <div class="info-text d-flex flex-column justify-content-center">

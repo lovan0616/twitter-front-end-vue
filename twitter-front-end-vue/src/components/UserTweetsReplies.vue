@@ -21,7 +21,11 @@
               </div>
             </router-link>
           </div>
+<<<<<<< HEAD
           <div class="content-area">
+=======
+          <div class="content-area w-100">
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
             <div class="post-info d-flex">
               <router-link
                 :to="{

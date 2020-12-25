@@ -49,6 +49,12 @@
             />
           </div>
 
+<<<<<<< HEAD
+=======
+          <input type="radio" id="password-toggle" class="password-toggle">
+          <label for="password-toggle" class="password-toggle-label">修改密碼</label>
+
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
           <div class="password-group-wrapper">
             <div class="form-group my-4">
               <input
@@ -146,7 +152,11 @@ export default {
         
         const { data } = await usersAPI.updateUser(id, { formData });
         console.log(data);
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -210,4 +220,34 @@ input {
   width: 122px;
   border-radius: 20px;
 }
+<<<<<<< HEAD
+=======
+
+.password-toggle {
+  visibility: hidden;
+  position: absolute;
+
+}
+
+.password-toggle:checked ~ .password-group-wrapper {
+  transform: scale(1,1);
+}
+
+.password-toggle-label {
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+.password-toggle-label:hover {
+  color: #ff6600;
+  background-color: #faceaf;
+}
+
+.password-group-wrapper {
+  transform: scale(1, 0);
+  transform-origin: top;
+  transition: transform .3s ease-in-out;
+}
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
 </style>

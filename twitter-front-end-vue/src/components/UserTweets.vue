@@ -15,7 +15,11 @@
         </div>
       </router-link>
     </div>
+<<<<<<< HEAD
     <div class="content-area">
+=======
+    <div class="content-area w-100">
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
       <div class="post-info d-flex">
         <router-link :to="{
           name: 'user-profile',
@@ -101,7 +105,11 @@
             <div class="user-related d-flex">
               <div class="image-area mr-3">
                 <div class="image-cropper">
+<<<<<<< HEAD
                   <img :src="tweet.userAvatar" class="avatar" />
+=======
+                  <img :src="tweet.userAvatar | emptyImage" class="avatar" />
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
                 </div>
               </div>
               <div class="post-info d-flex">

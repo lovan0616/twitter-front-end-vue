@@ -53,7 +53,11 @@ export default {
 
         // 報錯處理
         const { data } = response;
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
         // 將token存放入本地瀏覽器localStorage
         localStorage.setItem("token", data.token);
 
