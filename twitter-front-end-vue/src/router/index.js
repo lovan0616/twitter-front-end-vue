@@ -95,12 +95,6 @@ router.beforeEach(async (to, from, next) => {
     isAuthenticated = await store.dispatch('fetchCurrentUser')
   }
 
-  // 如果 token 無效則轉址到登入頁
-  if (!isAuthenticated && to.name !== 'sign-in') {
-    next('/signin')
-    return
-  }
-
   // 如果 token 有效則轉址到推特首頁
   if (isAuthenticated && to.name === 'sign-in') {
     next('/main/')
