@@ -101,7 +101,7 @@
             <div class="user-related d-flex">
               <div class="image-area mr-3">
                 <div class="image-cropper">
-                  <img :src="tweet.userAvatar" class="avatar" />
+                  <img :src="tweet.userAvatar | emptyImage" class="avatar" />
                 </div>
               </div>
               <div class="post-info d-flex">
