@@ -419,21 +419,22 @@ export default {
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .m-reply-to-photo {
-  margin: 18px 0 5px 15px;
+  margin: 0 0 5px 15px;
 }
 
 .m-reply-line {
   margin: auto;
   background-color: #ccd6dd;
   width: 2px;
-  height: 80px;
+  height: 60px;
 }
 
 .m-reply-photo {
-  margin: 10px 10px 182px 15px;
+  margin: 5px 10px 180px 15px;
 }
 
 textarea {

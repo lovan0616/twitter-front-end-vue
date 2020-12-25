@@ -214,9 +214,10 @@ export default {
 .main {
   padding: 0;
   width: 500px;
-  height: 10000px;
+  height: 3000px;
   border-left: 1px solid #e6ecf0;
   border-right: 1px solid #e6ecf0;
+  border-bottom: 1px solid #e6ecf0;
 }
 
 .tweet-reply-container {
