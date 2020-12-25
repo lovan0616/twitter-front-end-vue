@@ -15,9 +15,9 @@
         <div
           class="badge badge-pill badge-primary"
           v-if="following.isFollowed"
-          @click.stop.prevent="unfollow"
+          @click.stop.prevent="unfollow(following.followingId)"
         >正在跟隨</div>
-        <div class="badge badge-pill badge-outline-primary" v-else @click.stop.prevent="follow">跟隨</div>
+        <div class="badge badge-pill badge-outline-primary" v-else @click.stop.prevent="follow(following.followingId)">跟隨</div>
       </div>
     </div>
   </div>
@@ -26,6 +26,8 @@
 
 <script>
 import { emptyImageFilter } from "../utils/mixins";
+import followshipAPI from '../apis/followship'
+import { Toast } from '../utils/helpers'
 export default {
   name: "Following",
   mixins: [emptyImageFilter],
@@ -33,49 +35,71 @@ export default {
     initialFollowing: {
       type: Object,
       required: true
-    }
+    },
   },
   data() {
     return {
       following: {
-        name: "",
+        followingId: -1,
         account: "",
+        name: "",
         avatar: "",
         introduction: "",
+        followshipCreatedAt: "",
         isFollowed: false
       }
     };
   },
   methods: {
     fetchData() {
-      const { following, isFollowed } = this.initialFollowing;
-      const { name, account, avatar, introduction } = following;
-      this.following = {
-        ...this.following,
-        name,
-        account,
-        avatar,
-        introduction,
-        isFollowed
-      };
+      this.following = {...this.initialFollowing}
     },
-    follow() {
-      // 使用API發送追蹤請求
-      this.following = {
+    async follow(id) {
+      try {
+        const response = await followshipAPI.follow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        this.following = {
         ...this.following,
         isFollowed: true
       };
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法成功跟隨，請稍後再試'
+        })
+      }
     },
-    unfollow() {
-      // 使用API發送取消追蹤請求
-      this.following = {
+    async unfollow(id) {
+      try {
+        const response = await followshipAPI.unfollow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        this.following = {
         ...this.following,
         isFollowed: false
       };
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法成功跟隨，請稍後再試'
+        })
+      }
     }
   },
   created() {
     this.fetchData();
+  },
+  watch: {
+    initialFollowing(newValue) {
+      this.following = newValue
+    }
   }
 };
 </script>

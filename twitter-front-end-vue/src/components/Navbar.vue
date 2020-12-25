@@ -57,12 +57,8 @@ export default {
   },
   methods: {
     handleSignOut() {
-      // 用API發送登出請求
-
-      // 清空token
-
-      // 導向/sginin
-      this.$router.push({name: 'sign-in'})
+      this.$store.commit('revokeAuthentication')
+      this.$router.push('/signin')
     },
   }
 }

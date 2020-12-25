@@ -23,10 +23,10 @@
         <div class="info-area d-flex flex-column align-items-end pb-3">
           <div class="image-wrapper">
             <div class="cover-cropper">
-              <img :src="user.cover" class="cover" />
+              <img :src="user.cover | emptyImage" class="cover" />
             </div>
             <div class="image-cropper">
-              <img :src="user.avatar" class="avatar" />
+              <img :src="user.avatar | emptyImage" class="avatar" />
             </div>
           </div>
           <div
@@ -50,10 +50,10 @@
               <div
                 class="deleteFollow"
                 v-if="user.isFollowed"
-                @click.stop.prevent="deleteFollow"
+                @click.stop.prevent="deleteFollow(user.id)"
               >取消跟隨</div>
 
-              <div class="unfollow" v-else @click.stop.prevent="follow">跟隨</div>
+              <div class="unfollow" v-else @click.stop.prevent="follow(user.id)">跟隨</div>
             </div>
           </div>
         </div>
@@ -233,6 +233,12 @@
           <div class="user-tweets-panel" v-if="!nowTabbed">
             <!-- 拉取資料完成前顯示Spinner -->
             <Spinner v-if="isLoading" />
+
+             <!-- 無建立任何推文時，顯示註明文字 -->
+            <div class="no-data" v-else-if="!isLoading && !tweets.length">
+              <h3>尚未建立任何推文</h3>
+            </div>
+
             <!-- 綁入UserTweets.vue -->
             <UserTweets
               v-else-if="!isLoading"
@@ -242,15 +248,17 @@
               :user="user"
               :current-user="currentUser"
             />
-            <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-else-if="!isLoading && !tweets.length">
-              <h3>尚未建立任何推文</h3>
-            </div>
           </div>
 
           <div class="user-tweets-replies-panel" v-if="nowTabbed === 'with_replies'">
             <!-- 拉取資料完成前顯示Spinner -->
             <Spinner v-if="isLoading" />
+
+            <!-- 無建立任何推文時，顯示註明文字 -->
+            <div class="no-data" v-else-if="!isLoading && !replies.length">
+              <h3>尚未回覆任何推文</h3>
+            </div>
+
             <!-- 綁入UserTweetsReplies.vue -->
             <UserTweetsReplies
               v-else-if="!isLoading"
@@ -260,15 +268,17 @@
               :user="user"
               :current-user="currentUser"
             />
-            <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-else-if="!isLoading && !replies.length">
-              <h3>尚未回覆任何推文</h3>
-            </div>
           </div>
 
           <div class="user-liked-tweets-panel" v-if="nowTabbed === 'likes'">
             <!-- 拉取資料完成前顯示Spinner -->
             <Spinner v-if="isLoading" />
+
+            <!-- 無建立任何推文時，顯示註明文字 -->
+            <div class="no-data" v-else-if="!isLoading && !likes.length">
+              <h3>尚未有喜愛的推文</h3>
+            </div>
+
             <!-- 綁入UserLikedTweets.vue -->
             <UserLikedTweets 
               v-else-if="!isLoading" 
@@ -276,10 +286,6 @@
               :key="like.id" 
               :initial-like="like"
               :current-user="currentUser" />
-            <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-else-if="!isLoading && !likes.length">
-              <h3>尚未有喜愛的推文</h3>
-            </div>
           </div>
         </div>
       </main>
@@ -299,10 +305,11 @@ import UserLikedTweets from "../components/UserLikedTweets";
 import UserTweetsReplies from "../components/UserTweetsReplies";
 import { Toast } from "../utils/helpers";
 import { emptyImageFilter } from "../utils/mixins";
-import usersAPI from "../apis/users";
 import $ from "jquery";
 import { mapState } from 'vuex'
 import Spinner from '../components/Spinner'
+import usersAPI from "../apis/users";
+import followshipAPI from '../apis/followship'
 
 export default {
   name: "UserProfile",
@@ -425,19 +432,44 @@ export default {
     toggleTab(item) {
       this.nowTabbed = item;
     },
-    follow() {
-      this.user = {
-        //Todo: 使用API，加入follow
+    async follow(id) {
+      try {
+        const response = await followshipAPI.follow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        console.log(response)
+        this.user = {
         ...this.user,
         isFollowed: true
       };
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法成功追蹤，請稍後再試'
+        })
+      }
     },
-    deleteFollow() {
-      this.user = {
-        //Todo: 使用API，刪去notcie
+    async deleteFollow(id) {
+      try {
+        const response = await followshipAPI.unfollow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        console.log(response)
+        this.user = {
         ...this.user,
         isFollowed: false
       };
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取消追蹤，請稍後再試'
+        })
+      }
     },
     // modal表單資料交付
     handleEditSubmit(e) {
@@ -478,11 +510,12 @@ export default {
     this.fetchUser(id);
     this.fetchReplies(id);
   },
-  beforeRouteUpdate() {
-    const { id } = this.$route.params;
+  beforeRouteUpdate(to, from, next) {
+    const { id } = to.params;
     this.fetchUser(id);
     this.fetchReplies(id);
     this.fetchUserLikes(id)
+    next();
   },
   watch: {
     // 控制名字 & 自介字數上限
@@ -897,6 +930,5 @@ textarea:focus {
   justify-content: center;
   align-items: center;
   color:#657786;
-  
 }
 </style>
