@@ -90,16 +90,21 @@ router.beforeEach(async (to, from, next) => {
   const tokenInStore = store.state.token
   let isAuthenticated = store.state.isAuthenticated
 
-
   // 比較 localStorage 和 store 中的 token 是否一樣
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     isAuthenticated = await store.dispatch('fetchCurrentUser')
   }
 
+  // 如果 token 無效則轉址到登入頁
+  if (!isAuthenticated && to.name !== 'sign-in') {
+    next('/signin')
+    return
+  }
+
   // 如果 token 有效則轉址到推特首頁
   if (isAuthenticated && to.name === 'sign-in') {
     next('/main/')
-    return 
+    return
   }
 
   // 對於不需要驗證 token 的頁面
@@ -111,11 +116,10 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  // 如果 token 有效且進入不需要驗證到頁面則轉址到餐廳首頁
+  // 如果 token 有效且進入不需要驗證到頁面則轉址到首頁
   if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
-    console.log('4')
-      next('/main')
-      return
+    next('/main')
+    return
   }
 
   next()

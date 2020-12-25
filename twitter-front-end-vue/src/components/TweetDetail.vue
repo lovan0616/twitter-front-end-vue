@@ -14,8 +14,6 @@
         {{ presentTweet.description }}
       </div>
       <div class="tweet-time d-flex">
-        <div class="tweet-hour">上午 10:05</div>
-        <div class="dot">·</div>
         <div class="tweet-date">{{ presentTweet.createdAt | fromNow }}</div>
       </div>
     </div>
@@ -36,18 +34,18 @@
           <img src="../assets/Reply.svg" class="reply-img" />
         </a>
       </div>
-      <div class="like-icon">
+      <div class="like-icon" v-if="this.presentUser !== '' && !isSelfTweet()">
         <img
           src="../assets/Like.svg"
           class="like-img"
           v-if="!presentTweet.isLiked"
-          @click.stop.prevent="addLike"
+          @click.stop.prevent="addLike(presentTweet.id)"
         />
         <img
           class="like-img"
           src="../assets/Like-liked.svg"
           v-else
-          @click.stop.prevent="deleteLike"
+          @click.stop.prevent="deleteLike(presentTweet.id)"
         />
       </div>
     </div>
@@ -142,11 +140,10 @@
 </template>
 
 <script>
-// import { v4 as uuidv4 } from "uuid";
 import $ from "jquery";
 import { fromNowFilter } from "../utils/mixins";
-// import ReplyAPI from "../apis/replies";
-// import { Toast } from "../utils/helpers";
+import likeAPI from "../apis/likes";
+import { Toast } from "../utils/helpers";
 
 export default {
   name: "TweetDetail",
@@ -156,7 +153,7 @@ export default {
       type: Object,
       required: true,
     },
-    user: {
+    initialUser: {
       type: Object,
       required: true,
     },
@@ -164,20 +161,21 @@ export default {
   data() {
     return {
       newReply: "",
-      presentUser: this.user,
+      presentUser: this.initialUser,
       presentTweet: this.initialTweet,
       isLoading: true,
     };
   },
   methods: {
-    handleSubmit(e) {
-      const form = e.target;
-      const formData = new FormData(form);
-      for (let [key, value] of formData.entries()) {
-        console.log(key + ", " + value);
-      }
-      this.$emit("after-post-submit", formData);
-      console.log(this.newReply);
+    handleSubmit() {
+      // const form = e.target;
+      // const formData = new FormData(form);
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key + ", " + value);
+      // }
+      const comment = this.newReply;
+      this.$emit("after-post-submit", comment);
+      console.log(comment);
       // 表單回覆後清空收入欄、關閉彈跳視窗
       this.newReply = "";
       $("#postReply").modal("hide");
@@ -197,33 +195,44 @@ export default {
     //     userAvatar,
     //   };
     // },
-    // async addLike() {
-    //   try {
-    //     const { id } = this.$route.params;
-    //     const { data } = await ReplyAPI.addLike(id);
-    //     if (data.status !== "success") {
-    //       throw new Error(data.message);
-    //     }
+    async addLike(tweetId) {
+      try {
+        const response = await likeAPI.like({ tweetId });
+        console.log(response);
 
-    //     this.presentTweet = {
-    //       ...this.presentTweet,
-    //       isLiked: true,
-    //       LikeCount: this.presentTweet.LikeCount + 1,
-    //     };
-    //   } catch (error) {
-    //     console.log("error:", error);
-    //     Toast.fire({
-    //       icon: "error",
-    //       title: '暫時無法愛上，請稍候>"<',
-    //     });
-    //   }
-    // },
-    deleteLike() {
-      this.presentTweet = {
-        ...this.presentTweet,
-        isLiked: false,
-        LikeCount: this.presentTweet.LikeCount - 1,
-      };
+        this.presentTweet = {
+          ...this.presentTweet,
+          isLiked: true,
+          LikeCount: this.presentTweet.LikeCount + 1,
+        };
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: '暫時無法愛上，請稍候>"<',
+        });
+      }
+    },
+    async deleteLike(tweetId) {
+      try {
+        const response = await likeAPI.unlike({ tweetId });
+        console.log(response);
+
+        this.presentTweet = {
+          ...this.presentTweet,
+          isLiked: false,
+          LikeCount: this.presentTweet.LikeCount - 1,
+        };
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: '暫時無法收回愛心，請稍候>"<',
+        });
+      }
+    },
+    isSelfTweet() {
+      return this.presentUser.id === this.presentTweet.UserId;
     },
   },
   watch: {

@@ -31,11 +31,11 @@ export default new Vuex.Store({
       // 將使用者驗證用的 token 儲存在 state 中
       state.token = localStorage.getItem('token')
       state.isAuthenticated = true
-
     },
     revokeAuthentication(state) {
       state.currentUser = {}
       state.isAuthenticated = false
+      // 登出時一併將 state 內的 token 移除
       state.token = ''
       localStorage.removeItem('token')
     }
@@ -45,6 +45,7 @@ export default new Vuex.Store({
       try {
         // 呼叫 usersAPI.getCurrentUser() 方法，並將 response 顯示出來
         const { data, statusText } = await usersAPI.getCurrentUser()
+
         const { id, email, name, avatar, introduction, account, cover, role } = data
 
         if (statusText !== 'OK') {

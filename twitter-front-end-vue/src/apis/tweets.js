@@ -12,8 +12,8 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  post({ formData }) {
-    return apiHelper.post(`/api/tweets`, formData, {
+  post({ description }) {
+    return apiHelper.post(`/api/tweets`, { description }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
@@ -22,7 +22,9 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  delete(id) {
-    return apiHelper.delete(`api/tweets/${id}`, null,)
+  delete(tweetId) {
+    return apiHelper.delete(`/api/tweets/${tweetId}`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }

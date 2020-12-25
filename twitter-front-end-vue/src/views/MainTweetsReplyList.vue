@@ -15,6 +15,7 @@
           :initial-tweet="tweet"
           @after-post-submit="afterPostSubmit"
           v-if="tweet.id !== -1"
+          :initial-user="user"
         />
       </div>
       <div class="tweet-reply-container">
@@ -26,7 +27,7 @@
           v-for="reply in replies"
           :key="reply.id"
           :initial-reply="reply"
-          :user="user"
+          :initial-user="user"
           :tweet="tweet"
         />
       </div>
@@ -46,25 +47,27 @@ import TweetDetail from "../components/TweetDetail";
 import { Toast } from "../utils/helpers";
 import ReplyAPI from "../apis/replies";
 import TweetAPI from "../apis/tweets";
+import userAPI from "../apis/users";
+import { mapState } from "vuex";
 
 // GET /api/users/:id
-const dummyUser = {
-  currentUser: {
-    id: 15,
-    email: "user1@example.com",
-    password: "123445",
-    name: "user666",
-    avatar: "https://i.imgur.com/NZWqfN3.jpg",
-    introduction: "Quam et veniam.",
-    isAdmin: false,
-    account: "@user666",
-    cover:
-      "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
-    createdAt: "2020-12-16T06:02:24.000Z",
-    updatedAt: "2020-12-16T06:02:24.000Z",
-  },
-  isAuthenticated: true,
-};
+// const dummyUser = {
+//   currentUser: {
+//     id: 15,
+//     email: "user1@example.com",
+//     password: "123445",
+//     name: "user666",
+//     avatar: "https://i.imgur.com/NZWqfN3.jpg",
+//     introduction: "Quam et veniam.",
+//     isAdmin: false,
+//     account: "@user666",
+//     cover:
+//       "https://www.myvideo.net.tw/blog/assets/2020/06-30/blog0162964980.jpg",
+//     createdAt: "2020-12-16T06:02:24.000Z",
+//     updatedAt: "2020-12-16T06:02:24.000Z",
+//   },
+//   isAuthenticated: true,
+// };
 
 export default {
   name: "MainTweetsReplyList",
@@ -110,7 +113,10 @@ export default {
     const { id: replyId } = this.$route.params;
     this.fetchReply(replyId);
 
-    this.fetchUser();
+    this.fetchCurrentUser();
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
     async fetchTweet(tweetId) {
@@ -139,31 +145,45 @@ export default {
         });
       }
     },
-    fetchUser() {
-      // 待拉取 API 的當前用戶資料
-      this.user = dummyUser.currentUser;
-    },
-    async afterPostSubmit(formData) {
+    async fetchCurrentUser() {
       try {
-        for (let [key, value] of formData.entries()) {
-          console.log(key + ", " + value);
+        const response = await userAPI.getCurrentUser();
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
         }
+        const { data } = response;
+        this.user = {
+          ...this.user,
+          ...data,
+        };
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得用戶資料，請稍等！",
+        });
+      }
+    },
+    async afterPostSubmit(comment) {
+      try {
         const { id: tweetId } = this.$route.params;
-        // 將後端所需資料回拋給 API
-        const { data } = await ReplyAPI.addReply({ tweetId, formData });
-        // 拉資料回前端渲染
-        const { id, newReply } = data;
+        const data = await ReplyAPI.addReply(tweetId, { comment });
+        if (data.statusText !== "OK") {
+          throw new Error(data.message);
+        }
+        //拉資料回前端渲染;
+        const { id } = data;
         this.replies.unshift({
           id,
           TweetId: tweetId,
-          UserId: dummyUser.currentUser.id,
+          UserId: this.user.id,
           createdAt: new Date(),
           updateAt: new Date(),
-          comment: newReply,
+          comment,
           User: {
-            account: dummyUser.currentUser.account,
-            avatar: dummyUser.currentUser.avatar,
-            name: dummyUser.currentUser.name,
+            account: this.user.account,
+            avatar: this.user.avatar,
+            name: this.user.name,
           },
         });
         this.tweet.repliedCount++;

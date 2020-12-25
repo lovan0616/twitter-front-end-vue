@@ -13,7 +13,7 @@
       </div>
       <main>
         <!-- 插入NewTweet -->
-        <NewTweet @after-post-submit="afterPostSubmit" />
+        <NewTweet @after-post-submit="afterPostSubmit" :user="presentUser" />
 
         <!-- 插入Tweet -->
         <Spinner v-if="isLoading" />
@@ -22,7 +22,8 @@
             v-for="tweet in tweets"
             :key="tweet.id"
             :initial-tweet="tweet"
-            :current-user="currentUser"
+            :initial-user="presentUser"
+            @delete-tweet="deleteTweet"
           />
         </div>
       </main>
@@ -35,23 +36,6 @@
 </template>
 
 <script>
-const dummyUser = {
-  user: {
-    id: 11,
-    email: "user1@example.com",
-    password: "$2a$10$2tdllKdK2VPeGKsJeec2XObzIK3kA4lt5W8PVu/.OPWkRQjbCsiDq",
-    name: "user1",
-    avatar: "https://loremflickr.com/320/240/avatar/?random=60.45057970816829",
-    introduction: "Quia consequatur optio consequatur dolor commodi et.",
-    account: "@user1",
-    cover:
-      "https://loremflickr.com/320/240/background/?random=34.0538352094005",
-    role: "user",
-    createdAt: "2020-12-16T08:46:08.000Z",
-    updatedAt: "2020-12-16T08:46:08.000Z",
-  },
-};
-
 import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import NewTweet from "../components/NewTweet";
@@ -60,6 +44,7 @@ import { mapState } from "vuex";
 import TweetsAPI from "../apis/tweets";
 import { Toast } from "../utils/helpers";
 import Spinner from "../components/Spinner";
+import userAPI from "../apis/users";
 
 export default {
   name: "Main",
@@ -76,6 +61,7 @@ export default {
   data() {
     return {
       tweets: [],
+      presentUser: {},
       isLoading: false,
     };
   },
@@ -95,21 +81,18 @@ export default {
         });
       }
     },
-    async afterPostSubmit(formData) {
+    async afterPostSubmit(description) {
       try {
-        for (let [key, value] of formData.entries()) {
-          console.log(key + ", " + value);
-        }
-        const { data } = await TweetsAPI.post({ formData });
-        if (data.status !== "success") {
-          throw new Error(data.message);
-        }
-        const { description } = data.description;
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(key + ", " + value);
+        // }
+        const { data } = await TweetsAPI.post({ description });
+        console.log(data);
         // 注意：新推文的資料，未納入Likes和Replys的陣列
         this.tweets.unshift({
-          id: dummyUser.currentUser.id,
+          id: data.tweet.id,
           description,
-          UserId: dummyUser.currentUser.id,
+          UserId: this.presentUser.id,
           createdAt: new Date(),
           isLiked: false,
           repliedCount: 0,
@@ -123,9 +106,42 @@ export default {
         });
       }
     },
+    async fetchCurrentUser() {
+      try {
+        const response = await userAPI.getCurrentUser();
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
+        }
+        const { data } = response;
+        this.presentUser = {
+          ...this.presentUser,
+          ...data,
+        };
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法取得當前用戶資料，請稍候！",
+        });
+      }
+    },
+    async deleteTweet(tweetId) {
+      try {
+        const response = await TweetsAPI.delete(tweetId);
+        console.log(response);
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法刪除推文，請稍候再試！",
+        });
+      }
+    },
   },
   created() {
     this.fetchData();
+    this.fetchCurrentUser();
   },
 };
 </script>
