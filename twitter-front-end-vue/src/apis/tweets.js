@@ -21,5 +21,10 @@ export default {
     return apiHelper.put(`/api/tweets/${tweetId}`, { description }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  delete(tweetId) {
+    return apiHelper.delete(`/api/tweets/${tweetId}`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }

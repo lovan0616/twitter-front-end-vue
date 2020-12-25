@@ -11,7 +11,7 @@
         params: {id: tweet.userId}
       }">
         <div class="image-cropper">
-          <img :src="tweet.userAvatar" class="avatar" />
+          <img :src="tweet.userAvatar | emptyImage" class="avatar" />
         </div>
       </router-link>
     </div>
@@ -55,8 +55,10 @@
 import { fromNowFilter } from '../utils/mixins'
 import likesAPI from '../apis/likes'
 import { Toast } from '../utils/helpers'
+import { emptyImageFilter } from '../utils/mixins'
 export default {
   name: "UserLikedTweets",
+  mixins: [emptyImageFilter, fromNowFilter],
   props: {
     initialLike: {
       type: Object,
@@ -67,7 +69,6 @@ export default {
       required: true
     }
   },
-  mixins: [fromNowFilter],
   data() {
     return {
       tweet: {

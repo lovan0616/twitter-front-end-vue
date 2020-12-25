@@ -45,10 +45,13 @@ export default new Vuex.Store({
       try {
         // 呼叫 usersAPI.getCurrentUser() 方法，並將 response 顯示出來
         const { data, statusText } = await usersAPI.getCurrentUser()
+
+        const { id, email, name, avatar, introduction, account, cover, role } = data
+
         if (statusText !== 'OK') {
           throw new Error(statusText)
         }
-        const { id, email, name, avatar, introduction, account, cover, role } = data
+
         commit('setCurrentUser', {
           id,
           email,

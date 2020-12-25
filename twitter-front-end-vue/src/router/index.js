@@ -101,6 +101,12 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
+  // 如果 token 有效則轉址到推特首頁
+  if (isAuthenticated && to.name === 'sign-in') {
+    next('/main/')
+    return
+  }
+
   // 對於不需要驗證 token 的頁面
   const pathsWithoutAuthentication = ['sign-up', 'sign-in', 'admin']
 

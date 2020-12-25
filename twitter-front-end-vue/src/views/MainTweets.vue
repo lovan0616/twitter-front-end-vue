@@ -23,6 +23,7 @@
             :key="tweet.id"
             :initial-tweet="tweet"
             :initial-user="presentUser"
+            @delete-tweet="deleteTweet"
           />
         </div>
       </main>
@@ -121,6 +122,19 @@ export default {
         Toast.fire({
           icon: "error",
           title: "暫時無法取得當前用戶資料，請稍候！",
+        });
+      }
+    },
+    async deleteTweet(tweetId) {
+      try {
+        const response = await TweetsAPI.delete(tweetId);
+        console.log(response);
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+      } catch (error) {
+        console.log("error:", error);
+        Toast.fire({
+          icon: "error",
+          title: "暫時無法刪除推文，請稍候再試！",
         });
       }
     },

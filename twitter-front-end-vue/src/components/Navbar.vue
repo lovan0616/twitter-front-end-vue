@@ -70,10 +70,8 @@ export default {
   },
   methods: {
     handleSignOut() {
-      // 清空token
       this.$store.commit("revokeAuthentication");
-      // 導向/sginin
-      this.$router.push({ name: "sign-in" });
+      this.$router.push("/signin");
     },
   },
 };

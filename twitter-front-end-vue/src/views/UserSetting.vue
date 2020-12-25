@@ -1,166 +1,213 @@
 <template>
   <div class="container">
-      <div id="navbar-area" class="navbar-area">
-        <!-- 插入 Navbar -->
-       <Navbar />
-      </div>
+    <div id="navbar-area" class="navbar-area">
+      <!-- 插入 Navbar -->
+      <Navbar />
+    </div>
 
-      <div class="right-content">
-        <div class="upper-area">
-          <div class="upper-area-content">
-            <strong>帳戶設定</strong>
-          </div>
+    <div class="right-content">
+      <div class="upper-area">
+        <div class="upper-area-content">
+          <strong>帳戶設定</strong>
         </div>
-        <main>
-          <form class="ml-2" @submit.stop.prevent="handleSubmit" style="width: 60%">
+      </div>
+      <main>
+        <form class="ml-2" @submit.stop.prevent="handleSubmit" style="width: 60%">
+          <div class="form-group my-4">
+            <input
+              type="text"
+              id="account"
+              name="account"
+              class="form-control"
+              placeholder="帳號"
+              v-model="account"
+              required
+            />
+          </div>
+
+          <div class="form-group my-4">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Email"
+              v-model="email"
+              required
+            />
+          </div>
+
+          <div class="form-group my-4">
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="名稱"
+              v-model="name"
+              required
+            />
+          </div>
+
+          <div class="password-group-wrapper">
             <div class="form-group my-4">
               <input
-                type="text"
-                id="account"
-                name="account"
+                type="password"
+                id="oldPassword"
+                name="oldPassword"
                 class="form-control"
-                placeholder="帳號"
-                v-model="user.account"
+                placeholder="舊密碼"
+                v-model="oldPassword"
               />
             </div>
-
             <div class="form-group my-4">
               <input
-                type="email"
-                id="email"
-                name="email"
+                type="password"
+                id="newPassword"
+                name="newPassword"
                 class="form-control"
-                placeholder="Email"
-                v-model="user.email"
-              />
-            </div>
-
-            <div class="form-group my-4">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                class="form-control"
-                placeholder="名稱"
-                v-model="user.name"
+                placeholder="新密碼"
+                v-model="newPassword"
               />
             </div>
 
             <div class="form-group my-4">
               <input
                 type="password"
-                id="password"
-                name="password"
-                class="form-control"
-                placeholder="密碼"
-                v-model="user.password"
-              />
-            </div>
-
-            <div class="form-group my-4">
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
+                id="checkPassword"
+                name="checkPassword"
                 class="form-control"
                 placeholder="密碼確認"
-                v-model="user.confirmPassword"
+                v-model="checkPassword"
               />
             </div>
+          </div>
 
-            <div class="btn-control d-flex justify-content-end">
-              <button class="btn btn-primary ml-auto save" type="submit">儲存</button>
-            </div>
-          </form>
-        </main>
-      </div>
+          <div class="btn-control d-flex justify-content-end">
+            <button class="btn btn-primary ml-auto save" type="submit">儲存</button>
+          </div>
+        </form>
+      </main>
+    </div>
   </div>
 </template>
 
 <script>
-// Todo: 暫用dummyUser，需改回真實資料
-const dummyUser = {
-  user: {
-    id: 1,
-    account: "@root",
-    name: "root",
-    email: "root@example.com",
-    password: "12345678",
-    confirmPassword: "12345678",
-    isAdmin: true
-  }
-};
-import Navbar from '../components/Navbar'
+import Navbar from "../components/Navbar";
+import usersAPI from "../apis/users";
+import { Toast } from "../utils/helpers";
+import { mapState } from "vuex";
 
 export default {
+  name: "UserSetting",
   data() {
     return {
-      user: {
-        account: "",
-        email: "",
-        name: "",
-        password: "",
-        confirmPassword: ""
-      },
+      account: "",
+      email: "",
+      name: "",
+      oldPassword: "",
+      newPassword: "",
+      checkPassword: ""
     };
   },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"])
+  },
   components: {
-    Navbar,
+    Navbar
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        account: this.account,
-        email: this.email,
-        name: this.name,
-        password: this.password,
-        confirmPassword: this.confirmPassword
-      });
-
-      //Todo：發送請求給後端，修改使用者資料
-      console.log("data", data);
+    fetchData() {
+      this.account = this.currentUser.account;
+      this.email = this.currentUser.email;
+      this.name = this.currentUser.name;
     },
-    fetchUser() {
-      const { account, name, email, password, confirmPassword } = dummyUser.user
-      this.user = {
-        ...this.user,
-        account,
-        name,
-        email,
-        password,
-        confirmPassword
+    async handleSubmit(e) {
+      try {
+        const form = e.target;
+        const formData = new FormData(form);
+        const id = this.currentUser.id;
+        const passwordItems = ["oldPassword", "newPassword", "checkPassword"];
+
+        //如果必填項目空白
+        if (!this.account || !this.email || !this.name) {
+          Toast.fire({
+            icon: "error",
+            title: "必填項目不能為空白"
+          });
+        }
+
+        //如果未修改密碼，則只回傳前三筆資料
+        if (!this.oldPassword || !this.newPassword || !this.checkPassword) {
+          passwordItems.forEach(item => {
+            formData.delete(item);
+          });
+        }
+        
+        const { data } = await usersAPI.updateUser(id, { formData });
+        console.log(data);
+        
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法修改資料，請稍後再試"
+        });
       }
     }
+
+    // async handleSubmit() {
+    //   try {
+    //     const { id, account, email, name } = this.currentUser;
+    //     // const oldPassword = this.oldPassword;
+    //     // const newPassword = this.newPassword;
+    //     // const checkPassword = this.checkPassword;
+
+    //     const response = await usersAPI.updateUser(id, {
+    //       account,
+    //       email,
+    //       name
+    //     });
+
+    //     const { data } = response;
+    //     console.log(data);
+    //   } catch (error) {
+    //     console.log(error);
+    //     Toast.fire({
+    //       icon: "error",
+    //       title: "無法修改資料，請稍後再試"
+    //     });
+    //   }
+    // }
   },
   created() {
-    this.fetchUser()
+    this.fetchData();
   }
 };
 </script>
 
 <style scoped>
-  .right-content {
-    flex-grow: 1;
-  }
-  .upper-area-content {
-    border-bottom: 1px solid #E6ECF0;
-    padding-left: 15px;
-  }
+.right-content {
+  flex-grow: 1;
+}
+.upper-area-content {
+  border-bottom: 1px solid #e6ecf0;
+  padding-left: 15px;
+}
 
-  .upper-area strong {
-    line-height: 55px;
-  }
+.upper-area strong {
+  line-height: 55px;
+}
 
-  input {
-    background-color: #F5F8FA;
-    border:hidden;
-    border-bottom: 2px solid #657786;
-    height: 50px;
-  }
+input {
+  background-color: #f5f8fa;
+  border: hidden;
+  border-bottom: 2px solid #657786;
+  height: 50px;
+}
 
-  .save {
-    width: 122px;
-    border-radius: 20px;
-  }
-
+.save {
+  width: 122px;
+  border-radius: 20px;
+}
 </style>

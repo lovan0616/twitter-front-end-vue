@@ -2,14 +2,14 @@ import { apiHelper } from '../utils/helpers'
 const getToken = () => localStorage.getItem('token')
 
 export default {
-  getReply(tweetId) {
-    return apiHelper.get(`/api/tweets/${tweetId}/replies`, {
+  follow({ id }) {
+    return apiHelper.post('/api/followships', { id }, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
-  addReply(tweetId, { comment }) {
-    return apiHelper.post(`/api/tweets/${tweetId}/replies`, { comment }, {
+  unfollow({ id }) {
+    return apiHelper.delete(`/api/followships/${id}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
-  },
+  }
 }

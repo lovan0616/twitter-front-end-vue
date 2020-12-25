@@ -110,6 +110,7 @@
         <!-- Todo: 刪除按鈕綁v-on，完成刪除事件 -->
         <button
           class="list-group-item list-item delete-tweet d-flex align-items-center"
+          @click.stop.prevent="deleteTweet(tweet.id)"
         >
           <img class="list-icon" src="../assets/Trash-can.svg" />
           <p class="mb-0">刪除</p>
@@ -282,6 +283,9 @@ export default {
     },
     isSelfTweet() {
       return this.presentUser.id === this.tweet.userId;
+    },
+    deleteTweet(tweetId) {
+      this.$emit("delete-tweet", tweetId);
     },
   },
   created() {
