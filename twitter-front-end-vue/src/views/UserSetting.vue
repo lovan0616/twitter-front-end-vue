@@ -12,7 +12,11 @@
         </div>
       </div>
       <main>
-        <form class="ml-2" @submit.stop.prevent="handleSubmit" style="width: 60%">
+        <form
+          class="ml-2"
+          @submit.stop.prevent="handleSubmit"
+          style="width: 60%"
+        >
           <div class="form-group my-4">
             <input
               type="text"
@@ -48,10 +52,10 @@
               required
             />
           </div>
-
-          <input type="radio" id="password-toggle" class="password-toggle">
-          <label for="password-toggle" class="password-toggle-label">修改密碼</label>
-
+          <input type="radio" id="password-toggle" class="password-toggle" />
+          <label for="password-toggle" class="password-toggle-label"
+            >修改密碼</label
+          >
           <div class="password-group-wrapper">
             <div class="form-group my-4">
               <input
@@ -87,7 +91,9 @@
           </div>
 
           <div class="btn-control d-flex justify-content-end">
-            <button class="btn btn-primary ml-auto save" type="submit">儲存</button>
+            <button class="btn btn-primary ml-auto save" type="submit">
+              儲存
+            </button>
           </div>
         </form>
       </main>
@@ -110,14 +116,14 @@ export default {
       name: "",
       oldPassword: "",
       newPassword: "",
-      checkPassword: ""
+      checkPassword: "",
     };
   },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"])
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   components: {
-    Navbar
+    Navbar,
   },
   methods: {
     fetchData() {
@@ -136,28 +142,27 @@ export default {
         if (!this.account || !this.email || !this.name) {
           Toast.fire({
             icon: "error",
-            title: "必填項目不能為空白"
+            title: "必填項目不能為空白",
           });
         }
 
         //如果未修改密碼，則只回傳前三筆資料
         if (!this.oldPassword || !this.newPassword || !this.checkPassword) {
-          passwordItems.forEach(item => {
+          passwordItems.forEach((item) => {
             formData.delete(item);
           });
         }
-        
+
         const { data } = await usersAPI.updateUser(id, { formData });
         console.log(data);
-
       } catch (error) {
         console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法修改資料，請稍後再試"
+          title: "無法修改資料，請稍後再試",
         });
       }
-    }
+    },
 
     // async handleSubmit() {
     //   try {
@@ -185,7 +190,7 @@ export default {
   },
   created() {
     this.fetchData();
-  }
+  },
 };
 </script>
 
@@ -217,11 +222,10 @@ input {
 .password-toggle {
   visibility: hidden;
   position: absolute;
-
 }
 
 .password-toggle:checked ~ .password-group-wrapper {
-  transform: scale(1,1);
+  transform: scale(1, 1);
 }
 
 .password-toggle-label {
@@ -238,6 +242,6 @@ input {
 .password-group-wrapper {
   transform: scale(1, 0);
   transform-origin: top;
-  transition: transform .3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 </style>

@@ -4,20 +4,23 @@
       <router-link
         class="router-link"
         :to="{
-  name: 'reply-list',
-  params: {id: presentTweet.id}
-}"
+          name: 'reply-list',
+          params: { id: presentTweet.id },
+        }"
       >
         <div class="tweet d-flex p-2">
           <div class="image-area mr-3">
             <router-link
               :to="{
-            name: 'user-profile',
-            params: {id: presentTweet.User.id}
-          }"
+                name: 'user-profile',
+                params: { id: presentTweet.User.id },
+              }"
             >
               <div class="image-cropper">
-                <img :src="presentTweet.User.avatar | emptyImage" class="avatar" />
+                <img
+                  :src="presentTweet.User.avatar | emptyImage"
+                  class="avatar"
+                />
               </div>
             </router-link>
           </div>
@@ -25,9 +28,9 @@
             <div class="post-info d-flex">
               <router-link
                 :to="{
-            name: 'user-profile',
-            params: {id: presentTweet.User.id}
-          }"
+                  name: 'user-profile',
+                  params: { id: presentTweet.User.id },
+                }"
               >
                 <strong class="name">{{ presentTweet.User.name }}</strong>
               </router-link>
@@ -36,19 +39,23 @@
               <p class="created-at">・{{ presentTweet.createdAt | fromNow }}</p>
             </div>
             <div class="post-content">
-              <p style="word-wrap: break-word">{{ presentTweet.description }}</p>
+              <p style="word-wrap: break-word">
+                {{ presentTweet.description }}
+              </p>
             </div>
             <div class="post-engage d-flex">
               <div class="reply-control d-flex mr-3">
                 <router-link
                   :to="{
-            name: 'reply-list',
-            params: {id: presentTweet.id}
-          }"
+                    name: 'reply-list',
+                    params: { id: presentTweet.id },
+                  }"
                 >
                   <img src="../assets/Reply.svg" />
                 </router-link>
-                <p class="reply-counts mb-0 ml-2">{{ presentTweet.repliesCount }}</p>
+                <p class="reply-counts mb-0 ml-2">
+                  {{ presentTweet.repliesCount }}
+                </p>
               </div>
 
               <div class="like-control d-flex ml-3" v-if="!isSelfTweet()">
@@ -64,11 +71,12 @@
                   v-else
                   @click.stop.prevent="deleteLike(presentTweet.id)"
                 />
-                <p
-                  class="like-counts mb-0 ml-2"
-                  v-if="!presentTweet.isLike"
-                >{{ presentTweet.likesCount }}</p>
-                <p class="red like-counts mb-0 ml-2" v-else>{{ presentTweet.likesCount }}</p>
+                <p class="like-counts mb-0 ml-2" v-if="!presentTweet.isLike">
+                  {{ presentTweet.likesCount }}
+                </p>
+                <p class="red like-counts mb-0 ml-2" v-else>
+                  {{ presentTweet.likesCount }}
+                </p>
               </div>
             </div>
           </div>
@@ -92,9 +100,9 @@
             <div class="reply-literal">回覆</div>
             <router-link
               :to="{
-            name: 'user-profile',
-            params: {id: presentTweet.User.id}
-          }"
+                name: 'user-profile',
+                params: { id: presentTweet.User.id },
+              }"
             >
               <div class="reply-account">{{ presentTweet.User.account }}</div>
             </router-link>
@@ -118,30 +126,30 @@ export default {
   props: {
     initialReply: {
       type: Object,
-      required: true
+      required: true,
     },
     user: {
       type: Object,
-      required: true
+      required: true,
     },
     currentUser: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       presentTweet: {},
       isSelfTweet() {
-        return this.currentUser.id === this.presentTweet.UserId
-      }
+        return this.currentUser.id === this.presentTweet.UserId;
+      },
     };
   },
   methods: {
     fetchTweet() {
       const { Tweet } = this.initialReply;
       this.presentTweet = {
-        ...Tweet
+        ...Tweet,
       };
     },
     async addLike(tweetId) {
@@ -152,13 +160,13 @@ export default {
         this.presentTweet = {
           ...this.presentTweet,
           isLike: true,
-          likesCount: this.presentTweet.likesCount + 1
+          likesCount: this.presentTweet.likesCount + 1,
         };
       } catch (error) {
         console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法點擊愛心，請稍後再試"
+          title: "無法點擊愛心，請稍後再試",
         });
       }
     },
@@ -170,25 +178,25 @@ export default {
         this.presentTweet = {
           ...this.presentTweet,
           isLike: false,
-          likesCount: this.presentTweet.likesCount - 1
+          likesCount: this.presentTweet.likesCount - 1,
         };
       } catch (error) {
         console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法收回愛心，請稍後再試"
+          title: "無法收回愛心，請稍後再試",
         });
       }
-    }
+    },
   },
   watch: {
     initialReply(newValue) {
-      const { Tweet } = newValue
+      const { Tweet } = newValue;
       this.presentTweet = {
         ...this.presentTweet,
-        ...Tweet
-      }
-    }
+        ...Tweet,
+      };
+    },
   },
   created() {
     this.fetchTweet();

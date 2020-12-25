@@ -193,9 +193,9 @@ export default {
   watch: {
     followings() {
       const { id } = this.$route.params;
-      this.fetchFollowings(id)
-    }
-  }
+      this.fetchFollowings(id);
+    },
+  },
 };
 </script>
 

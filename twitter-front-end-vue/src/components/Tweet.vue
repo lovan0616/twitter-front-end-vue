@@ -1,5 +1,8 @@
 <template>
-  <div class="tweet-wrapper" v-if="this.presentUser !== ''">
+  <div
+    class="tweet-wrapper"
+    v-if="this.presentUser !== '' && this.tweet.id !== -1"
+  >
     <router-link
       class="router-link"
       :to="{
@@ -293,12 +296,9 @@ export default {
   },
   watch: {
     initialTweet(newValue) {
-      this.tweet = {
-        ...this.tweet,
-        ...newValue
-      }
+      this.tweet = newValue;
     },
-  }
+  },
 };
 </script>
 

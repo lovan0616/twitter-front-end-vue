@@ -92,6 +92,7 @@ export default {
         this.tweets.unshift({
           id: data.tweet.id,
           description,
+          User: this.presentUser,
           UserId: this.presentUser.id,
           createdAt: new Date(),
           isLiked: false,
@@ -99,8 +100,8 @@ export default {
           LikeCount: 0,
         });
 
-        this.fetchData()
-        this.fetchCurrentUser()
+        this.fetchData();
+        this.fetchCurrentUser();
       } catch (error) {
         console.log("error:", error);
         Toast.fire({

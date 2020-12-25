@@ -869,6 +869,7 @@ export default {
 
 .avatar-edit-wrapper {
   position: relative;
+  background-color: #9d9d9d;
 }
 
 .edit-avatar-photo {
@@ -890,6 +891,7 @@ export default {
 .cover-edit-wrapper {
   height: 100%;
   width: 100%;
+  background-color: #9d9d9d;
 }
 
 .cancel-edit {

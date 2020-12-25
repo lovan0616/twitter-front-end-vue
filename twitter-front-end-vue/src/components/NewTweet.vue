@@ -24,12 +24,7 @@
           ></textarea>
 
           <div class="button-control mt-3">
-            <button
-              type="submit"
-              class="btn btn-primary post"
-            >
-              推文
-            </button>
+            <button type="submit" class="btn btn-primary post">推文</button>
           </div>
         </form>
       </div>
@@ -102,7 +97,7 @@
 
 <script>
 import $ from "jquery";
-import { Toast } from '../utils/helpers';
+import { Toast } from "../utils/helpers";
 export default {
   name: "NewTweet",
   props: {
@@ -121,11 +116,11 @@ export default {
     handleSubmit() {
       if (!this.description.trim()) {
         Toast.fire({
-          icon: 'warning',
-          title: '推文不能為空白'
-        })
+          icon: "warning",
+          title: "推文不能為空白",
+        });
         $("#postModal").modal("hide");
-        return
+        return;
       }
       // const form = e.target;
       // const formData = new FormData(form);

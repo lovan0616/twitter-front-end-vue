@@ -119,10 +119,7 @@
                       </textarea>
 
                       <div class="button-control mt-3">
-                        <button
-                          type="submit"
-                          class="btn btn-primary post"
-                        >
+                        <button type="submit" class="btn btn-primary post">
                           回覆
                         </button>
                       </div>
@@ -175,11 +172,11 @@ export default {
       // 輸入為空白時跳回同一頁並alert
       if (!this.newReply.trim()) {
         Toast.fire({
-          icon: 'warning',
-          title: '回覆不能空白'
-        })
+          icon: "warning",
+          title: "回覆不能空白",
+        });
         $("#postReply").modal("hide");
-        return
+        return;
       }
 
       const comment = this.newReply;
@@ -422,21 +419,22 @@ export default {
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .m-reply-to-photo {
-  margin: 18px 0 5px 15px;
+  margin: 0 0 5px 15px;
 }
 
 .m-reply-line {
   margin: auto;
   background-color: #ccd6dd;
   width: 2px;
-  height: 80px;
+  height: 60px;
 }
 
 .m-reply-photo {
-  margin: 10px 10px 182px 15px;
+  margin: 5px 10px 180px 15px;
 }
 
 textarea {

@@ -24,7 +24,11 @@
           >
         </li>
         <div class="logout-wrapper">
-          <router-link to="/admin/login" class="logout d-flex">
+          <router-link
+            to="/admin/login"
+            class="logout d-flex"
+            @click="handleSignOut"
+          >
             <img
               src="../assets/Signout.svg"
               alt="登出icon"
@@ -37,6 +41,23 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapState } from "vuex";
+
+export default {
+  name: "AdminNavbar",
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+  },
+  methods: {
+    handleSignOut() {
+      this.$store.commit("revokeAuthentication");
+      this.$router.push("/admin/login");
+    },
+  },
+};
+</script>
 
 <style scoped>
 .sidebar {
