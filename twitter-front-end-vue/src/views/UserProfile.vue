@@ -333,7 +333,9 @@
     </div>
 
     <div id="follow-recommend-area" class="follow-recommend-area">
-      <FollowRecommend />
+      <FollowRecommend 
+        @after-click-follow="afterClickFollow"
+        @after-click-unfollow="afterClickUnfollow"/>
     </div>
   </div>
 </template>
@@ -351,6 +353,7 @@ import { mapState } from "vuex";
 import Spinner from "../components/Spinner";
 import usersAPI from "../apis/users";
 import followshipAPI from "../apis/followship";
+// import func from '../../vue-temp/vue-editor-bridge';
 
 export default {
   name: "UserProfile",
@@ -569,6 +572,28 @@ export default {
       this.cover = "";
       this.avatar = "";
     },
+    afterClickFollow(recommend) {
+      // 當前個人頁面就是follow對象，按下follow時顯示追隨者增加
+      if(this.$route.params.id === recommend.id) {
+        this.user.followersCount ++
+        return
+      }
+      //位在自己的頁面，按下follow時顯示正在追隨增加
+      if(this.user.isSelf) {
+        this.user.followingsCount ++
+      }
+    },
+    afterClickUnfollow(recommend) {
+      // 當前個人頁面就是follow對象，按下follow時顯示追隨者增加
+      if(this.$route.params.id === recommend.id) {
+        this.user.followersCount --
+        return
+      }
+      //位在自己的頁面，按下follow時顯示正在追隨增加
+      if(this.user.isSelf) {
+        this.user.followingsCount --
+      }
+    }
   },
   created() {
     const { id } = this.$route.params;
@@ -609,6 +634,16 @@ export default {
         }
       },
     },
+    user: {
+      //深度監聽user.isFollowed的變化，再根據變化增減user.followersCount的數字
+      handler: function (newValue, oldValue) {
+        //僅限於isFollowed產生變化時...
+        if (newValue.isFollowed !== oldValue.isFollowed) {
+          return newValue.isFollowed ? this.user.followersCount++ : this.user.followersCount --
+        } 
+      },
+      deep: true
+    }
   },
 };
 </script>
