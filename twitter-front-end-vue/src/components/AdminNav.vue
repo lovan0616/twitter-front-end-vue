@@ -24,15 +24,11 @@
           >
         </li>
         <div class="logout-wrapper">
-<<<<<<< HEAD
           <router-link
             to="/admin/login"
             class="logout d-flex"
             @click="handleSignOut"
           >
-=======
-          <router-link to="/admin/login" class="logout d-flex">
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
             <img
               src="../assets/Signout.svg"
               alt="登出icon"
@@ -46,7 +42,6 @@
   </div>
 </template>
 
-<<<<<<< HEAD
 <script>
 import { mapState } from "vuex";
 
@@ -64,8 +59,6 @@ export default {
 };
 </script>
 
-=======
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
 <style scoped>
 .sidebar {
   position: fixed;

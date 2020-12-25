@@ -37,10 +37,6 @@ const routes = [
     path: '/',
     name: 'root',
     redirect: '/signin'
-<<<<<<< HEAD
-=======
-
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
   },
   {
     path: '/signin',
@@ -98,15 +94,9 @@ router.beforeEach(async (to, from, next) => {
     isAuthenticated = await store.dispatch('fetchCurrentUser')
   }
 
-<<<<<<< HEAD
   // 如果 token 有效則轉址到推特首頁
   if (isAuthenticated && to.name === 'sign-in') {
     next('/main/')
-=======
-
-  if (isAuthenticated && to.name === 'sign-in') {
-    next('/main')
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
     return
   }
 

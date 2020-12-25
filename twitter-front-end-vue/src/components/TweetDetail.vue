@@ -119,14 +119,7 @@
                       </textarea>
 
                       <div class="button-control mt-3">
-                        <button
-                          type="submit"
-                          class="btn btn-primary post"
-<<<<<<< HEAD
-                          :disabled="!newReply"
-=======
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
-                        >
+                        <button type="submit" class="btn btn-primary post">
                           回覆
                         </button>
                       </div>
@@ -176,19 +169,16 @@ export default {
       // for (let [key, value] of formData.entries()) {
       //   console.log(key + ", " + value);
       // }
-<<<<<<< HEAD
-=======
       // 輸入為空白時跳回同一頁並alert
       if (!this.newReply.trim()) {
         Toast.fire({
-          icon: 'warning',
-          title: '回覆不能空白'
-        })
+          icon: "warning",
+          title: "回覆不能空白",
+        });
         $("#postReply").modal("hide");
-        return
+        return;
       }
 
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
       const comment = this.newReply;
       this.$emit("after-post-submit", comment);
       console.log(comment);

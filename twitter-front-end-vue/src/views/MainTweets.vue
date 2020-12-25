@@ -92,22 +92,16 @@ export default {
         this.tweets.unshift({
           id: data.tweet.id,
           description,
-<<<<<<< HEAD
           User: this.presentUser,
-=======
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
           UserId: this.presentUser.id,
           createdAt: new Date(),
           isLiked: false,
           repliedCount: 0,
           LikeCount: 0,
         });
-<<<<<<< HEAD
-=======
 
-        this.fetchData()
-        this.fetchCurrentUser()
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
+        this.fetchData();
+        this.fetchCurrentUser();
       } catch (error) {
         console.log("error:", error);
         Toast.fire({

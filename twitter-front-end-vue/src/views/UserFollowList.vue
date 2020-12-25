@@ -189,16 +189,13 @@ export default {
     this.fetchFollowings(id);
     next();
   },
-<<<<<<< HEAD
-=======
   // 當使用者追隨某人時，同步就重新拉一次資料到followings當中
   watch: {
     followings() {
       const { id } = this.$route.params;
-      this.fetchFollowings(id)
-    }
-  }
->>>>>>> a0c9e063de7ff632e142c2d9623af01c9012bedd
+      this.fetchFollowings(id);
+    },
+  },
 };
 </script>
 
