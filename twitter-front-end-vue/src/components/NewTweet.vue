@@ -3,11 +3,8 @@
     <div class="root new-tweet-area d-flex p-3">
       <div class="image-area mr-3">
         <a>
-          <div class="image-cropper">
-            <img
-              src="https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg"
-              class="avatar"
-            />
+          <div class="image-cropper" v-if="currentUser !== ''">
+            <img :src="currentUser.avatar" class="avatar" />
           </div>
         </a>
       </div>
@@ -65,11 +62,8 @@
             <div class="modal-new-tweet-area d-flex">
               <div class="image-area mr-3">
                 <a>
-                  <div class="image-cropper">
-                    <img
-                      src="https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg"
-                      class="avatar"
-                    />
+                  <div class="image-cropper" v-if="currentUser !== ''">
+                    <img :src="currentUser.avatar" class="avatar" />
                   </div>
                 </a>
               </div>
@@ -108,29 +102,43 @@
 </template>
 
 <script>
-//Todo: 取回API後記得刪除
-// import { v4 as uuidv4 } from "uuid";
 import $ from "jquery";
 export default {
   name: "NewTweet",
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       description: "",
+      currentUser: "",
     };
   },
   methods: {
-    handleSubmit(e) {
+    handleSubmit() {
       if (!this.description.trim()) return;
-      const form = e.target;
-      const formData = new FormData(form);
-      for (let [key, value] of formData.entries()) {
-        console.log(key + ", " + value);
-      }
-      this.$emit("after-post-submit", formData);
-
+      // const form = e.target;
+      // const formData = new FormData(form);
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key + ", " + value);
+      // }
+      const description = this.description;
+      console.log(description);
+      this.$emit("after-post-submit", description);
       // 發文後清空收入欄、關閉彈跳視窗
       this.description = "";
       $("#postModal").modal("hide");
+    },
+  },
+  watch: {
+    user(newValue) {
+      this.currentUser = {
+        ...this.currentUser,
+        ...newValue,
+      };
     },
   },
 };

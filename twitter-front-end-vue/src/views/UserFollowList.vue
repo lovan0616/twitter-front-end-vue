@@ -8,13 +8,15 @@
     <div id="main-area" class="main-area">
       <div class="upper-area d-flex align-items-top">
         <div class="upper-area-content d-flex align-items-center">
-          <router-link :to="{
-            name: 'user-profile',
-            params: {id: user.id}
-          }">
+          <router-link
+            :to="{
+              name: 'user-profile',
+              params: { id: user.id },
+            }"
+          >
             <span class="mr-4" style="color: #000000">&larr;</span>
           </router-link>
-          
+
           <div class="user">
             <strong class="name">{{ user.name }}</strong>
             <p class="tweets-count small">{{ user.tweetsCount }} 推文</p>
@@ -24,53 +26,56 @@
       <main>
         <ul class="nav nav-tabs">
           <li class="nav-item" @click.stop.prevent="toggleTab('followers')">
-            <router-link 
-            :to="{
-              name: 'user-followlist',
-              params: {id: user.id, followship: 'followers' }
-            }" 
-            class="nav-link"
-           >追隨者</router-link>
+            <router-link
+              :to="{
+                name: 'user-followlist',
+                params: { id: user.id, followship: 'followers' },
+              }"
+              class="nav-link"
+              >追隨者</router-link
+            >
           </li>
           <li class="nav-item" @click.stop.prevent="toggleTab('followings')">
-            <router-link 
-            :to="{
-              name: 'user-followlist',
-              params: {id: user.id, followship: 'followings'}
-            }"
-            class="nav-link">正在追隨</router-link>
+            <router-link
+              :to="{
+                name: 'user-followlist',
+                params: { id: user.id, followship: 'followings' },
+              }"
+              class="nav-link"
+              >正在追隨</router-link
+            >
           </li>
         </ul>
-        
+
         <div class="followers-panel" v-if="nowTabbed === 'followers'">
           <!-- 拉取資料完成前顯示Spinner -->
-            <Spinner v-if="isLoading" />
+          <Spinner v-if="isLoading" />
 
           <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-else-if="!isLoading && !followers.length">
-              <h3>尚未有追隨者</h3>
-            </div>
+          <div class="no-data" v-else-if="!isLoading && !followers.length">
+            <h3>尚未有追隨者</h3>
+          </div>
 
-          <Follower 
-            v-for="follower in followers" 
-            :key="follower.followerId" 
+          <Follower
+            v-for="follower in followers"
+            :key="follower.followerId"
             :initial-follower="follower"
-            />
+          />
         </div>
         <div class="followings-panel" v-if="nowTabbed === 'followings'">
           <!-- 拉取資料完成前顯示Spinner -->
-            <Spinner v-if="isLoading" />
+          <Spinner v-if="isLoading" />
 
           <!-- 無建立任何推文時，顯示註明文字 -->
-            <div class="no-data" v-else-if="!isLoading && !followings.length">
-              <h3>尚未有正在追隨者</h3>
-            </div>
+          <div class="no-data" v-else-if="!isLoading && !followings.length">
+            <h3>尚未有正在追隨者</h3>
+          </div>
 
           <Following
-            v-for="following in followings" 
-            :key="following.followingId" 
+            v-for="following in followings"
+            :key="following.followingId"
             :initial-following="following"
-            />
+          />
         </div>
       </main>
     </div>
@@ -86,9 +91,9 @@ import Navbar from "../components/Navbar";
 import FollowRecommend from "../components/FollowRecommend";
 import Follower from "../components/Follower";
 import Following from "../components/Following";
-import userAPI from '../apis/users'
-import Spinner from '../components/Spinner'
-import { Toast } from '../utils/helpers'
+import userAPI from "../apis/users";
+import Spinner from "../components/Spinner";
+import { Toast } from "../utils/helpers";
 
 export default {
   components: {
@@ -96,7 +101,7 @@ export default {
     FollowRecommend,
     Follower,
     Following,
-    Spinner
+    Spinner,
   },
   data() {
     return {
@@ -105,86 +110,85 @@ export default {
       user: {},
       userTweetsCount: -1,
       nowTabbed: this.$route.params.followship,
-      isLoading: true
+      isLoading: true,
     };
   },
   methods: {
     async fetchUser(id) {
       try {
-        const response = await userAPI.readUser({id})
-        if(response.statusText !== 'OK') {
-          throw new Error(response.statusText)
+        const response = await userAPI.readUser({ id });
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
         }
 
-        const { data } = response
+        const { data } = response;
         this.user = {
           ...this.user,
-          ...data
-        }
-
-      } catch(error) {
-        console.log(error)
+          ...data,
+        };
+      } catch (error) {
+        console.log(error);
         Toast.fire({
-          icon: 'error',
-          title: '無法取得使用者資料，請稍後再試'
-        })
+          icon: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
       }
     },
     async fetchFollowers(id) {
       try {
-        const response = await userAPI.readFollowers({id})
-        if(response.statusText !== 'OK') {
-          throw new Error(response.statusText)
+        const response = await userAPI.readFollowers({ id });
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
         }
 
-        const { data } = response
-        this.followers = [...data]
-        this.isLoading = false
-      } catch(error) {
-        this.isLoading = false
-        console.log(error)
+        const { data } = response;
+        this.followers = [...data];
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
         Toast.fire({
-          icon: 'error',
-          title: '無法取得跟隨者資料，請稍後再試'
-        })
+          icon: "error",
+          title: "無法取得跟隨者資料，請稍後再試",
+        });
       }
     },
     async fetchFollowings(id) {
       try {
-        const response = await userAPI.readFollowings({id})
-        if(response.statusText !== 'OK') {
-          throw new Error(response.statusText)
+        const response = await userAPI.readFollowings({ id });
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
         }
 
-        const { data } = response
-        this.followings = [...data]
-        this.isLoading = false
-      } catch(error) {
-        this.isLoading = false
-        console.log(error)
+        const { data } = response;
+        this.followings = [...data];
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.log(error);
         Toast.fire({
-          icon: 'error',
-          title: '無法取得跟隨中資料，請稍後再試'
-        })
+          icon: "error",
+          title: "無法取得跟隨中資料，請稍後再試",
+        });
       }
     },
     toggleTab(item) {
-      this.nowTabbed = item
-    }
+      this.nowTabbed = item;
+    },
   },
   created() {
-    const { id } = this.$route.params
-    this.fetchUser(id)
-    this.fetchFollowers(id)
-    this.fetchFollowings(id)
+    const { id } = this.$route.params;
+    this.fetchUser(id);
+    this.fetchFollowers(id);
+    this.fetchFollowings(id);
   },
   beforeRouteUpdate(to, from, next) {
-    const {id} = to.params
-    this.fetchUser(id)
-    this.fetchFollowers(id)
-    this.fetchFollowings(id)
-    next()
-  }
+    const { id } = to.params;
+    this.fetchUser(id);
+    this.fetchFollowers(id);
+    this.fetchFollowings(id);
+    next();
+  },
 };
 </script>
 
@@ -216,8 +220,8 @@ export default {
 
 .nav-link.active {
   border: hidden;
-  border-bottom: 2px solid #FF6600;
-  color: #FF6600
+  border-bottom: 2px solid #ff6600;
+  color: #ff6600;
 }
 
 .nav-link {
@@ -230,6 +234,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  color:#657786;
+  color: #657786;
 }
 </style>

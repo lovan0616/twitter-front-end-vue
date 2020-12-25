@@ -38,7 +38,7 @@ export default {
       type: Object,
       required: true,
     },
-    user: {
+    initialUser: {
       type: Object,
       required: true,
     },

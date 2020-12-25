@@ -4,7 +4,7 @@ const getToken = () => localStorage.getItem('token')
 export default {
   like({ tweetId }) {
     return apiHelper.post(`/api/tweets/${tweetId}/like`, null, {
-        headers: { Authorization: `Bearer ${getToken()}` }
+      headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
   unlike({ tweetId }) {
