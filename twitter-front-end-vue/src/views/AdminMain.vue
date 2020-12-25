@@ -35,7 +35,6 @@ export default {
     async fetchAdminTweets() {
       try {
         const { data } = await AdminAPI.getAdminTweets();
-        console.log(data);
         this.tweets = [...data];
       } catch (error) {
         console.log("error:", error);
@@ -48,7 +47,6 @@ export default {
     async deleteTweet(tweetId) {
       try {
         // 把子層回傳id跟API串連
-        console.log(tweetId);
         const { data } = await AdminAPI.deleteTweet(tweetId);
 
         // 寫入資料狀態報錯的情境
