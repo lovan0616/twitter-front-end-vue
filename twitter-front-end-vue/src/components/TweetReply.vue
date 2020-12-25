@@ -2,7 +2,7 @@
   <div class="reply-container">
     <div class="reply-template d-flex">
       <div class="image-cropper">
-        <img :src="initialReply.User.avatar" class="avatar" />
+        <img :src="initialReply.User.avatar | emptyImage" class="avatar" />
       </div>
       <div class="reply-all">
         <div class="user-profile d-flex">
@@ -25,10 +25,11 @@
 
 <script>
 import { fromNowFilter } from "../utils/mixins";
+import { emptyImageFilter } from '../utils/mixins'
 
 export default {
   name: "TweetReply",
-  mixins: [fromNowFilter],
+  mixins: [fromNowFilter, emptyImageFilter],
   data() {
     return {};
   },

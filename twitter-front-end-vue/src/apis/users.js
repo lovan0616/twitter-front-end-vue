@@ -41,5 +41,10 @@ export default {
     return apiHelper.put(`/api/users/${id}`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  readTopUsers() {
+    return apiHelper.get('/api/users/top', {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }

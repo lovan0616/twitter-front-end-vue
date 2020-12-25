@@ -43,6 +43,14 @@
         </ul>
         
         <div class="followers-panel" v-if="nowTabbed === 'followers'">
+          <!-- 拉取資料完成前顯示Spinner -->
+            <Spinner v-if="isLoading" />
+
+          <!-- 無建立任何推文時，顯示註明文字 -->
+            <div class="no-data" v-else-if="!isLoading && !followers.length">
+              <h3>尚未有追隨者</h3>
+            </div>
+
           <Follower 
             v-for="follower in followers" 
             :key="follower.followerId" 
@@ -50,6 +58,14 @@
             />
         </div>
         <div class="followings-panel" v-if="nowTabbed === 'followings'">
+          <!-- 拉取資料完成前顯示Spinner -->
+            <Spinner v-if="isLoading" />
+
+          <!-- 無建立任何推文時，顯示註明文字 -->
+            <div class="no-data" v-else-if="!isLoading && !followings.length">
+              <h3>尚未有正在追隨者</h3>
+            </div>
+
           <Following
             v-for="following in followings" 
             :key="following.followingId" 
@@ -71,6 +87,7 @@ import FollowRecommend from "../components/FollowRecommend";
 import Follower from "../components/Follower";
 import Following from "../components/Following";
 import userAPI from '../apis/users'
+import Spinner from '../components/Spinner'
 import { Toast } from '../utils/helpers'
 
 export default {
@@ -78,7 +95,8 @@ export default {
     Navbar,
     FollowRecommend,
     Follower,
-    Following
+    Following,
+    Spinner
   },
   data() {
     return {
@@ -87,6 +105,7 @@ export default {
       user: {},
       userTweetsCount: -1,
       nowTabbed: this.$route.params.followship,
+      isLoading: true
     };
   },
   methods: {
@@ -120,8 +139,9 @@ export default {
 
         const { data } = response
         this.followers = [...data]
-
+        this.isLoading = false
       } catch(error) {
+        this.isLoading = false
         console.log(error)
         Toast.fire({
           icon: 'error',
@@ -138,8 +158,9 @@ export default {
 
         const { data } = response
         this.followings = [...data]
-
+        this.isLoading = false
       } catch(error) {
+        this.isLoading = false
         console.log(error)
         Toast.fire({
           icon: 'error',
@@ -201,5 +222,14 @@ export default {
 
 .nav-link {
   color: #657786;
+}
+
+.no-data {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:#657786;
 }
 </style>

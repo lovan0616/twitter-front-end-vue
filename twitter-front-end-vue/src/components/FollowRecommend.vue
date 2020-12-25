@@ -12,7 +12,7 @@
         <div class="info d-flex align-items-center">
           <div class="image-area mr-2">
             <div class="image-cropper">
-            <img :src="recommend.image" class="avatar">
+            <img :src="recommend.image | emptyImage" class="avatar">
           </div>          
           </div>
           <div class="info-text d-flex flex-column justify-content-center">
@@ -22,7 +22,7 @@
         </div>
         <div class="follow-badge ml-auto">
           <div class="following badge badge-pill badge-primary" v-if="recommend.isFollowed">正在跟隨</div>
-          <div class="deleteFollow badge badge-pill" v-if="recommend.isFollowed" @click.stop.prevent="deleteFollow(recommend)">取消跟隨</div>
+          <div class="deleteFollow badge badge-pill" v-if="recommend.isFollowed" @click.stop.prevent="unfollow(recommend)">取消跟隨</div>
           <div class="unfollow badge badge-pill badge-outline-primary" v-else @click.stop.prevent="follow(recommend)">跟隨</div>
         </div>
         </router-link>
@@ -33,81 +33,10 @@
 </template>
 
 <script>
-//Todo: 需要替換為API撈回資料
-const dummyData = {
-  recommends: [
-    {
-      id: 1,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: true
-    },
-    {
-      id: 2,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: true
-    },
-    {
-      id: 3,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 4,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 5,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 6,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 7,
-      name: '蠟筆小新',
-      account: 'canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 8,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 9,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image: 'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-    {
-      id: 10,
-      name: '蠟筆小新',
-      account: '@canyon',
-      image:'https://bbs.kamigami.org/uploads/monthly_2017_12/timg.jpg.3d7dc76f5ab8a4eb86da562e60e28b43.jpg',
-      isFollowed: false
-    },
-  ]
-}
+import usersAPI from '../apis/users'
+import followshipAPI from '../apis/followship'
+import { Toast } from '../utils/helpers'
+import { emptyImageFilter } from '../utils/mixins'
 export default {
   data() {
     return {
@@ -115,24 +44,74 @@ export default {
       recommendsAllShowed: false
     }
   },
+  mixins: [emptyImageFilter],
   methods: {
-    fetchData(amount) {
-      this.recommends = [...dummyData.recommends].filter((recommend, index, self) => self.indexOf(recommend) < amount)
+    async fetchData(amount) {
+      try {
+        const response = await usersAPI.readTopUsers()
+
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+
+        const { data } = response
+        this.recommends = [...data].filter((recommend, index, self) => self.indexOf(recommend) < amount)
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推薦名單，請稍後再試'
+        })
+      }
     },
     showAllRecommends() {
       this.recommendsAllShowed = true
       this.fetchData(10)
     },
-    follow(recommend) {
-      recommend.isFollowed = true
+    async follow(recommend) {
+      try {
+        const { id } = recommend
+        console.log(id)
+        const response = await followshipAPI.follow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        recommend.isFollowed = true
+
+        this.recommends = [...this.recommends]
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法成功跟隨，請稍後再試'
+        })
+      }
     },
-    deleteFollow(recommend) {
-      recommend.isFollowed = false
+    async unfollow(recommend) {
+      try {
+        const { id } = recommend
+        const response = await followshipAPI.unfollow({id})
+        if(response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+        recommend.isFollowed = false
+
+        this.recommends = [...this.recommends]
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法成功跟隨，請稍後再試'
+        })
+      }
     }
   },
   created() {
     this.fetchData(6)
-  }
+  },
 }
 </script>
 

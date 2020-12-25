@@ -11,7 +11,7 @@
         params: {id: tweet.userId}
       }">
         <div class="image-cropper">
-          <img :src="tweet.userAvatar" class="avatar" />
+          <img :src="tweet.userAvatar | emptyImage" class="avatar" />
         </div>
       </router-link>
     </div>
@@ -111,7 +111,10 @@
               </div>
             </div>
 
-            <form>
+            <form @submit.stop.prevent="saveEdit(
+              tweet.id,
+              tweet.description
+            )">
               <textarea
                     class="w-100 mt-3"
                     name="description"
@@ -133,9 +136,12 @@
 <script>
 import { fromNowFilter } from '../utils/mixins'
 import likesAPI from '../apis/likes'
+import tweetsAPI from '../apis/tweets'
 import { Toast } from '../utils/helpers'
+import { emptyImageFilter } from '../utils/mixins'
 export default {
   name: "UserTweets",
+  mixins: [emptyImageFilter, fromNowFilter],
   props: {
     initialTweet: {
       type: Object,
@@ -150,7 +156,6 @@ export default {
       required: true
     }
   },
-  mixins: [fromNowFilter],
   data() {
     return {
       tweet: {
@@ -225,6 +230,24 @@ export default {
         Toast.fire({
           icon: 'error',
           title: '無法收回愛心，請稍後再試'
+        })
+      }
+    },
+    async saveEdit(tweetId, description) {
+      try {
+        const response = await tweetsAPI.update(tweetId, { description })
+        
+        if (response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+
+        console.log(response)
+
+      } catch(error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法編輯推文，請稍後再試'
         })
       }
     },

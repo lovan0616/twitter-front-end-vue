@@ -17,7 +17,7 @@
           }"
             >
               <div class="image-cropper">
-                <img :src="presentTweet.User.avatar" class="avatar" />
+                <img :src="presentTweet.User.avatar | emptyImage" class="avatar" />
               </div>
             </router-link>
           </div>
@@ -79,7 +79,7 @@
     <div class="reply-container">
       <div class="reply-template d-flex p-2">
         <div class="image-cropper">
-          <img :src="user.avatar" class="avatar" />
+          <img :src="user.avatar | emptyImage" class="avatar" />
         </div>
         <div class="reply-all ml-3">
           <div class="user-profile d-flex">
@@ -109,11 +109,12 @@
 </template>
 
 <script>
-import { fromNowFilter } from "../utils/mixins";
+import { fromNowFilter, emptyImageFilter } from "../utils/mixins";
 import likesAPI from "../apis/likes";
 import { Toast } from "../utils/helpers";
 export default {
   name: "UserTweetsReplies",
+  mixins: [emptyImageFilter, fromNowFilter],
   props: {
     initialReply: {
       type: Object,
@@ -128,7 +129,6 @@ export default {
       required: true
     }
   },
-  mixins: [fromNowFilter],
   data() {
     return {
       presentTweet: {},

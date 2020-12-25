@@ -55,7 +55,7 @@
         required
       />
 
-      <button class="btn btn-primary btn-block my-4" type="submit">註冊</button>
+      <button class="btn btn-primary btn-block my-4" type="submit" :disabled="isProcessing">註冊</button>
 
       <div class="others d-flex justify-content-center">
         <router-link to="/signin">取消</router-link>
@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import authorizationAPI from "../apis/authorization";
+import { Toast } from "../utils/helpers";
 export default {
   data() {
     return {
@@ -72,28 +74,68 @@ export default {
       email: "",
       name: "",
       password: "",
-      checkPassword: ""
+      checkPassword: "",
+      isProcessing: false
     };
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        account: this.account,
-        email: this.email,
-        name: this.name,
-        password: this.password,
-        checkPassword: this.checkPassword
-      });
+    async handleSubmit() {
+      try {
+        this.isProcessing = true;
 
-      //Todo：向後端驗證使用者登入是否合法
-      console.log("data", data);
+        const checkList = [
+          this.account,
+          this.name,
+          this.email,
+          this.password,
+          this.checkPassword
+        ];
+        const isBlank = checkList.map(data => data.trim()).some(data => !data);
+
+        if (isBlank) {
+          Toast.fire({
+            icon: "warning",
+            title: "請檢查是否有欄位未填寫"
+          });
+          return;
+        }
+
+        const response = await authorizationAPI.signUp({
+          account: this.account,
+          email: this.email,
+          name: this.name,
+          password: this.password,
+          checkPassword: this.checkPassword
+        });
+
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
+        }
+
+        //成功的話，發送註冊成功通知
+        Toast.fire({
+          icon: "success",
+          title: "完成註冊！請登入以開始使用論壇"
+        });
+
+        //轉址到signIn頁
+        this.$router.push({ name: "sign-in" });
+
+      } catch (error) {
+        this.isProcessing = false;
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法成功註冊，請稍後再試"
+        });
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-.alphitterLogo  {
+.alphitterLogo {
   margin-top: 72.51px;
   height: 50px;
   width: 50px;
@@ -110,12 +152,11 @@ input {
   padding: 10px;
   border: 10px;
   border-bottom: 3px solid #9d9d9d;
-  background-color: #F5F8FA;
+  background-color: #f5f8fa;
 }
 
 .others {
   width: 40%;
-
 }
 
 button {
