@@ -111,6 +111,9 @@ export default {
         recommend.isFollowed = true;
 
         this.recommends = [...this.recommends];
+
+        // 將recommend傳回userProfile使用
+        this.$emit("after-click-follow", recommend);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -129,6 +132,9 @@ export default {
         recommend.isFollowed = false;
 
         this.recommends = [...this.recommends];
+
+        // 將recommend傳回userProfile使用
+        this.$emit("after-click-unfollow", recommend);
       } catch (error) {
         console.log(error);
         Toast.fire({

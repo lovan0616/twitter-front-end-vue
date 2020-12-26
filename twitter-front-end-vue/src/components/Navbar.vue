@@ -66,6 +66,7 @@
           class="btn btn-primary post"
           data-toggle="modal"
           data-target="#postModal"
+          @click="handleClickConfig"
         >
           推文
         </div>
@@ -97,6 +98,10 @@ export default {
     handleSignOut() {
       this.$store.commit("revokeAuthentication");
       this.$router.push("/signin");
+    },
+    handleClickConfig() {
+      //確保使用者都會在首頁下新增推文
+      this.$router.push({ name: "main-tweets" });
     },
   },
 };
