@@ -22,11 +22,23 @@
       <main>
         <div class="info-area d-flex flex-column align-items-end pb-3">
           <div class="image-wrapper">
-            <div class="cover-cropper">
-              <img :src="user.cover | emptyImage" class="cover" />
+            <div
+              class="cover-cropper"
+              v-if="cover === '' && user.cover === '0'"
+            >
+              <img src="../assets/default-cover.jpg" class="cover" />
             </div>
-            <div class="image-cropper">
-              <img :src="user.avatar | emptyImage" class="avatar" />
+            <div class="cover-cropper" v-else>
+              <img :src="user.cover" class="cover" />
+            </div>
+            <div
+              class="image-cropper"
+              v-if="avatar === '' && user.avatar === null"
+            >
+              <img src="../assets/default-user.svg" class="avatar" />
+            </div>
+            <div class="image-cropper" v-else>
+              <img :src="user.avatar" class="avatar" />
             </div>
           </div>
           <div
@@ -113,6 +125,7 @@
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    @click="cancelEdit"
                   >
                     <img src="../assets/Close.svg" />
                   </button>
@@ -132,12 +145,21 @@
                 <div class="modal-body px-0">
                   <div class="edit-cover">
                     <div class="cover-edit-wrapper d-flex">
+                      <!--如果user為剛註冊者或無上傳cover者-->
                       <img
-                        :src="cover"
+                        src="../assets/default-cover.jpg"
+                        alt="cover-default"
+                        class="cover-sample"
+                        v-if="user.cover === '0' && cover === ''"
+                      />
+                      <!--即時預覽效果-->
+                      <img
+                        :src="this.cover"
                         alt="cover-thumbnail"
                         class="cover-sample"
-                        v-if="cover"
+                        v-if="cover !== ''"
                       />
+                      <!--即時帶入user的cover-->
                       <img
                         :src="user.cover"
                         alt="present-cover"
@@ -165,12 +187,21 @@
                     </div>
                     <div class="avatar-edit-wrapper">
                       <div class="edit-avatar">
+                        <!--如果user為剛註冊者或無上傳avatar者-->
                         <img
-                          :src="avatar"
-                          alt="avatar-thumbnail"
+                          src="../assets/default-user.svg"
+                          alt="avatar-default"
                           class="avartar-sample"
-                          v-if="avatar"
+                          v-if="avatar === '' && user.avatar === null"
                         />
+                        <!--即時預覽效果-->
+                        <img
+                          :src="this.avatar"
+                          alt="avatar-thumbnail"
+                          class="avatar-sample"
+                          v-if="avatar !== ''"
+                        />
+                        <!--即時帶入既有avatar-->
                         <img
                           :src="user.avatar"
                           alt="present-avatar"
@@ -568,6 +599,8 @@ export default {
     cancelEdit() {
       this.cover = "";
       this.avatar = "";
+      this.name = "";
+      this.introduction = "";
     },
   },
   created() {
@@ -608,6 +641,12 @@ export default {
           });
         }
       },
+    },
+    cover(newValue) {
+      this.cover = newValue;
+    },
+    avatar(newValue) {
+      this.avatar = newValue;
     },
   },
 };
@@ -819,18 +858,13 @@ export default {
 .edit-cover {
   width: 100%;
   height: 200px;
-  opacity: 60%;
+  opacity: 80%;
   background-color: #999999;
   position: relative;
 }
 
+.cover-sample,
 .edit-cover-photo {
-  width: 100%;
-  display: inline;
-  object-fit: cover;
-}
-
-.cover-sample {
   width: 100%;
   display: inline;
   object-fit: cover;
@@ -872,19 +906,12 @@ export default {
   background-color: #9d9d9d;
 }
 
+.avatar-sample,
 .edit-avatar-photo {
   width: auto;
   display: inline;
   height: 100%;
-  opacity: 60%;
-  object-fit: cover;
-}
-
-.avartar-sample {
-  width: auto;
-  display: inline;
-  height: 100%;
-  opacity: 60%;
+  opacity: 80%;
   object-fit: cover;
 }
 
