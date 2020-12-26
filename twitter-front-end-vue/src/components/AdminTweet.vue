@@ -37,6 +37,7 @@
 import { fromNowFilter } from "../utils/mixins";
 
 export default {
+  name: "AdminTweet",
   props: {
     initialTweet: {
       type: Object,

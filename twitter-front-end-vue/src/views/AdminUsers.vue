@@ -5,6 +5,7 @@
     </div>
     <div class="row" id="all-container" style="height: 100%">
       <h5 class="my-3" style="width: 100%">使用者列表</h5>
+      <Spinner v-if="this.isLoading" />
       <AdminUserCard
         v-for="user in allUsers"
         :key="user.id"
@@ -17,6 +18,7 @@
 <script>
 import AdminNav from "../components/AdminNav";
 import AdminUserCard from "../components/AdminUserCard";
+import Spinner from "../components/Spinner";
 import AdminAPI from "../apis/admin";
 import { Toast } from "../utils/helpers";
 
@@ -25,15 +27,18 @@ export default {
   components: {
     AdminNav,
     AdminUserCard,
+    Spinner,
   },
   data() {
     return {
       allUsers: [],
+      isLoading: true,
     };
   },
   methods: {
     async fetchAllUsers() {
       try {
+        this.isLoading = true;
         const { data } = await AdminAPI.getAdminUsers();
         console.log(data);
         this.allUsers = [...data];
@@ -41,7 +46,9 @@ export default {
           // 根據物件值降序排列
           return b.tweetsCount - a.tweetsCount;
         });
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log("error", error);
         Toast.fire({
           icon: "error",

@@ -17,6 +17,31 @@
           <router-link
             class="nav-item"
             :to="{
+              name: 'public-chat',
+            }"
+          >
+            <div class="d-flex" style="width: 143px">
+              <img src="../assets/email.svg" class="email-icon" />
+              <img src="../assets/email-open.svg" class="email-icon-hovered" />
+              <p>公開聊天室</p>
+            </div>
+          </router-link>
+          <router-link
+            class="nav-item"
+            :to="{
+              name: 'private-chat',
+              params: { id: currentUser.id },
+            }"
+          >
+            <div class="d-flex" style="width: 143px">
+              <img src="../assets/email.svg" class="email-icon" />
+              <img src="../assets/email-open.svg" class="email-icon-hovered" />
+              <p>私人訊息</p>
+            </div>
+          </router-link>
+          <router-link
+            class="nav-item"
+            :to="{
               name: 'user-profile',
               params: { id: currentUser.id },
             }"
@@ -76,8 +101,8 @@ export default {
     },
     handleClickConfig() {
       //確保使用者都會在首頁下新增推文
-      this.$router.push({name: 'main-tweets'})
-    }
+      this.$router.push({ name: "main-tweets" });
+    },
   },
 };
 </script>
@@ -103,7 +128,18 @@ li {
   margin-right: 21px;
 }
 
-.nav-item .icon-hovered {
+.email-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.email-icon-hovered {
+  width: 22px;
+  height: 22px;
+}
+
+.nav-item .icon-hovered,
+.nav-item .email-icon-hovered {
   display: none;
   margin-right: 21px;
 }
@@ -117,24 +153,38 @@ li {
   color: #ff6600;
 }
 
-.nav-item:hover .icon {
+.nav-item:hover .icon,
+.nav-item:hover .email-icon {
   display: none;
 }
 
-.nav-item:hover .icon-hovered {
+.nav-item:hover .icon-hovered,
+.nav-item:hover .email-icon-hovered {
   display: block;
+}
+
+.nav-item:hover .email-icon-hovered {
+  filter: invert(42%) sepia(19%) saturate(6136%) hue-rotate(2deg)
+    brightness(106%) contrast(105%);
 }
 
 .active p {
   color: #ff6600;
 }
 
-.active .icon {
+.active .icon,
+.active .email-icon {
   display: none;
 }
 
 .active .icon-hovered {
   display: block;
+}
+
+.active .email-icon-hovered {
+  display: block;
+  filter: invert(42%) sepia(19%) saturate(6136%) hue-rotate(2deg)
+    brightness(106%) contrast(105%);
 }
 
 .post {
