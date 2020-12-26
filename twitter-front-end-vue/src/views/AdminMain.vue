@@ -5,6 +5,7 @@
     </div>
     <div class="row" id="all-container" style="height: 100%">
       <h5 style="width: 100%">推文清單</h5>
+      <Spinner v-if="this.isLoading" />
       <AdminTweet
         v-for="tweet in tweets"
         :key="tweet.id"
@@ -18,6 +19,7 @@
 <script>
 import AdminNav from "../components/AdminNav";
 import AdminTweet from "../components/AdminTweet";
+import Spinner from "../components/Spinner";
 import AdminAPI from "../apis/admin";
 import { Toast } from "../utils/helpers";
 
@@ -25,18 +27,23 @@ export default {
   components: {
     AdminNav,
     AdminTweet,
+    Spinner,
   },
   data() {
     return {
       tweets: [],
+      isLoading: true,
     };
   },
   methods: {
     async fetchAdminTweets() {
       try {
+        this.isLoading = true;
         const { data } = await AdminAPI.getAdminTweets();
         this.tweets = [...data];
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log("error:", error);
         Toast.fire({
           icon: "warning",
@@ -48,11 +55,7 @@ export default {
       try {
         // 把子層回傳id跟API串連
         const { data } = await AdminAPI.deleteTweet(tweetId);
-
-        // 寫入資料狀態報錯的情境
-        if (data.status !== "success") {
-          throw new Error(data.message);
-        }
+        console.log(data);
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
       } catch (error) {
         console.log("error:", error);

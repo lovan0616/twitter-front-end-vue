@@ -92,6 +92,12 @@ h5 {
   overflow: hidden;
 }
 
+.card:hover {
+  -webkit-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+}
+
 .card-img-top {
   height: 45%;
   object-fit: cover;
@@ -112,7 +118,7 @@ h5 {
 }
 p {
   height: 100%;
-  font-size: 8px;
+  font-size: 15px;
   color: #657786;
   margin-top: 1rem;
 }
