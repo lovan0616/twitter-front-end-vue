@@ -60,6 +60,18 @@ const routes = [
 
   },
   {
+    path: '/user/chatting/public',
+    name: 'public-chat',
+    component: () => import('../views/PublicChat.vue')
+
+  },
+  {
+    path: '/user/chatting/:id',
+    name: 'private-chat',
+    component: () => import('../views/PrivateChat.vue')
+
+  },
+  {
     path: '/user/profile/:id/:category?',
     name: 'user-profile',
     component: () => import('../views/UserProfile.vue')
