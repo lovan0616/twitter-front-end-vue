@@ -72,6 +72,12 @@ const routes = [
     component: () => import('../views/UserFollowList.vue')
   },
   {
+    path: '/chatroom',
+    name: 'chatroom',
+    component: () => import('../views/Chatroom')
+
+  },
+  {
     path: '*',
     name: 'not-found',
     component: NotFound

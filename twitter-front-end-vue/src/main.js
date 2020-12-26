@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import './assets/application.css'
 import store from './store'
+import VueSocketIo from 'vue-socket.io'
 
 Vue.config.productionTip = false
 
@@ -35,6 +36,18 @@ Vue.directive('closable', {
     document.removeEventListener('touchstart', handleOutsideClick)
   }
 })
+
+Vue.use(new VueSocketIo({
+  debug: true,
+  connection: 'http://localhost:8080/',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  },
+  option: {path: "/chatroom/"}
+}))
+
 
 new Vue({
   router,

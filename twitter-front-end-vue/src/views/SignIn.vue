@@ -85,14 +85,14 @@ export default {
         this.$store.commit("setCurrentUser", data.user);
 
         this.$router.push("/main");
-      } catch (error) {
+      } catch ( { response }) {
         this.isProcessing = false;
         this.password = "";
         Toast.fire({
           icon: "error",
-          title: "請確認您輸入了正確的密碼",
+          title: response.data.message
         });
-        console.log("error", error);
+        console.log("response", response)
       }
     },
   },
