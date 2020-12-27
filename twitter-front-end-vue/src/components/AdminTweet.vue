@@ -137,6 +137,10 @@ export default {
   cursor: pointer;
 }
 
+.delete-img:hover {
+  transform: scale(1.3);
+}
+
 .btn-primary {
   position: absolute;
   right: 10%;

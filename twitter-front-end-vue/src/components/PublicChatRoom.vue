@@ -1,5 +1,6 @@
 <template>
   <div class="chat-container">
+<<<<<<< HEAD
     <div class="chat-message-container">
       <!-- <ul>
         <li v-for="{ message, index } in messages" :key="'message' + index">
@@ -14,6 +15,20 @@
         @submit.stop.prevent="handleMessageSubmit"
       >
         <input class="text-input" type="text" placeholder="say hi to everyone!" />
+=======
+    <div class="chat-message-container" id="chat-message-container"></div>
+    <div class="chat-text-container d-flex">
+      <form
+        class="form d-flex justify-content-center mx-2"
+        @click.stop.prevent="send"
+      >
+        <input
+          class="text-input"
+          type="text"
+          placeholder="say hi to everyone!"
+          v-model="message"
+        />
+>>>>>>> gh-pages
         <button type="submit" class="send-out-btn">
           <img src="../assets/send-message.svg" alt="send-out-the-text" class="send-out" />
         </button>
@@ -23,6 +38,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 // import io from "socket.io-client"
 // const socket = io("https://krll-twitter-api-dev.herokuapp.com:57750", {
 //   withCredentials: true,
@@ -48,6 +64,65 @@ export default {
     //向後端拋出需求，等後端回拋內容回宅
     this.join();
   }
+=======
+import socketio from "socket.io-client";
+
+export default {
+  name: "PublicChatRoom",
+  data() {
+    return {
+      message: "",
+    };
+  },
+  methods: {
+    socketMsg() {
+      //因为是本地测试，所以地址是我本地的，这里替换成你们服务的实际地址即可
+      let io = socketio("http://localhost:8080", {
+        //transports和服务端统一，否则会跨域
+        transports: ["websocket"],
+      });
+      //向服务端发送消息
+      io.emit("sendMsg", { time: new Date() });
+
+      //接收服务端相对应的setId数据
+      io.on("setId", (data) => {
+        this.message = data.id;
+      });
+    },
+    send() {
+      this.$socket.emit("send message", {
+        message: this.message,
+      });
+      var dark = document.createElement("p");
+      dark.innerHTML = this.message + "\r\n";
+      var inin = document.getElementById("chat-message-container");
+      inin.append(dark);
+      this.message = "";
+    },
+  },
+  mounted() {
+    this.socketMsg();
+  },
+  sockets: {
+    connect() {
+      console.log("connect");
+    },
+    other(data) {
+      console.log("other", data);
+      var dark = document.createElement("p");
+      dark.innerHTML = data.msg + "\r\n";
+      var inin = document.getElementById("chat-message-container");
+      inin.append(dark);
+    },
+    self(data) {
+      console.log("self", data);
+      var dark = document.createElement("p");
+      dark.innerHTML = data.msg + "\r\n";
+      var inin = document.getElementById("chat-message-container");
+      inin.append(dark);
+    },
+  },
+>>>>>>> gh-pages
 };
 </script>
 
