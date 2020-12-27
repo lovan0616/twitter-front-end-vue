@@ -4,6 +4,7 @@ import router from './router'
 import './assets/application.css'
 import store from './store'
 import VueSocketIo from 'vue-socket.io'
+// import socketio from 'socket.io-client'
 
 Vue.config.productionTip = false
 
@@ -39,14 +40,19 @@ Vue.directive('closable', {
 
 Vue.use(new VueSocketIo({
   debug: true,
-  connection: 'http://localhost:8080/',
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  },
-  option: {path: "/chatroom/"}
+  connection: 'https://krll-twitter-api-dev.herokuapp.com:9124',
+  // vuex: {
+  //   store,
+  //   actionPrefix: 'SOCKET_',
+  //   mutationPrefix: 'SOCKET_'
+  // } 
 }))
+
+// Vue.prototype.$io = socketio("http://localhost:8080/#/", {
+//   transports: ['websocket'],
+// })
+
+Vue.config.productionTip = false
 
 
 new Vue({

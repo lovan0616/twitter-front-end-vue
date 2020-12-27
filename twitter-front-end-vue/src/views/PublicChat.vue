@@ -29,21 +29,52 @@
   </div>
 </template>
 
+
 <script>
 import Navbar from "../components/Navbar";
 import UserChatCard from "../components/UserChatCard";
 import PublicChatRoom from "../components/PublicChatRoom";
-
-// fetchAllUsers
-// fetchCurrentUser
-
+import VueSocketIo from 'vue-socket.io'
 export default {
+  name: 'Chatroom',
+  data() {
+    return {
+      input: '',
+      messages: []
+    }
+  },
   components: {
     Navbar,
     UserChatCard,
     PublicChatRoom,
   },
-};
+  socket: {
+    connect: function() {
+      console.log('socket connected from page')
+    },
+    //監聽後端回拋的事件及內容
+    identity({ socketId, userId }) {
+      console.log(socketId, userId)
+    }
+  },
+  methods: {
+    clickButton: function() {
+      console.log(VueSocketIo)
+    }
+  },
+  mounted() {
+    console.log('page mounted')
+    //向後端拋出需求，等後端回拋內容回宅
+    this.$socket.emit('loginmsg', { subscribe: true })
+
+    this.$socket.on('identity', 25)
+  },
+  created() {
+    this.$socket.on('identity', (data) => {
+      console.log(data)
+    })
+  }
+}
 </script>
 
 <style scoped>
