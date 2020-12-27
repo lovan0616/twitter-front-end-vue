@@ -612,6 +612,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     const { id } = to.params;
+    this.fetchUserTweets(id);
     this.fetchUser(id);
     this.fetchReplies(id);
     this.fetchUserLikes(id);

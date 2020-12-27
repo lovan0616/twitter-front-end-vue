@@ -52,10 +52,14 @@
               required
             />
           </div>
-          <input type="radio" id="password-toggle" class="password-toggle" />
+
+          <div class="toggle-wrapper d-100">
+            <input type="radio" id="password-toggle" class="password-toggle" />
           <label for="password-toggle" class="password-toggle-label"
-            >修改密碼</label
-          >
+            >修改密碼</label>
+            <div class="down-arrow">&gt;</div>
+          </div>
+          
           <div class="password-group-wrapper">
             <div class="form-group my-4">
               <input
@@ -144,6 +148,7 @@ export default {
             icon: "error",
             title: "必填項目不能為空白",
           });
+          return
         }
 
         //如果未修改密碼，則只回傳前三筆資料
@@ -153,13 +158,24 @@ export default {
           });
         }
 
-        const { data } = await usersAPI.updateUser(id, { formData });
-        console.log(data);
-      } catch (error) {
-        console.log(error);
+        const response = await usersAPI.updateUser(id, { formData });
+        
+        if (response.statusText !== 'OK') {
+          throw new Error(response.statusText)
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: '已成功修改資料'
+        })
+        
+        this.fetchData()
+        this.$router.push({name: 'main-tweets'})
+
+      } catch ({ response }) {
         Toast.fire({
           icon: "error",
-          title: "無法修改資料，請稍後再試",
+          title: response.data.message,
         });
       }
     },
@@ -232,11 +248,8 @@ input {
   cursor: pointer;
   border-radius: 20px;
   padding: 3px 10px;
-}
-
-.password-toggle-label:hover {
-  color: #ff6600;
-  background-color: #faceaf;
+  margin: 0;
+  color: #495057;
 }
 
 .password-group-wrapper {
@@ -244,4 +257,25 @@ input {
   transform-origin: top;
   transition: transform 0.3s ease-in-out;
 }
+
+.toggle-wrapper {
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ebeef0;
+}
+
+.toggle-wrapper:hover {
+  background-color: #f7f9fa;
+  border-bottom: 2px solid #ff6600;
+}
+
+.down-arrow {
+  margin: 0 15px 0 auto;
+  transform: rotate(0.25turn);
+  padding-right: 0px;
+
+}
+
 </style>

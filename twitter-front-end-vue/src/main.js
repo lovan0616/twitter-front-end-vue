@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import './assets/application.css'
 import store from './store'
+import VueSocketIo from 'vue-socket.io'
+// import socketio from 'socket.io-client'
 
 Vue.config.productionTip = false
 
@@ -35,6 +37,23 @@ Vue.directive('closable', {
     document.removeEventListener('touchstart', handleOutsideClick)
   }
 })
+
+Vue.use(new VueSocketIo({
+  debug: true,
+  connection: 'https://krll-twitter-api-dev.herokuapp.com:9124',
+  // vuex: {
+  //   store,
+  //   actionPrefix: 'SOCKET_',
+  //   mutationPrefix: 'SOCKET_'
+  // } 
+}))
+
+// Vue.prototype.$io = socketio("http://localhost:8080/#/", {
+//   transports: ['websocket'],
+// })
+
+Vue.config.productionTip = false
+
 
 new Vue({
   router,

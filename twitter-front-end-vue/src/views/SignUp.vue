@@ -121,12 +121,11 @@ export default {
         //轉址到signIn頁
         this.$router.push({ name: "sign-in" });
 
-      } catch (error) {
+      } catch ({ error, response }) {
         this.isProcessing = false;
-        console.log(error);
         Toast.fire({
           icon: "error",
-          title: "無法成功註冊，請稍後再試"
+          title: response.data.message
         });
       }
     }

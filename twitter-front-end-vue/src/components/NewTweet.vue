@@ -23,6 +23,10 @@
             v-model="description"
           ></textarea>
 
+          <div class="tweet-num-limit">
+                    {{description.length}}/140
+                  </div>
+
           <div class="button-control mt-3">
             <button type="submit" class="btn btn-primary post">推文</button>
           </div>
@@ -75,6 +79,10 @@
                     placeholder="有什麼新鮮事？"
                     v-model="description"
                   ></textarea>
+
+                  <div class="tweet-num-limit">
+                    {{description.length}}/140
+                  </div>
 
                   <div class="button-control mt-3">
                     <button
@@ -142,6 +150,11 @@ export default {
         ...newValue,
       };
     },
+    // description(newValue) {
+    //   if (newValue.length > 170) {
+
+    //   }
+    // }
   },
 };
 </script>
@@ -210,4 +223,12 @@ textarea:focus {
   padding: 1rem 1rem;
   margin: -1rem auto -1rem -1rem;
 }
+
+.tweet-num-limit {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #657786;
+}
+
+
 </style>
