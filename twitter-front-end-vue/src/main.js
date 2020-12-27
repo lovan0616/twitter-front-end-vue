@@ -8,8 +8,6 @@ import VueSocketIo from 'vue-socket.io'
 
 Vue.config.productionTip = false
 
-export const SocketInstance = io('http://localhost:8080');
-
 //全域註冊客製化directive v-closable
 let handleOutsideClick
 Vue.directive('closable', {
