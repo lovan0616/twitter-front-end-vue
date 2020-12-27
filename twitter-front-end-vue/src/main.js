@@ -40,7 +40,7 @@ Vue.directive('closable', {
 
 Vue.use(new VueSocketIo({
   debug: true,
-  connection: 'https://krll-twitter-api-dev.herokuapp.com:9124',
+  connection: 'https://krll-twitter-api-dev.herokuapp.com:33073',
   // vuex: {
   //   store,
   //   actionPrefix: 'SOCKET_',
