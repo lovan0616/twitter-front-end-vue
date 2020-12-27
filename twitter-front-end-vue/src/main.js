@@ -3,13 +3,8 @@ import App from './App.vue'
 import router from './router'
 import './assets/application.css'
 import store from './store'
-<<<<<<< HEAD
 import VueSocketIo from 'vue-socket.io'
 // import socketio from 'socket.io-client'
-=======
-import VueSocketIO from 'vue-socket.io'
-import io from 'socket.io-client';
->>>>>>> gh-pages
 
 Vue.config.productionTip = false
 
@@ -45,7 +40,6 @@ Vue.directive('closable', {
   }
 })
 
-<<<<<<< HEAD
 Vue.use(new VueSocketIo({
   debug: true,
   connection: 'https://krll-twitter-api-dev.herokuapp.com:9124',
@@ -63,20 +57,6 @@ Vue.use(new VueSocketIo({
 Vue.config.productionTip = false
 
 
-=======
-Vue.use(SocketInstance)
-
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: 'wss://krll-twitter-api.herokuapp.com:30590',
-  vuex: {
-    store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  }
-}))
-
->>>>>>> gh-pages
 new Vue({
   router,
   store,
