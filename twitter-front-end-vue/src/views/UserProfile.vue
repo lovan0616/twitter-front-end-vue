@@ -619,9 +619,6 @@ export default {
   },
   watch: {
     // 控制名字 & 自介字數上限
-    // const limit = 50;
-    // this.$refs.count.setAttribute("maxlength", limit);
-    // this.name = limit - $refs.count.value.length;
     name: {
       handler: function (value) {
         if (value.length > 50) {

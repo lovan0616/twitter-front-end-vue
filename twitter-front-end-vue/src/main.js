@@ -3,8 +3,12 @@ import App from './App.vue'
 import router from './router'
 import './assets/application.css'
 import store from './store'
+import VueSocketIO from 'vue-socket.io'
+import io from 'socket.io-client';
 
 Vue.config.productionTip = false
+
+export const SocketInstance = io('http://localhost:8080');
 
 //全域註冊客製化directive v-closable
 let handleOutsideClick
@@ -23,7 +27,7 @@ Vue.directive('closable', {
         }
       })
 
-      if(!el.contains(e.target) && !clickedOnExcludedEl) {
+      if (!el.contains(e.target) && !clickedOnExcludedEl) {
         vnode.context[handler]()
       }
     }
@@ -35,6 +39,18 @@ Vue.directive('closable', {
     document.removeEventListener('touchstart', handleOutsideClick)
   }
 })
+
+Vue.use(SocketInstance)
+
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'wss://krll-twitter-api.herokuapp.com:30590',
+  vuex: {
+    store,
+    actionPrefix: 'SOCKET_',
+    mutationPrefix: 'SOCKET_'
+  }
+}))
 
 new Vue({
   router,
