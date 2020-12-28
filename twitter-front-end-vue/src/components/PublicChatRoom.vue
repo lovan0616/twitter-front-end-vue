@@ -11,12 +11,13 @@
     <div class="chat-text-container d-flex">
       <form
         class="form d-flex justify-content-center mx-2"
-        @submit.stop.prevent="handleMessageSubmit"
+        @submit.stop.prevent="send"
       >
         <input
           class="text-input"
           type="text"
           placeholder="say hi to everyone!"
+          v-model="text"
         />
         <button type="submit" class="send-out-btn">
           <img
@@ -31,32 +32,110 @@
 </template>
 
 <script>
-// import io from "socket.io-client"
-// const socket = io("https://krll-twitter-api-dev.herokuapp.com:57750", {
-//   withCredentials: true,
-//   extraHeaders: {
-//     "krll-twitter": "abcd"
-//   }
-// })
-// import VueSocketIo from 'vue-socket.io'
+// import socketio from "socket.io-client";
 
 export default {
-  socket: {
-    join: function (message) {
-      console.log(message);
-    },
+  name: "PublicChatRoom",
+  data() {
+    return {
+      text: "",
+    };
   },
-  methods: {
-    join: function () {
-      this.$socket.emit("join", "23");
-    },
-  },
-  mounted() {
-    console.log("page mounted");
-    //向後端拋出需求，等後端回拋內容回宅
-    this.join();
-  },
+  // methods: {
+  //   socketMsg() {
+  //     let io = socketio("https://krll-twitter-api-dev.herokuapp.com", {
+  //       transports: ["websocket"],
+  //     });
+  //     //向 server 發送請求
+  //     io.emit("sendMsg", { time: new Date() });
+  //     //接收 server response
+  //     io.on("setId", (data) => {
+  //       this.message = data.id;
+  //     });
+  //   },
+  //   send() {
+  //     this.$socket.emit("send message", {
+  //       text: this.text,
+  //     });
+  //     var dark = document.createElement("p");
+  //     dark.innerHTML = this.text + "\r\n";
+  //     var inin = document.getElementById("show");
+  //     inin.append(dark);
+  //     this.text = "";
+  //   },
+  // },
+  // mounted() {
+  //   this.socketMsg();
+  // },
 };
+//   sockets: {
+//     connect() {
+//       console.log("connect");
+//     },
+//     other(data) {
+//       console.log("other", data);
+//       var dark = document.createElement("p");
+//       dark.innerHTML = data.msg + "\r\n";
+//       var inin = document.getElementById("chat-message-container");
+//       inin.append(dark);
+//     },
+//     self(data) {
+//       console.log("self", data);
+//       var dark = document.createElement("p");
+//       dark.innerHTML = data.msg + "\r\n";
+//       var inin = document.getElementById("chat-message-container");
+//       inin.append(dark);
+//     },
+
+// import io from "socket.io-client";
+// const socket = io("https://krll-twitter-api-dev.herokuapp.com:24577", {
+//   withCredentials: true,
+//   extraHeaders: {
+//     "krll-twitter": "abcd",
+//   },
+// });
+// import VueSocketIo from "vue-socket.io";
+
+// export default {
+//   name: "PublicChatRoom",
+//   data() {
+//     return {
+//       text: "",
+//     };
+//   },
+//   socket: {
+//     連線成功
+//     connect() {
+//       console.log("socket connected!");
+//     },
+//     disconnect() {
+//       console.log("socket fail!");
+//     },
+//     reconnect() {
+//       console.log("socket reconnecting!");
+//     },
+//     TEAM_NOTICE(data) {
+//       console.log(data, "TEAM_NOTICE");
+//     },
+//     join: function (message) {
+//       console.log(message);
+//     },
+//   },
+//   methods: {
+//     sendNotice(context) {
+//       this.$socket.emit("TEAM_NOTICE", context);
+//     },
+//   },
+//   mounted() {
+//     console.log("page mounted");
+//     向後端拋出需求，等後端回拋內容回宅
+//     this.sockets.subscribe("TEAM_NOTICE", (data) => {
+//       console.log(data);
+//     });
+//   },
+//   destroy : unsubscribe
+// };
+//
 </script>
 
 <style scoped>
