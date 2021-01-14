@@ -20,6 +20,7 @@
     "socket.io-client": "^3.0.4",
     "sweetalert2": "^10.12.5",
     "uuid": "^8.3.2",
+    "uuidv4": "^6.2.6",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-socket.io": "^3.0.10",
