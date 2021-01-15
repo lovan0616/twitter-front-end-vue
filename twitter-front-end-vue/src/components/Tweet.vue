@@ -1,7 +1,7 @@
 <template>
   <div
     class="tweet-wrapper"
-    v-if="this.presentUser !== '' && this.tweet.id !== -1"
+    v-if="this.presentUser !== '' && this.tweet.userAvatar !== ''"
   >
     <router-link
       class="router-link"
@@ -295,7 +295,7 @@ export default {
     this.fetchData();
   },
   watch: {
-    initialTweet(newValue) {
+    tweet(newValue) {
       this.tweet = newValue;
     },
   },

@@ -34,47 +34,48 @@
 import Navbar from "../components/Navbar";
 import UserChatCard from "../components/UserChatCard";
 import PublicChatRoom from "../components/PublicChatRoom";
-import VueSocketIo from 'vue-socket.io'
+// import VueSocketIo from "vue-socket.io";
+
 export default {
-  name: 'Chatroom',
+  name: "Chatroom",
   data() {
     return {
-      input: '',
-      messages: []
-    }
+      input: "",
+      messages: [],
+    };
   },
   components: {
     Navbar,
     UserChatCard,
     PublicChatRoom,
   },
-  socket: {
-    connect: function() {
-      console.log('socket connected from page')
-    },
-    //監聽後端回拋的事件及內容
-    identity({ socketId, userId }) {
-      console.log(socketId, userId)
-    }
-  },
-  methods: {
-    clickButton: function() {
-      console.log(VueSocketIo)
-    }
-  },
-  mounted() {
-    console.log('page mounted')
-    //向後端拋出需求，等後端回拋內容回宅
-    this.$socket.emit('loginmsg', { subscribe: true })
+  // socket: {
+  //   connect: function() {
+  //     console.log('socket connected from page')
+  //   },
+  //   監聽後端回拋的事件及內容
+  //   identity({ socketId, userId }) {
+  //     console.log(socketId, userId)
+  //   }
+  // },
+  // methods: {
+  //   clickButton: function() {
+  //     console.log(VueSocketIo)
+  //   }
+  // },
+  // mounted() {
+  //   console.log('page mounted')
+  //   向後端拋出需求，等後端回拋內容回宅
+  //   this.$socket.emit('loginmsg', { subscribe: true })
 
-    this.$socket.on('identity', 25)
-  },
-  created() {
-    this.$socket.on('identity', (data) => {
-      console.log(data)
-    })
-  }
-}
+  //   this.$socket.on('identity', 25)
+  // },
+  // created() {
+  //   this.$socket.on('identity', (data) => {
+  //     console.log(data)
+  //   })
+  // }
+};
 </script>
 
 <style scoped>

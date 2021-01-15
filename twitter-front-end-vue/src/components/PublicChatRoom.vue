@@ -11,11 +11,20 @@
     <div class="chat-text-container d-flex">
       <form
         class="form d-flex justify-content-center mx-2"
-        @submit.stop.prevent="handleMessageSubmit"
+        @submit.stop.prevent="send"
       >
-        <input class="text-input" type="text" placeholder="say hi to everyone!" />
+        <input
+          class="text-input"
+          type="text"
+          placeholder="say hi to everyone!"
+          v-model="text"
+        />
         <button type="submit" class="send-out-btn">
-          <img src="../assets/send-message.svg" alt="send-out-the-text" class="send-out" />
+          <img
+            src="../assets/send-message.svg"
+            alt="send-out-the-text"
+            class="send-out"
+          />
         </button>
       </form>
     </div>
@@ -23,32 +32,69 @@
 </template>
 
 <script>
-// import io from "socket.io-client"
-// const socket = io("https://krll-twitter-api-dev.herokuapp.com:57750", {
-//   withCredentials: true,
-//   extraHeaders: {
-//     "krll-twitter": "abcd"
-//   }
-// })
-// import VueSocketIo from 'vue-socket.io'
+import socketio from "socket.io-client";
+const io = socketio("https://krll-twitter-api-dev.herokuapp.com/");
 
 export default {
-  socket: {
-    join: function(message) {
-      console.log(message);
-    }
+  name: "PublicChatRoom",
+  data() {
+    return {
+      text: "",
+    };
   },
   methods: {
-    join: function() {
-      this.$socket.emit("join", '23');
-    }
+    socketMsg() {
+      // const io = socketio("https://krll-twitter-api-dev.herokuapp.com/", {
+      //   withCredentials: true,
+      //   extraHeaders: {
+      //     "my-custom-header": "my-custom-header",
+      //   },
+      // });
+      io.on("connection", () => {
+        console.log("connection succeed!");
+      });
+    },
+    send() {
+      this.$socket.emit("send message", {
+        text: this.text,
+      });
+      var dark = document.createElement("p");
+      dark.innerHTML = this.text + "\r\n";
+      var inin = document.getElementById("show");
+      inin.append(dark);
+      this.text = "";
+    },
   },
-  mounted() {
-    console.log("page mounted");
-    //向後端拋出需求，等後端回拋內容回宅
-    this.join();
-  }
+  // created() {
+  //   this.socketMsg();
+  // },
 };
+//   sockets: {
+//     connect() {
+//       console.log("connect");
+//     },
+//     other(data) {
+//       console.log("other", data);
+//       var dark = document.createElement("p");
+//       dark.innerHTML = data.msg + "\r\n";
+//       var inin = document.getElementById("chat-message-container");
+//       inin.append(dark);
+//     },
+//     self(data) {
+//       console.log("self", data);
+//       var dark = document.createElement("p");
+//       dark.innerHTML = data.msg + "\r\n";
+//       var inin = document.getElementById("chat-message-container");
+//       inin.append(dark);
+//     },
+
+// import io from "socket.io-client";
+// const socket = io("https://krll-twitter-api-dev.herokuapp.com:24577", {
+//   withCredentials: true,
+//   extraHeaders: {
+//     "krll-twitter": "abcd",
+//   },
+// });
 </script>
 
 <style scoped>
