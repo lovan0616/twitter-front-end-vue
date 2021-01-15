@@ -32,7 +32,8 @@
 </template>
 
 <script>
-// import socketio from "socket.io-client";
+import socketio from "socket.io-client";
+const io = socketio("https://krll-twitter-api-dev.herokuapp.com/");
 
 export default {
   name: "PublicChatRoom",
@@ -41,30 +42,30 @@ export default {
       text: "",
     };
   },
-  // methods: {
-  //   socketMsg() {
-  //     let io = socketio("https://krll-twitter-api-dev.herokuapp.com", {
-  //       transports: ["websocket"],
-  //     });
-  //     //向 server 發送請求
-  //     io.emit("sendMsg", { time: new Date() });
-  //     //接收 server response
-  //     io.on("setId", (data) => {
-  //       this.message = data.id;
-  //     });
-  //   },
-  //   send() {
-  //     this.$socket.emit("send message", {
-  //       text: this.text,
-  //     });
-  //     var dark = document.createElement("p");
-  //     dark.innerHTML = this.text + "\r\n";
-  //     var inin = document.getElementById("show");
-  //     inin.append(dark);
-  //     this.text = "";
-  //   },
-  // },
-  // mounted() {
+  methods: {
+    socketMsg() {
+      // const io = socketio("https://krll-twitter-api-dev.herokuapp.com/", {
+      //   withCredentials: true,
+      //   extraHeaders: {
+      //     "my-custom-header": "my-custom-header",
+      //   },
+      // });
+      io.on("connection", () => {
+        console.log("connection succeed!");
+      });
+    },
+    send() {
+      this.$socket.emit("send message", {
+        text: this.text,
+      });
+      var dark = document.createElement("p");
+      dark.innerHTML = this.text + "\r\n";
+      var inin = document.getElementById("show");
+      inin.append(dark);
+      this.text = "";
+    },
+  },
+  // created() {
   //   this.socketMsg();
   // },
 };
@@ -94,48 +95,6 @@ export default {
 //     "krll-twitter": "abcd",
 //   },
 // });
-// import VueSocketIo from "vue-socket.io";
-
-// export default {
-//   name: "PublicChatRoom",
-//   data() {
-//     return {
-//       text: "",
-//     };
-//   },
-//   socket: {
-//     連線成功
-//     connect() {
-//       console.log("socket connected!");
-//     },
-//     disconnect() {
-//       console.log("socket fail!");
-//     },
-//     reconnect() {
-//       console.log("socket reconnecting!");
-//     },
-//     TEAM_NOTICE(data) {
-//       console.log(data, "TEAM_NOTICE");
-//     },
-//     join: function (message) {
-//       console.log(message);
-//     },
-//   },
-//   methods: {
-//     sendNotice(context) {
-//       this.$socket.emit("TEAM_NOTICE", context);
-//     },
-//   },
-//   mounted() {
-//     console.log("page mounted");
-//     向後端拋出需求，等後端回拋內容回宅
-//     this.sockets.subscribe("TEAM_NOTICE", (data) => {
-//       console.log(data);
-//     });
-//   },
-//   destroy : unsubscribe
-// };
-//
 </script>
 
 <style scoped>

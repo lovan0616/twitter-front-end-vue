@@ -3,15 +3,18 @@ import App from './App.vue'
 import router from './router'
 import './assets/application.css'
 import store from './store'
-// import VueSocketIO from 'vue-socket.io'
-// import io from 'socket.io-client'
+import io from 'socket.io-client'
 
 Vue.config.productionTip = false
 
-// const socket = io('https://krll-twitter-api-dev.herokuapp.com', {
-//   withCredentials: true,
-// })
-// Vue.use(socket);
+const socket = io('https://krll-twitter-api-dev.herokuapp.com/', {
+  withCredentials: true,
+  extraHeaders: {
+    'my-custom-header': 'my-custom-header'
+  }
+});
+
+Vue.use(socket);
 
 //全域註冊客製化directive v-closable
 let handleOutsideClick
@@ -43,25 +46,11 @@ Vue.directive('closable', {
   }
 })
 
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: 'https://krll-twitter-api-dev.herokuapp.com',
-//   vuex: {
-//     store,
-//     actionPrefix: 'SOCKET_',
-//     mutationPrefix: 'SOCKET_'
-//   }
-// }))
-
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
-
-// Vue.prototype.$io = socketio("http://localhost:8080/#/", {
-//   transports: ['websocket'],
-// })
 
 
 
