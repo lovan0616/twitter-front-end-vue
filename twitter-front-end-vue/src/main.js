@@ -46,26 +46,6 @@ Vue.directive('closable', {
   }
 })
 
-<<<<<<< HEAD
-Vue.use(new VueSocketIo({
-  debug: true,
-  connection: 'https://krll-twitter-api-dev.herokuapp.com:33073',
-  // vuex: {
-  //   store,
-  //   actionPrefix: 'SOCKET_',
-  //   mutationPrefix: 'SOCKET_'
-  // } 
-}))
-
-// Vue.prototype.$io = socketio("http://localhost:8080/#/", {
-//   transports: ['websocket'],
-// })
-
-Vue.config.productionTip = false
-
-
-=======
->>>>>>> b7f24e280e641186178e1b4ddd436240381f053e
 new Vue({
   router,
   store,
