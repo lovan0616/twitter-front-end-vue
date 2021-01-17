@@ -57,6 +57,10 @@ export default {
         const { data } = await AdminAPI.deleteTweet(tweetId);
         console.log(data);
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+        Toast.fire({
+          icon: "success",
+          title: "成功刪除該推文",
+        });
       } catch (error) {
         console.log("error:", error);
         Toast.fire({

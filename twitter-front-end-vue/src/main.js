@@ -3,10 +3,18 @@ import App from './App.vue'
 import router from './router'
 import './assets/application.css'
 import store from './store'
-import VueSocketIo from 'vue-socket.io'
-// import socketio from 'socket.io-client'
+import io from 'socket.io-client'
 
 Vue.config.productionTip = false
+
+const socket = io('https://krll-twitter-api-dev.herokuapp.com/', {
+  withCredentials: true,
+  extraHeaders: {
+    'my-custom-header': 'my-custom-header'
+  }
+});
+
+Vue.use(socket);
 
 //全域註冊客製化directive v-closable
 let handleOutsideClick
@@ -25,7 +33,7 @@ Vue.directive('closable', {
         }
       })
 
-      if(!el.contains(e.target) && !clickedOnExcludedEl) {
+      if (!el.contains(e.target) && !clickedOnExcludedEl) {
         vnode.context[handler]()
       }
     }
@@ -38,6 +46,7 @@ Vue.directive('closable', {
   }
 })
 
+<<<<<<< HEAD
 Vue.use(new VueSocketIo({
   debug: true,
   connection: 'https://krll-twitter-api-dev.herokuapp.com:33073',
@@ -55,8 +64,15 @@ Vue.use(new VueSocketIo({
 Vue.config.productionTip = false
 
 
+=======
+>>>>>>> b7f24e280e641186178e1b4ddd436240381f053e
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
+
+
+
+
