@@ -37,13 +37,7 @@ import PublicChatRoom from "../components/PublicChatRoom";
 // import VueSocketIo from "vue-socket.io";
 
 export default {
-  name: "Chatroom",
-  data() {
-    return {
-      input: "",
-      messages: [],
-    };
-  },
+  name: 'Chatroom',
   components: {
     Navbar,
     UserChatCard,
@@ -79,6 +73,10 @@ export default {
 </script>
 
 <style scoped>
+
+.container {
+  height: 100%;
+}
 .user-area {
   width: 30%;
 }
@@ -103,7 +101,7 @@ export default {
 
 .public-chat-area {
   width: 48%;
-  height: 100%;
+  height: 80%;
 }
 
 .chat-room-area {
