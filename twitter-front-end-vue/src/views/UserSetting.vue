@@ -12,11 +12,7 @@
         </div>
       </div>
       <main>
-        <form
-          class="ml-2"
-          @submit.stop.prevent="handleSubmit"
-          style="width: 60%"
-        >
+        <form class="ml-2" @submit.stop.prevent="handleSubmit" style="width: 60%">
           <div class="form-group my-4">
             <input
               type="text"
@@ -53,13 +49,12 @@
             />
           </div>
 
-          <div class="toggle-wrapper d-100">
-            <input type="radio" id="password-toggle" class="password-toggle" />
-          <label for="password-toggle" class="password-toggle-label"
-            >修改密碼</label>
-            <div class="down-arrow">&gt;</div>
-          </div>
-          
+          <input type="checkbox" id="password-toggle" class="password-toggle" />
+          <label for="password-toggle" class="password-toggle-label">
+            修改密碼
+            <span class="down-arrow">&gt;</span>
+          </label>
+
           <div class="password-group-wrapper">
             <div class="form-group my-4">
               <input
@@ -95,9 +90,7 @@
           </div>
 
           <div class="btn-control d-flex justify-content-end">
-            <button class="btn btn-primary ml-auto save" type="submit">
-              儲存
-            </button>
+            <button class="btn btn-primary ml-auto save" type="submit">儲存</button>
           </div>
         </form>
       </main>
@@ -120,14 +113,14 @@ export default {
       name: "",
       oldPassword: "",
       newPassword: "",
-      checkPassword: "",
+      checkPassword: ""
     };
   },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated"])
   },
   components: {
-    Navbar,
+    Navbar
   },
   methods: {
     fetchData() {
@@ -146,39 +139,38 @@ export default {
         if (!this.account || !this.email || !this.name) {
           Toast.fire({
             icon: "error",
-            title: "必填項目不能為空白",
+            title: "必填項目不能為空白"
           });
-          return
+          return;
         }
 
         //如果未修改密碼，則只回傳前三筆資料
         if (!this.oldPassword || !this.newPassword || !this.checkPassword) {
-          passwordItems.forEach((item) => {
+          passwordItems.forEach(item => {
             formData.delete(item);
           });
         }
 
         const response = await usersAPI.updateUser(id, { formData });
-        
-        if (response.statusText !== 'OK') {
-          throw new Error(response.statusText)
+
+        if (response.statusText !== "OK") {
+          throw new Error(response.statusText);
         }
 
         Toast.fire({
-          icon: 'success',
-          title: '已成功修改資料'
-        })
-        
-        this.fetchData()
-        this.$router.push({name: 'main-tweets'})
+          icon: "success",
+          title: "已成功修改資料"
+        });
 
+        this.fetchData();
+        this.$router.push({ name: "main-tweets" });
       } catch ({ response }) {
         Toast.fire({
           icon: "error",
-          title: response.data.message,
+          title: response.data.message
         });
       }
-    },
+    }
 
     // async handleSubmit() {
     //   try {
@@ -206,7 +198,7 @@ export default {
   },
   created() {
     this.fetchData();
-  },
+  }
 };
 </script>
 
@@ -249,7 +241,13 @@ input {
   border-radius: 20px;
   padding: 3px 10px;
   margin: 0;
-  color: #495057;
+  box-shadow: 0 0 1px 1.5px lightgray;
+}
+
+.password-toggle-label:hover {
+  color: #ff6601;
+  border: 2px solid #ff6601;
+
 }
 
 .password-group-wrapper {
@@ -258,7 +256,7 @@ input {
   transition: transform 0.3s ease-in-out;
 }
 
-.toggle-wrapper {
+/* .toggle-wrapper {
   height: 40px;
   line-height: 40px;
   display: flex;
@@ -269,13 +267,12 @@ input {
 .toggle-wrapper:hover {
   background-color: #f7f9fa;
   border-bottom: 2px solid #ff6600;
-}
+} */
 
 .down-arrow {
-  margin: 0 15px 0 auto;
-  transform: rotate(0.25turn);
+  display: inline-block;
+  margin: 0 5px 0 15px;
+  transform: rotate(.25turn);
   padding-right: 0px;
-
 }
-
 </style>

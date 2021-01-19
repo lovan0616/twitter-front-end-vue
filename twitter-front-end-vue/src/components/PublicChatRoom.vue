@@ -1,15 +1,17 @@
 <template>
   <div class="chat-container">
     <div class="chat-message-container chatbox p-3">
-      <div class="publicMessages">
-
-      </div>
+      <div class="publicMessages"></div>
 
       <div class="realtimeMessages d-flex flex-column">
-        <div v-for="message in messages" :key="message.id" :class="['message', 'd-flex', {selfMessage : currentUser.id === message.user.id}, {publicMessage : message.type === 'publicMessage'}]">
+        <div
+          v-for="message in messages"
+          :key="message.id"
+          :class="['message', 'd-flex', {selfMessage : currentUser.id === message.user.id}, {publicMessage : message.type === 'publicMessage'}]"
+        >
           <div class="sender-avatar-area mr-1" v-if="currentUser.id !== message.user.id">
             <div class="image-cropper">
-                  <img :src="message.user.avatar" class="avatar" />
+              <img :src="message.user.avatar" class="avatar" />
             </div>
           </div>
           <div class="message-area d-flex flex-column">
@@ -21,29 +23,28 @@
     </div>
 
     <div class="chat-text-container d-flex">
-      <form
-        class="form d-flex justify-content-center mx-2"
-        @submit.stop.prevent="send"
-      >
-        <input class="text-input" type="text" placeholder="say hi to everyone!" v-model="message.content" />
+      <form class="form d-flex justify-content-center mx-2" @submit.stop.prevent="send">
+        <input
+          class="text-input"
+          type="text"
+          placeholder="say hi to everyone!"
+          v-model="message.content"
+        />
         <button type="submit" class="send-out-btn" :disabled="!message.content">
           <img src="../assets/send-message.svg" alt="send-out-the-text" class="send-out" />
         </button>
       </form>
 
-      <!-- Todo: 測試按鈕，導入scoket-io-client後拔除 -->
-      <button class="join-rrom" @click="joinRoom">joinRoom</button>
     </div>
   </div>
 </template>
 
 <script>
-
-import { mapState } from 'vuex'
-import { timeNowFilter } from '../utils/mixins'
-import { uuid } from 'uuidv4'
-import socketio from "socket.io-client";
-const io = socketio("https://krll-twitter-api-dev.herokuapp.com/");
+import { mapState } from "vuex";
+import { timeNowFilter } from "../utils/mixins";
+import { uuid } from "uuidv4";
+// import socketio from "socket.io-client";
+// const io = socketio("https://krll-twitter-api-dev.herokuapp.com/");
 
 export default {
   // socket: {
@@ -66,87 +67,23 @@ export default {
     return {
       // Todo: 修改message內容
       message: {
-        id: uuid(),
-        type: '',
-        user: {
-          id: 11,
-          name: 'user1',
-          avatar: "https://i.imgur.com/qrr11vy.jpg"
-        },
-        content: '',
+        id: "",
+        type: "",
+        user: {},
+        content: "",
         timeStamp: new Date()
       },
-      messages: [],
-    }
+      messages: []
+    };
   },
   mixins: [timeNowFilter],
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated"])
   },
   methods: {
-    handleMessageSubmit(){
-      if (!this.message.content) return
-
-      //將此則 message 設定為 chatMessage 
-      this.message.type = 'chatMessage'
-
-      this.messages.push({...this.message})
-      // Todo: 修改message內容
-      this.message = {
-        id: uuid(),
-        type: '',
-        user: {
-          id: Math.random(),
-          name: 'user1',
-          avatar: "https://i.imgur.com/qrr11vy.jpg"
-        },
-        content: '',
-        timeStamp: new Date()
-      }
-
-      //使對話框置底:對話框
-      this.$nextTick(function() {
-        const chatbox = document.querySelector('.chatbox')
-        chatbox.scrollTop = chatbox.scrollHeight
-      })
-    },
-    // Todo: 測試功能，導入scoket-io-client後改寫
-    joinRoom() {
-      //將此則 message 設定為 publicMessage 
-      this.message.type = 'publicMessage'
-
-      this.message = {
-        id: uuid(),
-        type: 'publicMessage',
-        user: {
-          id: 5,
-          name: '@user5',
-          avatar: "https://i.imgur.com/qrr11vy.jpg",
-        },
-        content: '@user5 is online',
-        timeStamp: new Date()
-      }
-
-      this.messages.push({...this.message})
-
-      // Todo: 修改message內容
-      this.message = {
-        id: uuid(),
-        type: '',
-        user: {
-          id: Math.random(),
-          name: 'user1',
-          avatar: "https://i.imgur.com/qrr11vy.jpg"
-        },
-        content: '',
-        timeStamp: new Date()
-      }
-
-      //使對話框置底:對話框
-      this.$nextTick(function() {
-        const chatbox = document.querySelector('.chatbox')
-        chatbox.scrollTop = chatbox.scrollHeight
-      })
+    handleMessageSubmit() {
+      if (!this.message.content) return;
+      this.$socket.emit("clientSendMessage", this.message.content);
     },
 
     socketMsg() {
@@ -156,15 +93,76 @@ export default {
       //     "my-custom-header": "my-custom-header",
       //   },
       // });
-      io.on("connection", () => {
+      this.$socket.on("connection", () => {
         console.log("connection succeed!");
       });
-    },
+    }
+  },
+  created() {
+    this.socketMsg();
+  },
+  mounted() {
+    this.$socket.on("joinroom", () => {
+      // Todo: 若後端確認回傳為一包物件時，改為註解中的payload寫法(參數加入payload)
+      // this.message = {
+      //   ...payload,
+      //   type: "publicMessage",
+      //   id: uuid()
+      // }
+      this.message = {
+        id: uuid(),
+        type: "publicMessage",
+        user: {
+          id: 5,
+          name: "@user5",
+          avatar: "https://i.imgur.com/qrr11vy.jpg"
+        },
+        content: "@user5 is online",
+        timeStamp: new Date()
+      };
+
+      this.messages.push({ ...this.message });
+
+      // Todo: 修改message內容
+      this.message = {
+        id: "",
+        type: "",
+        user: {},
+        content: "",
+        timeStamp: new Date()
+      };
+
+      //使對話框置底:對話框
+      this.$nextTick(function() {
+        const chatbox = document.querySelector(".chatbox");
+        chatbox.scrollTop = chatbox.scrollHeight;
+      });
+    }),
+    this.$socket.on("serverSendMessage", payload => {
+      this.message = {
+        ...payload,
+        type: "chatMessage",
+        id: uuid()
+      };
+
+      this.messages.push({ ...this.message });
+      // Todo: 修改message內容
+      this.message = {
+        id: "",
+        type: "",
+        user: {},
+        content: "",
+        timeStamp: new Date()
+      };
+
+      //使對話框置底:對話框
+      this.$nextTick(function() {
+        const chatbox = document.querySelector(".chatbox");
+        chatbox.scrollTop = chatbox.scrollHeight;
+      });
+    });
   }
-}
-  // created() {
-  //   this.socketMsg();
-  // },
+};
 
 //   sockets: {
 //     connect() {
@@ -195,7 +193,8 @@ export default {
 </script>
 
 <style scoped>
-ul, li {
+ul,
+li {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -245,12 +244,12 @@ ul, li {
 
 .send-out-btn[disabled="disabled"] .send-out {
   cursor: auto;
-  filter: invert(50%) brightness(130%)
+  filter: invert(50%) brightness(130%);
 }
 
 .chatbox {
   width: 100%;
-  height:100%;
+  height: 100%;
   overflow: scroll;
 }
 
@@ -274,7 +273,7 @@ ul, li {
 }
 
 .message-box {
-  background-color: #E6ECF0;
+  background-color: #e6ecf0;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -283,7 +282,7 @@ ul, li {
 .selfMessage .message-box {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 20px;
-  background-color: #FF6601;
+  background-color: #ff6601;
   color: white;
 }
 
@@ -300,10 +299,9 @@ ul, li {
 }
 
 .publicMessage .message-box {
-  background-color: #E5E5E5;
-  color: #7A8995;
+  background-color: #e5e5e5;
+  color: #7a8995;
   text-align: center;
   border-radius: 20px;
 }
-
 </style>>
