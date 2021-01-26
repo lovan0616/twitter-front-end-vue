@@ -35,7 +35,7 @@
     <div class="chat-text-container d-flex">
       <form
         class="form d-flex justify-content-center mx-2"
-        @submit.stop.prevent="send"
+        @submit.stop.prevent="handleMessageSubmit"
       >
         <input
           class="text-input"
@@ -106,15 +106,24 @@ export default {
       };
     },
     handleMessageSubmit() {
-      if (!this.message.content) return;
-      this.$socket.emit("clientSendMessage", this.message.content);
+      // if (!this.message.content) return;
+      // console.log("send out!!");
+      // const userId = this.presentUser.id;
+      // const message = this.message.content;
+      // this.$socket.emit("sendMessage", () => {
+      //   userId, message, (room = "publicRoom");
+      // });
     },
     socketOnline() {
-      this.$socket.emit("online", { userId: this.presentUser.id });
+      const userId = this.presentUser.id;
+      this.$socket.emit("online", () => {
+        userId;
+      });
       this.$socket.on("onlineUsers", (data) => {
         console.log("connection succeed!");
-        (this.onlineUsers = data.onlineUsers),
-          (this.countOfUsers = data.countOfUsers);
+        console.log(data);
+        this.onlineUsers = data.onlineUsers;
+        this.countOfUsers = data.countOfUsers;
       });
     },
   },
