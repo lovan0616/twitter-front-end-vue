@@ -106,12 +106,26 @@ export default {
       };
     },
     handleMessageSubmit() {
-      // if (!this.message.content) return;
+      if (!this.message.content) return;
+      this.$socket.emit("clientSendMessage", this.message.content);
       // console.log("send out!!");
       // const userId = this.presentUser.id;
       // const message = this.message.content;
+      // const room = "publicRoom";
       // this.$socket.emit("sendMessage", () => {
-      //   userId, message, (room = "publicRoom");
+      //   userId, message, room;
+      // });
+      // this.$socket.on("serverSendMessage", (data) => {
+      //   console.log("got message!");
+      //   const { user, message, timeStamp } = data;
+      //   this.message = {
+      //     ...this.message,
+      //     id: uuid(),
+      //     user,
+      //     type: '',
+      //     content: message,
+      //     timeStamp,
+      //   };
       // });
     },
     socketOnline() {
