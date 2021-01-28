@@ -34,10 +34,9 @@
 import Navbar from "../components/Navbar";
 import UserChatCard from "../components/UserChatCard";
 import PublicChatRoom from "../components/PublicChatRoom";
-// import VueSocketIo from "vue-socket.io";
 
 export default {
-  name: 'Chatroom',
+  name: "Chatroom",
   components: {
     Navbar,
     UserChatCard,
@@ -73,7 +72,6 @@ export default {
 </script>
 
 <style scoped>
-
 .container {
   height: 100%;
 }

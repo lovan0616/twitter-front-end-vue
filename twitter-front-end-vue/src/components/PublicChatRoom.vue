@@ -7,23 +7,36 @@
         <div
           v-for="message in messages"
           :key="message.id"
-          :class="['message', 'd-flex', {selfMessage : currentUser.id === message.user.id}, {publicMessage : message.type === 'publicMessage'}]"
+          :class="[
+            'message',
+            'd-flex',
+            { selfMessage: currentUser.id === message.user.id },
+            { publicMessage: message.type === 'publicMessage' },
+          ]"
         >
-          <div class="sender-avatar-area mr-1" v-if="currentUser.id !== message.user.id">
+          <div
+            class="sender-avatar-area mr-1"
+            v-if="currentUser.id !== message.user.id"
+          >
             <div class="image-cropper">
               <img :src="message.user.avatar" class="avatar" />
             </div>
           </div>
           <div class="message-area d-flex flex-column">
-            <div class="message-box p-2">{{message.content}}</div>
-            <span class="small text-secondary sent-time">{{message.timeStamp | timeNow }}</span>
+            <div class="message-box p-2">{{ message.content }}</div>
+            <span class="small text-secondary sent-time">{{
+              message.timeStamp | timeNow
+            }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="chat-text-container d-flex">
-      <form class="form d-flex justify-content-center mx-2" @submit.stop.prevent="send">
+      <form
+        class="form d-flex justify-content-center mx-2"
+        @submit.stop.prevent="handleMessageSubmit"
+      >
         <input
           class="text-input"
           type="text"
@@ -31,10 +44,13 @@
           v-model="message.content"
         />
         <button type="submit" class="send-out-btn" :disabled="!message.content">
-          <img src="../assets/send-message.svg" alt="send-out-the-text" class="send-out" />
+          <img
+            src="../assets/send-message.svg"
+            alt="send-out-the-text"
+            class="send-out"
+          />
         </button>
       </form>
-
     </div>
   </div>
 </template>
@@ -44,7 +60,6 @@ import { mapState } from "vuex";
 import { timeNowFilter } from "../utils/mixins";
 import { uuid } from "uuidv4";
 // import socketio from "socket.io-client";
-// const io = socketio("https://krll-twitter-api-dev.herokuapp.com/");
 
 export default {
   // socket: {
@@ -71,35 +86,64 @@ export default {
         type: "",
         user: {},
         content: "",
-        timeStamp: new Date()
+        timeStamp: new Date(),
       },
-      messages: []
+      messages: [],
+      onlineUsers: [],
+      countOfUsers: 0,
+      presentUser: {},
     };
   },
   mixins: [timeNowFilter],
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"])
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
+    fetchUser() {
+      this.presentUser = {
+        ...this.presentUser,
+        ...this.currentUser,
+      };
+    },
     handleMessageSubmit() {
       if (!this.message.content) return;
       this.$socket.emit("clientSendMessage", this.message.content);
-    },
-
-    socketMsg() {
-      // const io = socketio("https://krll-twitter-api-dev.herokuapp.com/", {
-      //   withCredentials: true,
-      //   extraHeaders: {
-      //     "my-custom-header": "my-custom-header",
-      //   },
+      // console.log("send out!!");
+      // const userId = this.presentUser.id;
+      // const message = this.message.content;
+      // const room = "publicRoom";
+      // this.$socket.emit("sendMessage", () => {
+      //   userId, message, room;
       // });
-      this.$socket.on("connection", () => {
-        console.log("connection succeed!");
+      // this.$socket.on("serverSendMessage", (data) => {
+      //   console.log("got message!");
+      //   const { user, message, timeStamp } = data;
+      //   this.message = {
+      //     ...this.message,
+      //     id: uuid(),
+      //     user,
+      //     type: '',
+      //     content: message,
+      //     timeStamp,
+      //   };
+      // });
+    },
+    socketOnline() {
+      const userId = this.presentUser.id;
+      this.$socket.emit("online", () => {
+        userId;
       });
-    }
+      this.$socket.on("onlineUsers", (data) => {
+        console.log("connection succeed!");
+        console.log(data);
+        this.onlineUsers = data.onlineUsers;
+        this.countOfUsers = data.countOfUsers;
+      });
+    },
   },
   created() {
-    this.socketMsg();
+    this.socketOnline();
+    this.fetchUser();
   },
   mounted() {
     this.$socket.on("joinroom", () => {
@@ -115,10 +159,10 @@ export default {
         user: {
           id: 5,
           name: "@user5",
-          avatar: "https://i.imgur.com/qrr11vy.jpg"
+          avatar: "https://i.imgur.com/qrr11vy.jpg",
         },
         content: "@user5 is online",
-        timeStamp: new Date()
+        timeStamp: new Date(),
       };
 
       this.messages.push({ ...this.message });
@@ -129,67 +173,40 @@ export default {
         type: "",
         user: {},
         content: "",
-        timeStamp: new Date()
+        timeStamp: new Date(),
       };
 
       //使對話框置底:對話框
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         const chatbox = document.querySelector(".chatbox");
         chatbox.scrollTop = chatbox.scrollHeight;
       });
     }),
-    this.$socket.on("serverSendMessage", payload => {
-      this.message = {
-        ...payload,
-        type: "chatMessage",
-        id: uuid()
-      };
+      this.$socket.on("serverSendMessage", (payload) => {
+        this.message = {
+          ...payload,
+          type: "chatMessage",
+          id: uuid(),
+        };
 
-      this.messages.push({ ...this.message });
-      // Todo: 修改message內容
-      this.message = {
-        id: "",
-        type: "",
-        user: {},
-        content: "",
-        timeStamp: new Date()
-      };
+        this.messages.push({ ...this.message });
+        // Todo: 修改message內容
+        this.message = {
+          id: "",
+          type: "",
+          user: {},
+          content: "",
+          timeStamp: new Date(),
+        };
 
-      //使對話框置底:對話框
-      this.$nextTick(function() {
-        const chatbox = document.querySelector(".chatbox");
-        chatbox.scrollTop = chatbox.scrollHeight;
+        //使對話框置底:對話框
+        this.$nextTick(function () {
+          const chatbox = document.querySelector(".chatbox");
+          chatbox.scrollTop = chatbox.scrollHeight;
+        });
       });
-    });
-  }
+  },
 };
-
-//   sockets: {
-//     connect() {
-//       console.log("connect");
-//     },
-//     other(data) {
-//       console.log("other", data);
-//       var dark = document.createElement("p");
-//       dark.innerHTML = data.msg + "\r\n";
-//       var inin = document.getElementById("chat-message-container");
-//       inin.append(dark);
-//     },
-//     self(data) {
-//       console.log("self", data);
-//       var dark = document.createElement("p");
-//       dark.innerHTML = data.msg + "\r\n";
-//       var inin = document.getElementById("chat-message-container");
-//       inin.append(dark);
-//     },
-
-// import io from "socket.io-client";
-// const socket = io("https://krll-twitter-api-dev.herokuapp.com:24577", {
-//   withCredentials: true,
-//   extraHeaders: {
-//     "krll-twitter": "abcd",
-//   },
-// });
 </script>
 
 <style scoped>

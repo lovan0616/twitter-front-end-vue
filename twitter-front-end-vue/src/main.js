@@ -14,7 +14,7 @@ const socket = io('https://krll-twitter-api-dev.herokuapp.com/', {
   }
 });
 
-Vue.use(socket);
+Vue.prototype.$socket = socket
 
 //全域註冊客製化directive v-closable
 let handleOutsideClick
