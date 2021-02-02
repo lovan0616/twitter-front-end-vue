@@ -4,9 +4,11 @@ module.exports = {
     : '/',
   css: {
     loaderOptions: {
-      sass: {
-        additionalData: `@import "~@/assets/sass/variables.sass";`,
-        additionalData: `@import "~@/assets/sass/mixin.sass";`,
+      scss: {
+        additionalData: `
+        @import "~@/assets/sass/variables.scss";
+        @import "~@/assets/sass/mixin.scss";
+        `
       },
     }
   }
